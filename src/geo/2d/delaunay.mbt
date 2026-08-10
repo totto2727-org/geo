@@ -5,7 +5,7 @@
 //   https://en.wikipedia.org/wiki/Bowyer%E2%80%93Watson_algorithm
 // - https://github.com/Stoeoef/spade — full DCEL/flip-based reference
 //   port (constraints, conforming Delaunay, walk location). Only a
-//   viable subset is implemented here per the geo-mbt roadmap (ms-27).
+//   viable subset is implemented here per the geo roadmap (ms-27).
 //
 // This is a v0.2.0 first cut: the "find bad triangles" sweep is brute
 // force (O(n) per insertion, O(n²) total), and the circumcircle test

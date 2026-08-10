@@ -7,7 +7,7 @@ Provide a spatial index over items tagged with bounding rects. Build it in one s
 - "Which items intersect this query rect?" — `O(log n + k)` where `k` is the result size.
 - "Which item is closest to this point?" — `O(log n)` average.
 
-This is **not** a fully-featured R\*-tree: forced reinsertion, condense-tree rebalancing, tunable params, and best-first nearest-neighbour traversal are intentionally omitted. It still supports the dynamic operations needed by geo-mbt's indexed algorithms.
+This is **not** a fully-featured R\*-tree: forced reinsertion, condense-tree rebalancing, tunable params, and best-first nearest-neighbour traversal are intentionally omitted. It still supports the dynamic operations needed by geo's indexed algorithms.
 
 ## API surface
 

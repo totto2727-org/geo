@@ -1,8 +1,8 @@
-# @totto2727/geo-mbt
+# @totto2727/geo
 
-MoonBit port of [georust/geo](https://georust.org/): 2D planar + geographic geospatial primitives and algorithms.
+MoonBit port of [georust/geo](https://georust.org/): 2D planar + geographic geospatial primitives and algorithms. The published module is [`totto2727/geo`](https://mooncakes.io/docs/totto2727/geo).
 
-Scope: 2D geometry only, `f64` (`Double`) coordinates only. 3D remains out of scope. See `docs/roadmap/geo-mbt/` for the full roadmap (Phase 2 complete, ms-01〜ms-33 landed; ms-34 v0.2.0 release prep in progress).
+Scope: 2D geometry only, `f64` (`Double`) coordinates only. 3D remains out of scope. See `docs/roadmap/geo/` for the full roadmap (Phase 2 complete, ms-01〜ms-33 landed; ms-34 v0.2.0 release prep in progress).
 
 ## Modules
 

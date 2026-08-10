@@ -1,8 +1,8 @@
-# @totto2727/geo-mbt
+# @totto2727/geo
 
 ## Overview
 
-`@totto2727/geo-mbt` is a MoonBit port of [georust/geo](https://georust.org/), focused on 2D planar geospatial primitives and algorithms.
+`@totto2727/geo` is a MoonBit port of [georust/geo](https://georust.org/), focused on 2D planar geospatial primitives and algorithms.
 
 ## Scope
 
@@ -32,7 +32,7 @@ After making API changes, follow `mbt/AGENTS.md` to refresh interfaces and forma
 
 ## Roadmap
 
-See `docs/roadmap/geo-mbt/` for the multi-cycle porting plan (15 milestones).
+See `docs/roadmap/geo/` for the multi-cycle porting plan (15 milestones).
 
 ## Source references
 

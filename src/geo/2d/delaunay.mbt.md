@@ -1,6 +1,6 @@
 # delaunay.mbt
 
-2D Delaunay triangulation via the **Bowyer-Watson incremental algorithm**. The `geo-mbt` v0.2.0 first cut targets a viable subset of [`spade`](https://github.com/Stoeoef/spade) — full DCEL, edge constraints, conforming Delaunay, and walk-based location are deferred to follow-up milestones (ms-28 Voronoi / ms-29 concave hull).
+2D Delaunay triangulation via the **Bowyer-Watson incremental algorithm**. The `geo` v0.2.0 first cut targets a viable subset of [`spade`](https://github.com/Stoeoef/spade) — full DCEL, edge constraints, conforming Delaunay, and walk-based location are deferred to follow-up milestones (ms-28 Voronoi / ms-29 concave hull).
 
 The core sweep:
 
