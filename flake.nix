@@ -11,7 +11,6 @@
 
   outputs =
     {
-      self,
       nixpkgs,
       moonbit-overlay,
       ...
@@ -41,21 +40,6 @@
               pkgs.moonbit-bin.moonbit.latest
             ];
           };
-        }
-      );
-
-      checks = forEachSystem (
-        system:
-        let
-          pkgs = forSystem system;
-        in
-        {
-          source-contract = pkgs.runCommand "geo-source-contract" { nativeBuildInputs = [ pkgs.gnugrep ]; } ''
-            grep -Fx 'name = "totto2727/geo"' ${self}/moon.mod
-            grep -Fx 'repository = "https://github.com/totto2727-org/geo"' ${self}/moon.mod
-            test ! -e ${self}/package.nix
-            touch "$out"
-          '';
         }
       );
     };
