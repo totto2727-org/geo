@@ -1,6 +1,6 @@
 # 3. `robust` ↔ `src/robust/`
 
-Port package: `totto2727/geo-mbt/robust` (`src/robust/pkg.generated.mbti`).
+Port package: `totto2727/geo/robust` (`src/robust/pkg.generated.mbti`).
 The port preserves Shewchuk's helper hierarchy verbatim; it tracks the
 upstream Rust `robust` crate (georust) which itself transliterates
 Shewchuk's reference implementation.

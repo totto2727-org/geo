@@ -1,6 +1,6 @@
 # 1. `geo-types` ↔ `src/geo/2d/type/`
 
-Port package: `totto2727/geo-mbt/geo/2d/type` (interface generated to
+Port package: `totto2727/geo/geo/2d/type` (interface generated to
 `_build/wasm-gc/debug/check/geo/2d/type/type.mbti` — run `moon info` to
 refresh).
 

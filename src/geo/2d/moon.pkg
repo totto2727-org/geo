@@ -1,7 +1,7 @@
 import {
-  "totto2727/geo-mbt/geo/2d/type",
-  "totto2727/geo-mbt/robust",
-  "totto2727/geo-mbt/rtree",
+  "totto2727/geo/geo/2d/type",
+  "totto2727/geo/robust",
+  "totto2727/geo/rtree",
   "moonbitlang/core/double",
   "moonbitlang/core/math",
 }

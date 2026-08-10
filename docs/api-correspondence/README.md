@@ -1,4 +1,4 @@
-# `@totto2727/geo-mbt` API correspondence
+# `@totto2727/geo` API correspondence
 
 Per-item correspondence between the MoonBit port and its Rust upstreams,
 split per upstream library. This directory is the structural counterpart
@@ -7,7 +7,7 @@ every type, trait, function, test and benchmark in the port's
 corresponding region and maps it back to the upstream Rust item it was
 ported from.
 
-Originally a single file at `mbt/package/geo-mbt/api-correspondence.md`;
+Originally a single file at `mbt/package/geo/api-correspondence.md`;
 split per upstream library on 2026-05-11 to make per-library diffs and
 per-library navigation easier.
 
@@ -36,7 +36,7 @@ the milestone surface):
 | `num-traits`       | [num-traits.md](./num-traits.md)             | Not used — port hard-codes `Double`                            |
 
 The retrospective on skipped per-type helpers from the privatisation pass
-lives in the roadmap: [docs/roadmap/geo-mbt/retrospective.md](../../../../../docs/roadmap/geo-mbt/retrospective.md).
+lives in the roadmap: [docs/roadmap/geo/retrospective.md](../../../../../docs/roadmap/geo/retrospective.md).
 
 ## Source revisions
 
@@ -70,10 +70,10 @@ lives in the roadmap: [docs/roadmap/geo-mbt/retrospective.md](../../../../../doc
 
 Port snapshot:
 
-- Package: `totto2727/geo-mbt` `v0.1.0` (`./moon.mod.json`).
+- Package: `totto2727/geo` `v0.1.0` (`./moon.mod`).
 - Last commit affecting the port: `02f281a (2026-05-10)` —
   `fix(bw): satisfy lint rules in formatErrorChain (no-let, isNullish, no-base-to-string)`
-  (most recent geo-mbt content commit: `eca00ca (2026-05-10)` — `style: fix markdown table formatting for CI`).
+  (most recent geo content commit: `eca00ca (2026-05-10)` — `style: fix markdown table formatting for CI`).
 
 ## Status legend
 
@@ -81,11 +81,11 @@ Port snapshot:
 | ------ | -------------------------------------------------------------------------------- |
 | ✅     | Ported with passing tests                                                        |
 | 🟡     | Partial port (subset of variants / overloads — see per-row note)                 |
-| ⛔     | Explicit non-goal of the port (see `mbt/package/geo-mbt/CLAUDE.md`)              |
+| ⛔     | Explicit non-goal of the port (see `mbt/package/geo/CLAUDE.md`)                  |
 | ⏳     | Not yet ported but in scope (deferred)                                           |
 | —      | Not applicable (Rust idiom that has no MoonBit counterpart, e.g. iterator types) |
 
-Scope reminders (from `mbt/package/geo-mbt/CLAUDE.md`, Phase 2 ms-16〜ms-34 complete):
+Scope reminders (from `mbt/package/geo/CLAUDE.md`, Phase 2 ms-16〜ms-34 complete):
 
 - 2D only — Z coordinate is out of scope.
 - `Double` / `f64` only — no generic `CoordNum`.
@@ -105,7 +105,7 @@ count). Bench counts come from `grep -c '@bench\.T' <file>` across each
 `*_bench_test.mbt`.
 
 Snapshot after the public-API privatisation pass (2026-05-11): **`Total tests:
-520`** across the full `geo-mbt` package — up from the Phase-1 close
+520`** across the full `geo` package — up from the Phase-1 close
 baseline of 411 (+109 net). The drop from the immediate-post-PR-review
 peak (524) is the four `twice_signed_ring_area` doctest blocks removed
 from `area.mbt.md`; the same coverage is retained in

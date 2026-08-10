@@ -1,6 +1,6 @@
 # 4. `rstar` ↔ `src/rtree/`
 
-Port package: `totto2727/geo-mbt/rtree` (`src/rtree/pkg.generated.mbti`).
+Port package: `totto2727/geo/rtree` (`src/rtree/pkg.generated.mbti`).
 Originally added as a minimal bulk-loaded index; Phase 2 ms-18 expanded
 it to a viable dynamic R\*-tree (insert / remove / locate / nearest /
 iter / drain). The port still omits forced-reinsertion, condense-tree

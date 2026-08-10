@@ -1,6 +1,6 @@
 # 2. `geo` algorithms ↔ `src/geo/2d/`
 
-Port package: `totto2727/geo-mbt/geo/2d` (`src/geo/2d/pkg.generated.mbti`).
+Port package: `totto2727/geo/geo/2d` (`src/geo/2d/pkg.generated.mbti`).
 
 Rust uses extension traits dispatched via blanket impls (e.g. `Area for
 Polygon<T>`). The port mirrors that surface with **MoonBit traits as the

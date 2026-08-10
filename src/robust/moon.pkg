@@ -1,5 +1,5 @@
 import {
-  "totto2727/geo-mbt/geo/2d/type",
+  "totto2727/geo/geo/2d/type",
 }
 
 import {

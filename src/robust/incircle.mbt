@@ -8,7 +8,7 @@
 // determinant value (which has the correct sign in well-separated cases but
 // may misclassify near-cocircular inputs). The full adaptive version (~600
 // lines) can be added later if Delaunay triangulation / Voronoi diagram
-// algorithms come into scope (currently out of scope per the geo-mbt
+// algorithms come into scope (currently out of scope per the geo
 // roadmap).
 
 ///|

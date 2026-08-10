@@ -1,7 +1,7 @@
 // Ported from georust/robust
 // https://github.com/georust/robust/blob/master/src/lib.rs (orient2d)
 // Reference also: mbt/package/geo/src/util/robust/orient2d.mbt — adapted to
-// the geo-mbt concrete `Coord` type (no traits).
+// the geo concrete `Coord` type (no traits).
 
 ///|
 /// Returns a positive value if `pa`, `pb`, `pc` occur in counter-clockwise

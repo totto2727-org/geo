@@ -1,6 +1,6 @@
 # line.mbt
 
-A line segment defined by exactly two `Coord`s — `start` and `end`. Provides accessors, `Point` views, vector deltas (`delta` / `dx` / `dy`), `slope`, `determinant`, and `reverse` (a geo-mbt addition that swaps endpoints).
+A line segment defined by exactly two `Coord`s — `start` and `end`. Provides accessors, `Point` views, vector deltas (`delta` / `dx` / `dy`), `slope`, `determinant`, and `reverse` (a geo addition that swaps endpoints).
 
 ## Public API
 
