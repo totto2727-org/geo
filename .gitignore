@@ -4,3 +4,5 @@ target/
 .moonagent/
 _build/
 *.mbti
+.direnv/
+.omo/
