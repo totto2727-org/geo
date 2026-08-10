@@ -21,5 +21,6 @@ jobs:
           eval "$(nix print-dev-env "$GITHUB_WORKSPACE#default")"
           moon update
           moon check
+          moon build
           moon test
           moon package --list
