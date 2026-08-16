@@ -2,7 +2,7 @@
 
 `totto2727/geo/rtree` is an R-tree spatial index for values associated with two-dimensional bounding rectangles. It supports bulk loading, insertion and removal, rectangular and point queries, nearest queries, iteration, and draining.
 
-This document is canonical `README.mbt.md`; maintain `README.md` as the relative symlink `README.md -> README.mbt.md`. The module overview is [../../README.mbt.md](../../README.mbt.md).
+The module overview is [../../README.mbt.md](../../README.mbt.md).
 
 ## Usage
 

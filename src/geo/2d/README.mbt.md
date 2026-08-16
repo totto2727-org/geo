@@ -2,7 +2,7 @@
 
 `totto2727/geo/geo/2d` implements planar and geographic algorithms over the values in `totto2727/geo/geo/2d/type`. Use it for measurements, topology, transforms, hulls, simplification, boolean operations, buffering, triangulation, and clustering rather than as the module-wide entrypoint.
 
-This document is canonical `README.mbt.md`; maintain `README.md` as the relative symlink `README.md -> README.mbt.md`. The module overview is [../../../README.mbt.md](../../../README.mbt.md).
+The module overview is [../../../README.mbt.md](../../../README.mbt.md).
 
 ## Usage
 

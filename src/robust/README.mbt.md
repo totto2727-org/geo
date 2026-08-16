@@ -2,7 +2,7 @@
 
 `totto2727/geo/robust` provides orientation and incircle predicates for two-dimensional coordinates. Use these predicates when topology or triangulation code must distinguish counter-clockwise, clockwise, collinear, inside-circle, and outside-circle relationships.
 
-This document is canonical `README.mbt.md`; maintain `README.md` as the relative symlink `README.md -> README.mbt.md`. The module overview is [../../README.mbt.md](../../README.mbt.md).
+The module overview is [../../README.mbt.md](../../README.mbt.md).
 
 ## Usage
 

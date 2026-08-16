@@ -2,7 +2,7 @@
 
 `totto2727/geo/geo/2d/type` provides the concrete two-dimensional geometry values consumed by `totto2727/geo/geo/2d` algorithms. Its immutable `Double`-coordinate values cover points, lines, polygons, collections, rectangles, triangles, and the `Geometry` sum type.
 
-This document is canonical `README.mbt.md`; maintain `README.md` as the relative symlink `README.md -> README.mbt.md`. The module overview is [../../../../README.mbt.md](../../../../README.mbt.md).
+The module overview is [../../../../README.mbt.md](../../../../README.mbt.md).
 
 ## Usage
 
