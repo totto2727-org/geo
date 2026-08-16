@@ -130,6 +130,21 @@ pub fn chamberlain_duquette_signed_area_geometry(g : @type.Geometry) -> Double {
 ///|
 /// Unsigned (absolute) Chamberlain-Duquette spherical area of a `Geometry`
 /// (meters²).
+///
+/// ```check
+/// test "chamberlain_duquette_unsigned_area_geometry - square" {
+///   let ring = @type.LineString::from_tuples([
+///     (0.0, 0.0),
+///     (1.0, 0.0),
+///     (1.0, 1.0),
+///     (0.0, 1.0),
+///     (0.0, 0.0),
+///   ])
+///   let geometry = @type.Geometry::Polygon(@type.Polygon::Polygon(ring, []))
+///   let area = chamberlain_duquette_unsigned_area_geometry(geometry)
+///   assert_true(area > 1.0e10)
+/// }
+/// ```
 pub fn chamberlain_duquette_unsigned_area_geometry(
   g : @type.Geometry,
 ) -> Double {
