@@ -4,7 +4,7 @@
 // georust ships two indexed flavours: `PreparedGeometry` (R*-tree backed
 // `Relate`/`Contains`/`Intersects`) and `IntervalTreeMultiPolygon` (1-D
 // interval tree for point-in-multipolygon). The DE-9IM `Relate` machinery
-// is out of scope for this port (per the package CLAUDE.md), so this
+// is out of scope for this port (per AGENTS.md), so this
 // module provides the simpler "build R*-tree of bboxes once, query many
 // times" pattern that fits the existing `contains` / `intersects` /
 // `nearest` predicates already implemented in the package. Each function

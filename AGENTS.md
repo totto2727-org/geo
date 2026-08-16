@@ -4,11 +4,11 @@
 
 ```text
 src/geo/2d/type/       Geometry primitives and type-level traits
-src/geo/2d/            Planar and geographic algorithms
+src/geo/2d/            Planar and geographic algorithms; canonical README.mbt.md
 src/robust/            Robust orient2d and incircle predicates
 src/rtree/             R-tree spatial index
 docs/api-correspondence/  Upstream Rust API correspondence notes
-README.mbt.md          Canonical end-user README and checked usage example
+README.mbt.md          Relative symlink to src/geo/2d/README.mbt.md
 README.md              Relative symlink to README.mbt.md
 ```
 
@@ -19,7 +19,7 @@ README.md              Relative symlink to README.mbt.md
 - Run commands from the repository root.
 - Enter the Nix development shell with `nix develop` before running the MoonBit toolchain when the shell is not already active.
 - Read the `mbt-coding` and `mbt-test` skills before changing MoonBit source or documentation tests.
-- Keep `README.mbt.md` canonical and preserve `README.md -> README.mbt.md` as a relative symbolic link; do not create a second README.
+- Keep `src/geo/2d/README.mbt.md` canonical, preserve `README.mbt.md -> src/geo/2d/README.mbt.md`, and preserve `README.md -> README.mbt.md`; do not create a second README.
 - Keep committed source, configuration, and documentation in English. Use Japanese only for collaboration handoffs and review discussion.
 - Resolve released dependencies from Mooncakes; do not add local overlays or path dependencies for consumer-facing validation.
 
@@ -28,7 +28,8 @@ README.md              Relative symlink to README.mbt.md
 - `moon info` — Regenerate package interfaces after public API changes.
 - `moon check` — Type-check all source packages and documentation examples discovered by the workspace.
 - `moon test` — Run all package tests and checked MoonBit documentation examples.
-- `moon check README.mbt.md` — Check the canonical README path; the module has no root `moon.pkg`, so this command is a no-op after the workspace is up to date.
+- `moon check README.mbt.md` — Check the canonical README usage example through the `geo/2d` package.
+- `moon test README.mbt.md` — Run the canonical README usage example through the `geo/2d` package.
 - `moon test src/geo/2d` — Run the algorithm package tests and its checked documentation examples.
 - `moon package --list` — List packages that are eligible for publication.
 - `git diff --check` — Reject whitespace errors before handoff.
@@ -44,7 +45,7 @@ README.md              Relative symlink to README.mbt.md
 
 ### API documentation
 
-- Mooncakes is the canonical generated API index for the published module; keep the end-user README in registry mode and link to the package API pages.
+- Mooncakes is the canonical generated API index for the published module; keep the package-local end-user README in registry mode and link to the package API pages.
 - Document caller-visible behavior for public declarations with `///` comments. Put representative executable examples in `///` `check` blocks or the matching `.mbt.md` documentation file.
 - Keep examples aligned with the package aliases and constructors used by the source packages. Run the relevant `moon check` and `moon test` commands after changing documentation examples.
 
