@@ -19,6 +19,16 @@
 /// Cross-track distance from `p` to the great circle through `line_point_a`
 /// and `line_point_b`. Uses the same mean-Earth radius as `Haversine()`
 /// (GRS80 mean radius, 6_371_008.8 m). Result is in meters.
+///
+/// ```check
+/// test "cross_track_distance - one degree off the equator" {
+///   let p = @type.Point::from_tuple((1.0, 1.0))
+///   let a = @type.Point::from_tuple((0.0, 0.0))
+///   let b = @type.Point::from_tuple((2.0, 0.0))
+///   let distance = cross_track_distance(p, a, b)
+///   assert_true(distance > 100_000.0 && distance < 120_000.0)
+/// }
+/// ```
 pub fn cross_track_distance(
   p : @type.Point,
   line_point_a : @type.Point,

@@ -81,11 +81,11 @@ Port snapshot:
 | ------ | -------------------------------------------------------------------------------- |
 | ✅     | Ported with passing tests                                                        |
 | 🟡     | Partial port (subset of variants / overloads — see per-row note)                 |
-| ⛔     | Explicit non-goal of the port (see `mbt/package/geo/CLAUDE.md`)                  |
+| ⛔     | Explicit non-goal of the port (see [AGENTS.md](../../AGENTS.md))                 |
 | ⏳     | Not yet ported but in scope (deferred)                                           |
 | —      | Not applicable (Rust idiom that has no MoonBit counterpart, e.g. iterator types) |
 
-Scope reminders (from `mbt/package/geo/CLAUDE.md`, Phase 2 ms-16〜ms-34 complete):
+Scope reminders (from [AGENTS.md](../../AGENTS.md), Phase 2 ms-16〜ms-34 complete):
 
 - 2D only — Z coordinate is out of scope.
 - `Double` / `f64` only — no generic `CoordNum`.

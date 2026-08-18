@@ -1,71 +1,51 @@
 # @totto2727/geo
 
-MoonBit port of [georust/geo](https://georust.org/): 2D planar + geographic geospatial primitives and algorithms. The published module is [`totto2727/geo`](https://mooncakes.io/docs/totto2727/geo).
+`@totto2727/geo` is a MoonBit port of [georust/geo](https://georust.org/) for two-dimensional planar and geographic geometry. It publishes dedicated packages for geometry values, algorithms, robust predicates, and R-tree indexing; coordinates use `Double` and 3D geometry is outside the module scope.
 
-Scope: 2D geometry only, `f64` (`Double`) coordinates only. 3D remains out of scope. See `docs/roadmap/geo/` for the full roadmap (Phase 2 complete, ms-01〜ms-33 landed; ms-34 v0.2.0 release prep in progress).
+This document is canonical `README.mbt.md`; maintain `README.md` as the relative symlink `README.md -> README.mbt.md`.
 
-## Modules
+## Usage
 
-- `src/geo/2d/type/` — geometry primitives (Coord, Point, Line, LineString, Polygon, etc.)
-- `src/geo/2d/` — algorithms (area, bounding rect, distance, contains, triangulation, etc.)
-- `src/robust/` — robust predicates (orient2d, incircle) ported from the [`robust`](https://github.com/georust/robust) crate
-- `src/rtree/` — R\*-tree spatial index (bulk load, insert, remove, locate, nearest neighbors, iter, drain)
+Add the module, then import the package that owns the API you need.
 
-## Geometry types (15 total)
-
-`Coord`, `Point`, `MultiPoint`, `Line`, `LineString`, `MultiLineString`, `Polygon`, `MultiPolygon`, `Rect`, `Triangle`, `GeometryCollection`, `Geometry` (10-variant enum).
-
-## Algorithms
-
-| Category               | Functions                                                                                                                     |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Iteration              | `coords_of_*`, `lines_of_*`, `map_coords_in_*`, `exterior_coords_of_*`                                                        |
-| Bounding & area        | `bounding_rect_of_*`, `signed_area_of_*` / `unsigned_area_of_*`, `dimensions_of_*`, `is_empty_of_geometry`                    |
-| Robust kernels         | `@robust.orient2d`, `@robust.incircle`, `Orientation`, `orient(p, q, r)`                                                      |
-| Vector ops             | `magnitude`, `magnitude_squared`, `left`, `right`, `dot_product`, `wedge_product`, `try_normalize`, `is_finite`               |
-| Distance               | `euclidean_distance_*`, `euclidean_length_*`, `euclidean_bearing`, `euclidean_destination`                                    |
-| Geographic distances   | `HaversineMeasure` / `Vincenty` / `RhumbMeasure` — bearing, destination, distance, length                                     |
-| Topology               | `coord_position_for_*` (CoordPos), `intersects_*`                                                                             |
-| Containment            | `contains_*`, `within_*`, `covers_*`                                                                                          |
-| DE-9IM                 | `relate`, `IntersectionMatrix`, 8 boolean predicates (contains/covers/within/intersects/disjoint/touches/crosses/overlaps)    |
-| Centroid / extremes    | `centroid_*`, `extremes_of_*`, `winding_order`, `is_convex`, `orient_polygon`                                                 |
-| Affine                 | `AffineTransform`, `translate_*`, `rotate_geometry_around*`, `scale_geometry_around`, `skew_geometry*`, inverse, compose_many |
-| Hulls                  | `convex_hull_of_*` (Andrew's monotone chain), `k_nearest_concave_hull`, `delaunay_concave_hull`                               |
-| Closest / intersection | `closest_point_on_*` (Closest), `line_intersection` (LineIntersection), `line_locate_point`, `line_interpolate_point`         |
-| Simplification         | `simplify_*` (RDP), `simplify_vw_*`, `chaikin_smoothing`, `remove_repeated_points_*`                                          |
-| Distance metrics       | `frechet_distance`, `hausdorff_distance_*`, `densify_*`, `densify_haversine_*`, `cross_track_distance`                        |
-| Predicate traits       | `Contains`, `Covers`, `Intersects`, `Within` — implemented for 11 geometry types                                              |
-| Validation             | `validation_problems`, `is_valid` (RingRole / CoordIndex / GeometryIndex payloads)                                            |
-| Sweep                  | `segment_intersections`, `has_segment_intersection`                                                                           |
-| Boolean ops            | `polygon_intersection`, `polygon_union`, `polygon_difference`, `polygon_xor`, `unary_union`, `clip_line_string`               |
-| Buffer                 | `buffer_point`, `buffer_line_string`, `buffer_polygon` (Round / Square / Flat caps, Round / Miter / Bevel joins)              |
-| Stitch / repair        | `stitch_line_strings`, `repair_polygon`                                                                                       |
-| Triangulation          | `earcut` (polygon triangulation), `delaunay_triangulation` (Bowyer-Watson)                                                    |
-| Voronoi                | `voronoi_diagram`, `voronoi_vertices` (Delaunay dual)                                                                         |
-| Clustering             | `dbscan` (DBSCAN with R\*-tree), `dbscan_outliers`, `kmeans`                                                                  |
-| Indexed                | `indexed_contains_polygons`, `indexed_intersecting_polygons`, `indexed_nearest_point` (R\*-tree backed)                       |
-| Spherical area         | `chamberlain_duquette_signed_area_*`                                                                                          |
-
-## Example
-
-```moonbit
-fn example() -> Unit {
-  let polygon = @type.Polygon::new(
-    @type.LineString::from_tuples([
-      (0.0, 0.0),
-      (10.0, 0.0),
-      (10.0, 10.0),
-      (0.0, 10.0),
-    ]),
-    [],
-  )
-  let area = @lib2d.unsigned_area_of_polygon(polygon)
-  let centroid = @lib2d.centroid_polygon(polygon).unwrap()
-}
+```bash
+moon add totto2727/geo@0.1.2
 ```
 
-## Status
+Read the package-local usage guides for [2D algorithms](./src/geo/2d/README.mbt.md), [geometry types](./src/geo/2d/type/README.mbt.md), [robust predicates](./src/robust/README.mbt.md), and the [R-tree index](./src/rtree/README.mbt.md).
 
-- **Phase 1** (ms-01〜ms-15): complete — 411 tests
-- **Phase 2** (ms-16〜ms-33): complete — 521 tests
-- **ms-34** (v0.2.0 release prep): in progress
+## Key features
+
+- `totto2727/geo/geo/2d/type` provides `Coord`, `Point`, `LineString`, `Polygon`, multi-geometries, `Rect`, `Triangle`, and `Geometry`.
+- `totto2727/geo/geo/2d` provides planar and geographic measurement, topology, transformation, simplification, boolean, triangulation, and clustering algorithms.
+- `totto2727/geo/robust` provides adaptive `orient2d` and `incircle` predicates for topology-sensitive operations.
+- `totto2727/geo/rtree` provides bulk loading, mutation, rectangle queries, nearest queries, and iteration over spatial entries.
+
+## Prerequisites
+
+- **MoonBit**: Install the MoonBit toolchain.
+- **Mooncakes**: Resolve the published module and browse its generated API documentation.
+
+## Setup
+
+1. Add `totto2727/geo` to the consumer project.
+
+```bash
+moon add totto2727/geo@0.1.2
+```
+
+2. Add the required package import to the consumer package's `moon.pkg`, then follow its linked package README for a checked example.
+
+## API
+
+Mooncakes is the canonical generated API index. See the [module page](https://mooncakes.io/docs/totto2727/geo), [2D algorithms](https://mooncakes.io/docs/totto2727/geo/geo/2d), [geometry types](https://mooncakes.io/docs/totto2727/geo/geo/2d/type), [robust predicates](https://mooncakes.io/docs/totto2727/geo/robust), and [R-tree](https://mooncakes.io/docs/totto2727/geo/rtree) pages.
+
+## Development
+
+For repository structure, development commands, and package documentation-test guidance, see [AGENTS.md](./AGENTS.md).
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
+
+_This README was generated from the [share-artifact skill](https://raw.githubusercontent.com/totto2727-org/agent/refs/heads/main/plugins/totto2727-coding/skills/share-artifact/SKILL.md) and [README template](https://raw.githubusercontent.com/totto2727-org/agent/refs/heads/main/plugins/totto2727-coding/skills/share-artifact/readme/template.md)._

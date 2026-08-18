@@ -38,6 +38,14 @@ fn densify_between_haversine(
 /// Densifies a `Line` along a haversine path. Returns a `LineString`
 /// starting from `line.start()`, ending at `line.end()`, with intermediate
 /// great-circle points inserted as needed.
+///
+/// ```check
+/// test "densify_haversine_line - inserts intermediate points" {
+///   let line = @type.Line::from_tuples((0.0, 0.0), (1.0, 0.0))
+///   let result = densify_haversine_line(line, 50_000.0)
+///   assert_true(result.coords().length() >= 3)
+/// }
+/// ```
 pub fn densify_haversine_line(
   line : @type.Line,
   max_segment_length : Double,
