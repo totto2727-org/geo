@@ -8,11 +8,19 @@ The module overview is [../../../../README.mbt.md](../../../../README.mbt.md).
 
 ```mbt check
 ///|
-test "construct a point and line string" {
-  let point = Point::from_tuple((3.0, 4.0))
-  let line = LineString::from_tuples([(0.0, 0.0), point.x_y()])
-  @test.assert_eq(point.coord(), Coord(3.0, 4.0))
-  @test.assert_eq(line.length(), 2)
+test "convert a triangle boundary to a closed polygon" {
+  let triangle = Triangle::ccw(
+    Coord(0.0, 0.0),
+    Coord(0.0, 6.0),
+    Coord(4.0, 0.0),
+  )
+  let polygon = triangle.to_polygon()
+  @test.assert_eq(polygon.exterior().coords(), [
+    Coord(0.0, 0.0),
+    Coord(4.0, 0.0),
+    Coord(0.0, 6.0),
+    Coord(0.0, 0.0),
+  ])
 }
 ```
 
