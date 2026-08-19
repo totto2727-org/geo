@@ -6,10 +6,18 @@ This document is canonical `README.mbt.md`; maintain `README.md` as the relative
 
 ## Usage
 
-Add the module, then import the package that owns the API you need.
+After completing [Setup](#setup), construct geometry values and call algorithms through the imported package aliases:
 
-```bash
-moon add totto2727/geo@0.1.2
+```mbt check
+///|
+test "calculate a triangle area" {
+  let triangle = @type.Triangle::Triangle(
+    @type.Coord(0.0, 0.0),
+    @type.Coord(4.0, 0.0),
+    @type.Coord(0.0, 6.0),
+  )
+  inspect(@geo2d.HasArea::unsigned_area(triangle), content="12")
+}
 ```
 
 Read the package-local usage guides for [2D algorithms](./src/geo/2d/README.mbt.md), [geometry types](./src/geo/2d/type/README.mbt.md), [robust predicates](./src/robust/README.mbt.md), and the [R-tree index](./src/rtree/README.mbt.md).
@@ -24,7 +32,6 @@ Read the package-local usage guides for [2D algorithms](./src/geo/2d/README.mbt.
 ## Prerequisites
 
 - **MoonBit**: Install the MoonBit toolchain.
-- **Mooncakes**: Resolve the published module and browse its generated API documentation.
 
 ## Setup
 
@@ -34,7 +41,14 @@ Read the package-local usage guides for [2D algorithms](./src/geo/2d/README.mbt.
 moon add totto2727/geo@0.1.2
 ```
 
-2. Add the required package import to the consumer package's `moon.pkg`, then follow its linked package README for a checked example.
+2. Import the algorithm and geometry-type packages in the consumer package's `moon.pkg`.
+
+```text
+import {
+  "totto2727/geo/geo/2d" @geo2d,
+  "totto2727/geo/geo/2d/type" @type,
+}
+```
 
 ## API
 
