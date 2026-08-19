@@ -2,8 +2,6 @@
 
 `@totto2727/geo` is a MoonBit port of [georust/geo](https://georust.org/) for two-dimensional planar and geographic geometry. It publishes dedicated packages for geometry values, algorithms, robust predicates, and R-tree indexing; coordinates use `Double` and 3D geometry is outside the module scope.
 
-This document is canonical `README.mbt.md`; maintain `README.md` as the relative symlink `README.md -> README.mbt.md`.
-
 ## Usage
 
 After completing [Setup](#setup), construct geometry values and call algorithms through the imported package aliases:
