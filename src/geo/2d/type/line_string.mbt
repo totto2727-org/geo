@@ -82,6 +82,15 @@ pub impl IsClosed for LineString with fn is_closed(self) {
 }
 
 ///|
+pub extend LineString with HasLength::{length}
+
+///|
+pub extend LineString with IsEmpty::{is_empty}
+
+///|
+pub extend LineString with IsClosed::{is_closed}
+
+///|
 /// Returns the line segments composing this line string, eagerly. Each
 /// segment connects two consecutive coords with the same orientation as
 /// upstream Rust `geo_types::LineString::lines`. For a pipeline that

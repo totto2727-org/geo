@@ -192,3 +192,6 @@ pub impl IsEmpty for Geometry with fn is_empty(self) {
     GeometryCollection(gc) => gc.geometries().iter().all(IsEmpty::is_empty)
   }
 }
+
+///|
+pub extend Geometry with IsEmpty::{is_empty}

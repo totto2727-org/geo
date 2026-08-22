@@ -38,3 +38,9 @@ pub impl HasLength for GeometryCollection with fn length(self) {
 pub impl IsEmpty for GeometryCollection with fn is_empty(self) {
   self.geometries.length() == 0
 }
+
+///|
+pub extend GeometryCollection with HasLength::{length}
+
+///|
+pub extend GeometryCollection with IsEmpty::{is_empty}

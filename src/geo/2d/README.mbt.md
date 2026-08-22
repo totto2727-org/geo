@@ -43,7 +43,7 @@ test "polygon area and centroid" {
 1. Add the module to a MoonBit project.
 
 ```bash
-moon add totto2727/geo@0.1.2
+moon add totto2727/geo@0.1.3
 ```
 
 2. Import `totto2727/geo/geo/2d` and `totto2727/geo/geo/2d/type` in the consumer package's `moon.pkg`.

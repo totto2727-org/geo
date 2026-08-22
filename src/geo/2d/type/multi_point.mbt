@@ -56,3 +56,9 @@ pub impl HasLength for MultiPoint with fn length(self) {
 pub impl IsEmpty for MultiPoint with fn is_empty(self) {
   self.points.length() == 0
 }
+
+///|
+pub extend MultiPoint with HasLength::{length}
+
+///|
+pub extend MultiPoint with IsEmpty::{is_empty}

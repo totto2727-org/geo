@@ -9,7 +9,7 @@ This document is canonical `README.mbt.md`; maintain `README.md` as the relative
 Add the module, then import the package that owns the API you need.
 
 ```bash
-moon add totto2727/geo@0.1.2
+moon add totto2727/geo@0.1.3
 ```
 
 Read the package-local usage guides for [2D algorithms](./src/geo/2d/README.mbt.md), [geometry types](./src/geo/2d/type/README.mbt.md), [robust predicates](./src/robust/README.mbt.md), and the [R-tree index](./src/rtree/README.mbt.md).
@@ -31,7 +31,7 @@ Read the package-local usage guides for [2D algorithms](./src/geo/2d/README.mbt.
 1. Add `totto2727/geo` to the consumer project.
 
 ```bash
-moon add totto2727/geo@0.1.2
+moon add totto2727/geo@0.1.3
 ```
 
 2. Add the required package import to the consumer package's `moon.pkg`, then follow its linked package README for a checked example.

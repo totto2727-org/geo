@@ -33,3 +33,9 @@ pub impl HasLength for MultiPolygon with fn length(self) {
 pub impl IsEmpty for MultiPolygon with fn is_empty(self) {
   self.polygons.length() == 0
 }
+
+///|
+pub extend MultiPolygon with HasLength::{length}
+
+///|
+pub extend MultiPolygon with IsEmpty::{is_empty}
