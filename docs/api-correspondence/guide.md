@@ -35,9 +35,6 @@ the milestone surface):
 | `geographiclib-rs` | [geographiclib-rs.md](./geographiclib-rs.md) | Geodesic engine (Karney) deferred                              |
 | `num-traits`       | [num-traits.md](./num-traits.md)             | Not used — port hard-codes `Double`                            |
 
-The retrospective on skipped per-type helpers from the privatisation pass
-lives in the roadmap: [docs/roadmap/geo/retrospective.md](../../../../../docs/roadmap/geo/retrospective.md).
-
 ## Source revisions
 
 > Versions / commit hashes captured against the working trees under

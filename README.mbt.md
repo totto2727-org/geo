@@ -1,10 +1,10 @@
 # @totto2727/geo
 
-`@totto2727/geo` is a MoonBit port of [georust/geo](https://georust.org/) for two-dimensional planar and geographic geometry. It publishes dedicated packages for geometry values, algorithms, robust predicates, and R-tree indexing; coordinates use `Double` and 3D geometry is outside the module scope.
+`@totto2727/geo` lets MoonBit applications model two-dimensional spatial data, measure and transform shapes, make robust topology decisions, and query indexed locations. It is a port of [georust/geo](https://georust.org/) with dedicated packages for geometry values, algorithms, robust predicates, and R-tree indexing; coordinates use `Double` and 3D geometry is outside the module scope.
 
 ## Usage
 
-After completing [Setup](#setup), construct geometry values and call algorithms through the imported package aliases:
+After completing [Setup](#setup), measure a triangular work area through the geometry-value and algorithm packages:
 
 ```mbt check
 ///|

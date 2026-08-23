@@ -7,7 +7,7 @@ src/geo/2d/type/       Geometry primitives and type-level traits
 src/geo/2d/            Planar and geographic algorithms with a package role and API index
 src/robust/            Robust orient2d and incircle predicates
 src/rtree/             R-tree spatial index
-docs/api-correspondence/  Upstream Rust API correspondence notes
+docs/api-correspondence/guide.md  Index of upstream Rust API correspondence notes
 README.mbt.md          Module overview linking each published package README
 README.md              Relative symlink to README.mbt.md
 ```
@@ -20,7 +20,7 @@ README.md              Relative symlink to README.mbt.md
 - Enter the Nix development shell with `nix develop` before running the MoonBit toolchain when the shell is not already active.
 - Read the `mbt-coding` and `mbt-test` skills before changing MoonBit source or documentation tests.
 - Keep the root `README.mbt.md` as the physical module overview and preserve `README.md -> README.mbt.md`.
-- Keep package-local `README.mbt.md` files in `src/geo/2d/`, `src/geo/2d/type/`, `src/robust/`, and `src/rtree/` limited to the package role and API index; the root README owns consumer setup and usage.
+- Keep package-local `README.mbt.md` files in `src/geo/2d/`, `src/geo/2d/type/`, `src/robust/`, and `src/rtree/` limited to each package's distinct role, checked use case, and API index; the root README owns consumer setup.
 - Keep committed source, configuration, and documentation in English. Use Japanese only for collaboration handoffs and review discussion.
 - Resolve released dependencies from Mooncakes; do not add local overlays or path dependencies for consumer-facing validation.
 
@@ -29,6 +29,10 @@ README.md              Relative symlink to README.mbt.md
 - `moon info` — Regenerate package interfaces after public API changes.
 - `moon check` — Type-check all source packages and documentation examples discovered by the workspace.
 - `moon test` — Run all package tests and checked MoonBit documentation examples.
+- `moon check src/geo/2d/README.mbt.md` and `moon test src/geo/2d/README.mbt.md` — Check and run the 2D algorithm usage example.
+- `moon check src/geo/2d/type/README.mbt.md` and `moon test src/geo/2d/type/README.mbt.md` — Check and run the geometry-type usage example.
+- `moon check src/robust/README.mbt.md` and `moon test src/robust/README.mbt.md` — Check and run the robust-predicate usage example.
+- `moon check src/rtree/README.mbt.md` and `moon test src/rtree/README.mbt.md` — Check and run the R-tree usage example.
 - `moon package --list` — List packages that are eligible for publication.
 - `git diff --check` — Reject whitespace errors before handoff.
 
@@ -63,7 +67,7 @@ README.md              Relative symlink to README.mbt.md
 ## Package-specific rules
 
 - Update `moon.mod` metadata, interfaces, and documentation together when changing the public API.
-- Preserve the upstream correspondence notes under `docs/api-correspondence/` when porting or renaming APIs.
+- Preserve `docs/api-correspondence/guide.md` and its per-library upstream correspondence notes when porting or renaming APIs.
 - Do not add a separate `CLAUDE.md`; `AGENTS.md` is the sole agent/developer guidance document for this repository.
 
 _This AGENTS.md was generated from the [share-artifact skill](https://raw.githubusercontent.com/totto2727-org/agent/refs/heads/main/plugins/totto2727-coding/skills/share-artifact/SKILL.md) and [AGENTS template](https://raw.githubusercontent.com/totto2727-org/agent/refs/heads/main/plugins/totto2727-coding/skills/share-artifact/agents/template.md)._
