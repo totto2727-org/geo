@@ -20,7 +20,10 @@ test "find the nearest depot" {
     ),
   ]
   let index = RTree::bulk_load(depots)
-  @test.assert_eq(index.query_nearest(@type.Coord(9.5, 9.5)), Some("east depot"))
+  @test.assert_eq(
+    index.query_nearest(@type.Coord(9.5, 9.5)),
+    Some("east depot"),
+  )
 }
 ```
 
