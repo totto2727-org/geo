@@ -7,7 +7,7 @@ src/geo/2d/type/       Geometry primitives and type-level traits
 src/geo/2d/            Planar and geographic algorithms with a package role and API index
 src/robust/            Robust orient2d and incircle predicates
 src/rtree/             R-tree spatial index
-docs/api-correspondence/  Upstream Rust API correspondence notes
+docs/api-correspondence/guide.md  Index of upstream Rust API correspondence notes
 README.mbt.md          Module overview linking each published package README
 README.md              Relative symlink to README.mbt.md
 ```
@@ -67,7 +67,7 @@ README.md              Relative symlink to README.mbt.md
 ## Package-specific rules
 
 - Update `moon.mod` metadata, interfaces, and documentation together when changing the public API.
-- Preserve the upstream correspondence notes under `docs/api-correspondence/` when porting or renaming APIs.
+- Preserve `docs/api-correspondence/guide.md` and its per-library upstream correspondence notes when porting or renaming APIs.
 - Do not add a separate `CLAUDE.md`; `AGENTS.md` is the sole agent/developer guidance document for this repository.
 
 _This AGENTS.md was generated from the [share-artifact skill](https://raw.githubusercontent.com/totto2727-org/agent/refs/heads/main/plugins/totto2727-coding/skills/share-artifact/SKILL.md) and [AGENTS template](https://raw.githubusercontent.com/totto2727-org/agent/refs/heads/main/plugins/totto2727-coding/skills/share-artifact/agents/template.md)._
