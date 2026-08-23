@@ -36,7 +36,7 @@ For package roles and API references, see [2D algorithms](./src/geo/2d/README.mb
 1. Add `totto2727/geo` to the consumer project.
 
 ```bash
-moon add totto2727/geo@0.1.2
+moon add totto2727/geo@0.1.3
 ```
 
 2. Import the algorithm and geometry-type packages in the consumer package's `moon.pkg`.

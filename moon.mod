@@ -1,9 +1,9 @@
 name = "totto2727/geo"
 
-version = "0.1.2"
+version = "0.1.3"
 
 import {
-  "moonbitlang/x@0.4.47",
+  "moonbitlang/x@0.5.1",
 }
 
 readme = "README.mbt.md"

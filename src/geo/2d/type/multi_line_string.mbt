@@ -44,3 +44,12 @@ pub impl IsEmpty for MultiLineString with fn is_empty(self) {
 pub impl IsClosed for MultiLineString with fn is_closed(self) {
   self.line_strings.iter().all(IsClosed::is_closed)
 }
+
+///|
+pub extend MultiLineString with HasLength::{length}
+
+///|
+pub extend MultiLineString with IsEmpty::{is_empty}
+
+///|
+pub extend MultiLineString with IsClosed::{is_closed}
