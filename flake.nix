@@ -21,7 +21,8 @@
         "x86_64-linux"
       ];
       forEachSystem = nixpkgs.lib.genAttrs supportedSystems;
-      forSystem = system:
+      forSystem =
+        system:
         import nixpkgs {
           inherit system;
           overlays = [ moonbit-overlay.overlays.default ];
@@ -36,6 +37,10 @@
         {
           default = pkgs.mkShell {
             packages = [ pkgs.moonbit-bin.moonbit.latest ];
+            shellHook = ''
+              # Enable Git Hook
+              vp config
+            '';
           };
         }
       );
