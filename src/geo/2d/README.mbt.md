@@ -19,9 +19,9 @@ test "measure a parcel boundary" {
     ]),
     [],
   )
-  @test.assert_eq(HasArea::unsigned_area(parcel), 100.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(parcel), 100.0)
   @test.assert_eq(
-    HasCentroid::centroid(parcel),
+    @geo.HasCentroid::centroid(parcel),
     Some(@type.Point::from_tuple((5.0, 5.0))),
   )
 }

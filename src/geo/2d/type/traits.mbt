@@ -32,5 +32,5 @@ pub(open) trait IsClosed {
 /// `Vec::len()` / `Array::length()`. Distinct from `HasEuclideanLength` (the
 /// physical length of a curve, defined in `geo/2d/traits.mbt`).
 pub(open) trait HasLength {
-  fn length(Self) -> Int
+  fn length(Self) -> Int32
 }

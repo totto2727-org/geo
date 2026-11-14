@@ -28,7 +28,10 @@ A line segment defined by exactly two `Coord`s — `start` and `end`. Provides a
 ```mbt check
 ///|
 test "Line::Line - simple initialization" {
-  let line = Line::Line(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 2.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 2.0),
+  )
   debug_inspect(
     line,
     content=(
@@ -45,10 +48,10 @@ test "Line::Line - simple initialization" {
 ```mbt check
 ///|
 test "Line::from_tuples - construct from tuple pair" {
-  let line = Line::from_tuples((1.0, 2.0), (3.0, 4.0))
+  let line = @type.Line::from_tuples((1.0, 2.0), (3.0, 4.0))
   @test.assert_eq(
     line,
-    Line::Line(Coord::Coord(1.0, 2.0), Coord::Coord(3.0, 4.0)),
+    @type.Line::Line(@type.Coord::Coord(1.0, 2.0), @type.Coord::Coord(3.0, 4.0)),
   )
 }
 ```
@@ -60,8 +63,11 @@ test "Line::from_tuples - construct from tuple pair" {
 ```mbt check
 ///|
 test "Line start - returns start coord" {
-  let line = Line::Line(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 2.0))
-  @test.assert_eq(line.start(), Coord::Coord(0.0, 0.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 2.0),
+  )
+  @test.assert_eq(line.start(), @type.Coord::Coord(0.0, 0.0))
 }
 ```
 
@@ -72,8 +78,11 @@ test "Line start - returns start coord" {
 ```mbt check
 ///|
 test "Line end - returns end coord" {
-  let line = Line::Line(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 2.0))
-  @test.assert_eq(line.end(), Coord::Coord(1.0, 2.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 2.0),
+  )
+  @test.assert_eq(line.end(), @type.Coord::Coord(1.0, 2.0))
 }
 ```
 
@@ -84,8 +93,11 @@ test "Line end - returns end coord" {
 ```mbt check
 ///|
 test "Line start_point - returns start as Point" {
-  let line = Line::Line(Coord::Coord(0.0, 0.0), Coord::Coord(3.0, 4.0))
-  @test.assert_eq(line.start_point(), Point::Point(0.0, 0.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(3.0, 4.0),
+  )
+  @test.assert_eq(line.start_point(), @type.Point::Point(0.0, 0.0))
 }
 ```
 
@@ -96,8 +108,11 @@ test "Line start_point - returns start as Point" {
 ```mbt check
 ///|
 test "Line end_point - returns end as Point" {
-  let line = Line::Line(Coord::Coord(0.0, 0.0), Coord::Coord(3.0, 4.0))
-  @test.assert_eq(line.end_point(), Point::Point(3.0, 4.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(3.0, 4.0),
+  )
+  @test.assert_eq(line.end_point(), @type.Point::Point(3.0, 4.0))
 }
 ```
 
@@ -108,10 +123,13 @@ test "Line end_point - returns end as Point" {
 ```mbt check
 ///|
 test "Line points - returns start_point, end_point pair" {
-  let line = Line::Line(Coord::Coord(0.0, 0.0), Coord::Coord(3.0, 4.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(3.0, 4.0),
+  )
   @test.assert_eq(
     line.points(),
-    (Point::Point(0.0, 0.0), Point::Point(3.0, 4.0)),
+    (@type.Point::Point(0.0, 0.0), @type.Point::Point(3.0, 4.0)),
   )
 }
 ```
@@ -123,8 +141,11 @@ test "Line points - returns start_point, end_point pair" {
 ```mbt check
 ///|
 test "Line delta - difference Δx, Δy" {
-  let line = Line::Line(Coord::Coord(4.0, -12.0), Coord::Coord(0.0, 9.0))
-  @test.assert_eq(line.delta(), Coord::Coord(-4.0, 21.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(4.0, -12.0),
+    @type.Coord::Coord(0.0, 9.0),
+  )
+  @test.assert_eq(line.delta(), @type.Coord::Coord(-4.0, 21.0))
 }
 ```
 
@@ -135,7 +156,10 @@ test "Line delta - difference Δx, Δy" {
 ```mbt check
 ///|
 test "Line dx - difference in x" {
-  let line = Line::Line(Coord::Coord(4.0, -12.0), Coord::Coord(0.0, 9.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(4.0, -12.0),
+    @type.Coord::Coord(0.0, 9.0),
+  )
   @test.assert_eq(line.dx(), -4.0)
 }
 ```
@@ -147,7 +171,10 @@ test "Line dx - difference in x" {
 ```mbt check
 ///|
 test "Line dy - difference in y" {
-  let line = Line::Line(Coord::Coord(4.0, -12.0), Coord::Coord(0.0, 9.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(4.0, -12.0),
+    @type.Coord::Coord(0.0, 9.0),
+  )
   @test.assert_eq(line.dy(), 21.0)
 }
 ```
@@ -164,7 +191,10 @@ test "Line dy - difference in y" {
 ```mbt check
 ///|
 test "Line slope - basic Δy over Δx" {
-  let line = Line::Line(Coord::Coord(4.0, -12.0), Coord::Coord(0.0, 9.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(4.0, -12.0),
+    @type.Coord::Coord(0.0, 9.0),
+  )
   @test.assert_eq(line.slope(), 21.0 / -4.0)
 }
 ```
@@ -174,9 +204,12 @@ test "Line slope - basic Δy over Δx" {
 ```mbt check
 ///|
 test "Line slope - direction-independent" {
-  let a = Coord::Coord(4.0, -12.0)
-  let b = Coord::Coord(0.0, 9.0)
-  @test.assert_eq(Line::Line(a, b).slope(), Line::Line(b, a).slope())
+  let a = @type.Coord::Coord(4.0, -12.0)
+  let b = @type.Coord::Coord(0.0, 9.0)
+  @test.assert_eq(
+    @type.Line::Line(a, b).slope(),
+    @type.Line::Line(b, a).slope(),
+  )
 }
 ```
 
@@ -192,7 +225,10 @@ test "Line slope - direction-independent" {
 ```mbt check
 ///|
 test "Line determinant - basic" {
-  let line = Line::Line(Coord::Coord(4.0, -12.0), Coord::Coord(0.0, 9.0))
+  let line = @type.Line::Line(
+    @type.Coord::Coord(4.0, -12.0),
+    @type.Coord::Coord(0.0, 9.0),
+  )
   @test.assert_eq(line.determinant(), 4.0 * 9.0 - -12.0 * 0.0)
 }
 ```
@@ -202,11 +238,11 @@ test "Line determinant - basic" {
 ```mbt check
 ///|
 test "Line determinant - flips sign on reversal" {
-  let a = Coord::Coord(4.0, -12.0)
-  let b = Coord::Coord(0.0, 9.0)
+  let a = @type.Coord::Coord(4.0, -12.0)
+  let b = @type.Coord::Coord(0.0, 9.0)
   @test.assert_eq(
-    Line::Line(a, b).determinant(),
-    -Line::Line(b, a).determinant(),
+    @type.Line::Line(a, b).determinant(),
+    -@type.Line::Line(b, a).determinant(),
   )
 }
 ```
@@ -224,9 +260,12 @@ test "Line determinant - flips sign on reversal" {
 ```mbt check
 ///|
 test "Line reverse - swaps start and end" {
-  let line = Line::from_tuples((1.0, 2.0), (3.0, 4.0))
+  let line = @type.Line::from_tuples((1.0, 2.0), (3.0, 4.0))
   let r = line.reverse()
-  @test.assert_eq(r, Line::Line(Coord::Coord(3.0, 4.0), Coord::Coord(1.0, 2.0)))
+  @test.assert_eq(
+    r,
+    @type.Line::Line(@type.Coord::Coord(3.0, 4.0), @type.Coord::Coord(1.0, 2.0)),
+  )
 }
 ```
 
@@ -235,7 +274,7 @@ test "Line reverse - swaps start and end" {
 ```mbt check
 ///|
 test "Line reverse - involutive" {
-  let line = Line::from_tuples((-2.5, 7.0), (8.0, -1.5))
+  let line = @type.Line::from_tuples((-2.5, 7.0), (8.0, -1.5))
   @test.assert_eq(line.reverse().reverse(), line)
 }
 ```
@@ -245,12 +284,12 @@ test "Line reverse - involutive" {
 ```mbt check
 ///|
 test "Line reverse - flips determinant and matches reversed-construct" {
-  let a = Coord::Coord(4.0, -12.0)
-  let b = Coord::Coord(0.0, 9.0)
-  let forward = Line::Line(a, b)
+  let a = @type.Coord::Coord(4.0, -12.0)
+  let b = @type.Coord::Coord(0.0, 9.0)
+  let forward = @type.Line::Line(a, b)
   let reversed = forward.reverse()
   @test.assert_eq(reversed.determinant(), -forward.determinant())
-  @test.assert_eq(reversed, Line::Line(b, a))
+  @test.assert_eq(reversed, @type.Line::Line(b, a))
 }
 ```
 
@@ -263,9 +302,9 @@ test "Line reverse - flips determinant and matches reversed-construct" {
 ```mbt check
 ///|
 test "Line Eq::op_equal - equal and unequal" {
-  let a = Line::from_tuples((0.0, 0.0), (1.0, 1.0))
-  let b = Line::from_tuples((0.0, 0.0), (1.0, 1.0))
-  let c = Line::from_tuples((0.0, 0.0), (1.0, 2.0))
+  let a = @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))
+  let b = @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))
+  let c = @type.Line::from_tuples((0.0, 0.0), (1.0, 2.0))
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }

@@ -21,10 +21,10 @@ A bounded 2D area defined by three `Coord` vertices `v0` / `v1` / `v2`. Provides
 ```mbt check
 ///|
 test "Triangle::Triangle - simple initialization" {
-  let t = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(10.0, 0.0),
-    Coord::Coord(0.0, 10.0),
+  let t = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 0.0),
+    @type.Coord::Coord(0.0, 10.0),
   )
   debug_inspect(
     t,
@@ -42,12 +42,12 @@ test "Triangle::Triangle - simple initialization" {
 ```mbt check
 ///|
 test "Triangle v0 - returns first vertex" {
-  let t = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(10.0, 0.0),
-    Coord::Coord(0.0, 10.0),
+  let t = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 0.0),
+    @type.Coord::Coord(0.0, 10.0),
   )
-  @test.assert_eq(t.v0(), Coord::Coord(0.0, 0.0))
+  @test.assert_eq(t.v0(), @type.Coord::Coord(0.0, 0.0))
 }
 ```
 
@@ -58,12 +58,12 @@ test "Triangle v0 - returns first vertex" {
 ```mbt check
 ///|
 test "Triangle v1 - returns second vertex" {
-  let t = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(10.0, 0.0),
-    Coord::Coord(0.0, 10.0),
+  let t = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 0.0),
+    @type.Coord::Coord(0.0, 10.0),
   )
-  @test.assert_eq(t.v1(), Coord::Coord(10.0, 0.0))
+  @test.assert_eq(t.v1(), @type.Coord::Coord(10.0, 0.0))
 }
 ```
 
@@ -74,12 +74,12 @@ test "Triangle v1 - returns second vertex" {
 ```mbt check
 ///|
 test "Triangle v2 - returns third vertex" {
-  let t = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(10.0, 0.0),
-    Coord::Coord(0.0, 10.0),
+  let t = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 0.0),
+    @type.Coord::Coord(0.0, 10.0),
   )
-  @test.assert_eq(t.v2(), Coord::Coord(0.0, 10.0))
+  @test.assert_eq(t.v2(), @type.Coord::Coord(0.0, 10.0))
 }
 ```
 
@@ -90,14 +90,14 @@ test "Triangle v2 - returns third vertex" {
 ```mbt check
 ///|
 test "Triangle to_lines - 3 segments in v0→v1, v1→v2, v2→v0 order" {
-  let v0 = Coord::Coord(0.0, 0.0)
-  let v1 = Coord::Coord(10.0, 0.0)
-  let v2 = Coord::Coord(0.0, 10.0)
-  let t = Triangle::Triangle(v0, v1, v2)
+  let v0 = @type.Coord::Coord(0.0, 0.0)
+  let v1 = @type.Coord::Coord(10.0, 0.0)
+  let v2 = @type.Coord::Coord(0.0, 10.0)
+  let t = @type.Triangle::Triangle(v0, v1, v2)
   @test.assert_eq(t.to_lines(), [
-    Line::Line(v0, v1),
-    Line::Line(v1, v2),
-    Line::Line(v2, v0),
+    @type.Line::Line(v0, v1),
+    @type.Line::Line(v1, v2),
+    @type.Line::Line(v2, v0),
   ])
 }
 ```
@@ -109,10 +109,10 @@ test "Triangle to_lines - 3 segments in v0→v1, v1→v2, v2→v0 order" {
 ```mbt check
 ///|
 test "Triangle to_polygon - closed four-coord ring" {
-  let t = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(10.0, 0.0),
-    Coord::Coord(0.0, 10.0),
+  let t = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 0.0),
+    @type.Coord::Coord(0.0, 10.0),
   )
   let p = t.to_polygon()
   @test.assert_eq(p.exterior().length(), 4)
@@ -129,20 +129,20 @@ test "Triangle to_polygon - closed four-coord ring" {
 ```mbt check
 ///|
 test "Triangle Eq::op_equal - equal and unequal" {
-  let a = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(1.0, 0.0),
-    Coord::Coord(0.0, 1.0),
+  let a = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 0.0),
+    @type.Coord::Coord(0.0, 1.0),
   )
-  let b = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(1.0, 0.0),
-    Coord::Coord(0.0, 1.0),
+  let b = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 0.0),
+    @type.Coord::Coord(0.0, 1.0),
   )
-  let c = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(2.0, 0.0),
-    Coord::Coord(0.0, 2.0),
+  let c = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(2.0, 0.0),
+    @type.Coord::Coord(0.0, 2.0),
   )
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)

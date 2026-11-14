@@ -24,7 +24,7 @@ test "RemoveRepeatedPoints::remove_repeated_points - LineString collapses consec
     (10.0, 0.0),
   ])
   @test.assert_eq(
-    RemoveRepeatedPoints::remove_repeated_points(ls),
+    @geo.RemoveRepeatedPoints::remove_repeated_points(ls),
     @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.0), (10.0, 0.0)]),
   )
 }
@@ -55,7 +55,7 @@ test "RemoveRepeatedPoints::remove_repeated_points - Polygon collapses in every 
     (1.0, 1.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [interior])
-  let cleaned = RemoveRepeatedPoints::remove_repeated_points(polygon)
+  let cleaned = @geo.RemoveRepeatedPoints::remove_repeated_points(polygon)
   // 7-coord exterior with two duplicate pairs → 5 unique + closing = collapses
   // to the canonical 5-coord ring after Polygon::Polygon's auto-closure.
   @test.assert_eq(cleaned.exterior().length(), 5)

@@ -31,7 +31,10 @@ An axis-aligned bounded 2D rectangle defined by `min` / `max` `Coord`s. The cons
 ```mbt check
 ///|
 test "Rect::Rect - simple initialization" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
   debug_inspect(
     r,
     content=(
@@ -46,9 +49,12 @@ test "Rect::Rect - simple initialization" {
 ```mbt check
 ///|
 test "Rect::Rect - normalises swapped inputs" {
-  let r = Rect::Rect(Coord::Coord(2.0, 3.0), Coord::Coord(0.0, 1.0))
-  @test.assert_eq(r.min(), Coord::Coord(0.0, 1.0))
-  @test.assert_eq(r.max(), Coord::Coord(2.0, 3.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(2.0, 3.0),
+    @type.Coord::Coord(0.0, 1.0),
+  )
+  @test.assert_eq(r.min(), @type.Coord::Coord(0.0, 1.0))
+  @test.assert_eq(r.max(), @type.Coord::Coord(2.0, 3.0))
 }
 ```
 
@@ -59,8 +65,11 @@ test "Rect::Rect - normalises swapped inputs" {
 ```mbt check
 ///|
 test "Rect min - returns min corner" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
-  @test.assert_eq(r.min(), Coord::Coord(0.0, 0.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
+  @test.assert_eq(r.min(), @type.Coord::Coord(0.0, 0.0))
 }
 ```
 
@@ -71,8 +80,11 @@ test "Rect min - returns min corner" {
 ```mbt check
 ///|
 test "Rect max - returns max corner" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
-  @test.assert_eq(r.max(), Coord::Coord(10.0, 20.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
+  @test.assert_eq(r.max(), @type.Coord::Coord(10.0, 20.0))
 }
 ```
 
@@ -83,7 +95,10 @@ test "Rect max - returns max corner" {
 ```mbt check
 ///|
 test "Rect width - max.x minus min.x" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
   @test.assert_eq(r.width(), 10.0)
 }
 ```
@@ -95,7 +110,10 @@ test "Rect width - max.x minus min.x" {
 ```mbt check
 ///|
 test "Rect height - max.y minus min.y" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
   @test.assert_eq(r.height(), 20.0)
 }
 ```
@@ -107,8 +125,11 @@ test "Rect height - max.y minus min.y" {
 ```mbt check
 ///|
 test "Rect center - returns centroid" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
-  @test.assert_eq(r.center(), Coord::Coord(5.0, 10.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
+  @test.assert_eq(r.center(), @type.Coord::Coord(5.0, 10.0))
 }
 ```
 
@@ -119,7 +140,10 @@ test "Rect center - returns centroid" {
 ```mbt check
 ///|
 test "Rect area - width times height" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 20.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 20.0),
+  )
   @test.assert_eq(r.area(), 200.0)
 }
 ```
@@ -131,16 +155,19 @@ test "Rect area - width times height" {
 ```mbt check
 ///|
 test "Rect to_lines - 4 edges in CCW order from min corner" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 5.0))
-  let bl = Coord::Coord(0.0, 0.0)
-  let br = Coord::Coord(10.0, 0.0)
-  let tr = Coord::Coord(10.0, 5.0)
-  let tl = Coord::Coord(0.0, 5.0)
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 5.0),
+  )
+  let bl = @type.Coord::Coord(0.0, 0.0)
+  let br = @type.Coord::Coord(10.0, 0.0)
+  let tr = @type.Coord::Coord(10.0, 5.0)
+  let tl = @type.Coord::Coord(0.0, 5.0)
   @test.assert_eq(r.to_lines(), [
-    Line::Line(bl, br),
-    Line::Line(br, tr),
-    Line::Line(tr, tl),
-    Line::Line(tl, bl),
+    @type.Line::Line(bl, br),
+    @type.Line::Line(br, tr),
+    @type.Line::Line(tr, tl),
+    @type.Line::Line(tl, bl),
   ])
 }
 ```
@@ -157,7 +184,10 @@ test "Rect to_lines - 4 edges in CCW order from min corner" {
 ```mbt check
 ///|
 test "Rect to_polygon - closed five-coord ring" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 1.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 1.0),
+  )
   let p = r.to_polygon()
   @test.assert_eq(p.exterior().length(), 5)
   assert_true(p.exterior().is_closed())
@@ -169,9 +199,12 @@ test "Rect to_polygon - closed five-coord ring" {
 ```mbt check
 ///|
 test "Rect to_polygon - corners agree with to_lines starts" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(10.0, 5.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(10.0, 5.0),
+  )
   let lines = r.to_lines()
-  let line_starts = lines.map(Line::start)
+  let line_starts = lines.map(@type.Line::start)
   let polygon_coords = r.to_polygon().exterior().coords()
   // First 4 polygon coords are the to_lines starts; coord 5 closes the ring.
   @test.assert_eq(polygon_coords[0:4].to_owned(), line_starts)
@@ -192,12 +225,21 @@ test "Rect to_polygon - corners agree with to_lines starts" {
 ```mbt check
 ///|
 test "Rect split_x - equal-width halves at midpoint" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(4.0, 4.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(4.0, 4.0),
+  )
   @test.assert_eq(
     r.split_x(),
     (
-      Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(2.0, 4.0)),
-      Rect::Rect(Coord::Coord(2.0, 0.0), Coord::Coord(4.0, 4.0)),
+      @type.Rect::Rect(
+        @type.Coord::Coord(0.0, 0.0),
+        @type.Coord::Coord(2.0, 4.0),
+      ),
+      @type.Rect::Rect(
+        @type.Coord::Coord(2.0, 0.0),
+        @type.Coord::Coord(4.0, 4.0),
+      ),
     ),
   )
 }
@@ -208,7 +250,10 @@ test "Rect split_x - equal-width halves at midpoint" {
 ```mbt check
 ///|
 test "Rect split_x - shared mid-X bit-identical on seam" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(4.0, 4.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(4.0, 4.0),
+  )
   let (left, right) = r.split_x()
   @test.assert_eq(left.max().x(), right.min().x())
 }
@@ -219,7 +264,10 @@ test "Rect split_x - shared mid-X bit-identical on seam" {
 ```mbt check
 ///|
 test "Rect split_x - total width preserved and full height on each half" {
-  let r = Rect::Rect(Coord::Coord(1.0, 2.0), Coord::Coord(7.0, 5.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(1.0, 2.0),
+    @type.Coord::Coord(7.0, 5.0),
+  )
   let (left, right) = r.split_x()
   @test.assert_eq(left.width() + right.width(), r.width())
   @test.assert_eq(left.height(), r.height())
@@ -241,12 +289,21 @@ test "Rect split_x - total width preserved and full height on each half" {
 ```mbt check
 ///|
 test "Rect split_y - equal-height halves at midpoint" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(4.0, 4.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(4.0, 4.0),
+  )
   @test.assert_eq(
     r.split_y(),
     (
-      Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(4.0, 2.0)),
-      Rect::Rect(Coord::Coord(0.0, 2.0), Coord::Coord(4.0, 4.0)),
+      @type.Rect::Rect(
+        @type.Coord::Coord(0.0, 0.0),
+        @type.Coord::Coord(4.0, 2.0),
+      ),
+      @type.Rect::Rect(
+        @type.Coord::Coord(0.0, 2.0),
+        @type.Coord::Coord(4.0, 4.0),
+      ),
     ),
   )
 }
@@ -257,7 +314,10 @@ test "Rect split_y - equal-height halves at midpoint" {
 ```mbt check
 ///|
 test "Rect split_y - shared mid-Y bit-identical on seam" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(4.0, 4.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(4.0, 4.0),
+  )
   let (bottom, top) = r.split_y()
   @test.assert_eq(bottom.max().y(), top.min().y())
 }
@@ -268,7 +328,10 @@ test "Rect split_y - shared mid-Y bit-identical on seam" {
 ```mbt check
 ///|
 test "Rect split_y - total height preserved and full width on each half" {
-  let r = Rect::Rect(Coord::Coord(1.0, 2.0), Coord::Coord(7.0, 5.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(1.0, 2.0),
+    @type.Coord::Coord(7.0, 5.0),
+  )
   let (bottom, top) = r.split_y()
   @test.assert_eq(bottom.height() + top.height(), r.height())
   @test.assert_eq(bottom.width(), r.width())
@@ -281,7 +344,10 @@ test "Rect split_y - total height preserved and full width on each half" {
 ```mbt check
 ///|
 test "Rect split_x then split_y - 4 quadrants of equal area" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(4.0, 4.0))
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(4.0, 4.0),
+  )
   let (left, right) = r.split_x()
   let (bottom_left, top_left) = left.split_y()
   let (bottom_right, top_right) = right.split_y()
@@ -306,9 +372,18 @@ test "Rect split_x then split_y - 4 quadrants of equal area" {
 ```mbt check
 ///|
 test "Rect Eq::op_equal - equal and unequal" {
-  let a = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 1.0))
-  let b = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 1.0))
-  let c = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(2.0, 2.0))
+  let a = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 1.0),
+  )
+  let b = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 1.0),
+  )
+  let c = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(2.0, 2.0),
+  )
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }

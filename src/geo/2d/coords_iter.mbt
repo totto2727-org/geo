@@ -103,7 +103,7 @@ fn coords_of_geometry(g : @type.Geometry) -> Array[@type.Coord] {
 ///|
 /// Returns the count of coordinates in the geometry (the length of the
 /// array returned by `coords_of_geometry`).
-pub fn coords_count(g : @type.Geometry) -> Int {
+pub fn coords_count(g : @type.Geometry) -> Int32 {
   coords_of_geometry(g).length()
 }
 

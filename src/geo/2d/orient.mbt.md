@@ -24,15 +24,15 @@ test "Orient::orient - Polygon Default makes exterior CCW" {
     (1.0, 0.0),
     (0.0, 0.0),
   ])
-  let oriented = Orient::orient(
+  let oriented = @geo.Orient::orient(
     @type.Polygon::Polygon(cw_exterior, []),
-    OrientDirection::Default,
+    @geo.OrientDirection::Default,
   )
-  let actual = match winding_order(oriented.exterior()) {
+  let actual = match @geo.winding_order(oriented.exterior()) {
     Some(w) => w
     None => abort("expected winding order for non-degenerate exterior")
   }
-  @test.assert_eq(actual, WindingOrder::CounterClockwise)
+  @test.assert_eq(actual, @geo.WindingOrder::CounterClockwise)
 }
 ```
 
@@ -48,15 +48,15 @@ test "Orient::orient - Polygon Reversed makes exterior CW" {
     (0.0, 1.0),
     (0.0, 0.0),
   ])
-  let oriented = Orient::orient(
+  let oriented = @geo.Orient::orient(
     @type.Polygon::Polygon(ccw_exterior, []),
-    OrientDirection::Reversed,
+    @geo.OrientDirection::Reversed,
   )
-  let actual = match winding_order(oriented.exterior()) {
+  let actual = match @geo.winding_order(oriented.exterior()) {
     Some(w) => w
     None => abort("expected winding order for non-degenerate exterior")
   }
-  @test.assert_eq(actual, WindingOrder::Clockwise)
+  @test.assert_eq(actual, @geo.WindingOrder::Clockwise)
 }
 ```
 
@@ -77,11 +77,11 @@ test "Orient::orient - MultiPolygon re-orients every polygon" {
   let mp = @type.MultiPolygon::MultiPolygon([
     @type.Polygon::Polygon(cw_exterior, []),
   ])
-  let oriented = Orient::orient(mp, OrientDirection::Default)
-  let actual = match winding_order(oriented.polygons()[0].exterior()) {
+  let oriented = @geo.Orient::orient(mp, @geo.OrientDirection::Default)
+  let actual = match @geo.winding_order(oriented.polygons()[0].exterior()) {
     Some(w) => w
     None => abort("expected winding order for non-degenerate exterior")
   }
-  @test.assert_eq(actual, WindingOrder::CounterClockwise)
+  @test.assert_eq(actual, @geo.WindingOrder::CounterClockwise)
 }
 ```

@@ -24,7 +24,7 @@ Per-geometry edge-iteration trait. `LinesCarrier::lines` returns the line segmen
 ///|
 test "LinesCarrier::lines - LineString yields n-1 segments" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
-  @test.assert_eq(LinesCarrier::lines(ls).length(), 2)
+  @test.assert_eq(@geo.LinesCarrier::lines(ls).length(), 2)
 }
 ```
 
@@ -37,7 +37,7 @@ test "LinesCarrier::lines - Rect yields 4 edges" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(1.0, 1.0),
   )
-  @test.assert_eq(LinesCarrier::lines(r).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(r).length(), 4)
 }
 ```
 
@@ -47,7 +47,9 @@ test "LinesCarrier::lines - Rect yields 4 edges" {
 ///|
 test "LinesCarrier::lines - Geometry::Point yields no segments" {
   @test.assert_eq(
-    LinesCarrier::lines(@type.Geometry::Point(@type.Point::Point(1.0, 2.0))),
+    @geo.LinesCarrier::lines(
+      @type.Geometry::Point(@type.Point::Point(1.0, 2.0)),
+    ),
     [],
   )
 }
@@ -83,14 +85,14 @@ test "LinesCarrier::lines - direct dispatch on every concrete type" {
   let gc = @type.GeometryCollection::GeometryCollection([
     @type.Geometry::LineString(ls),
   ])
-  @test.assert_eq(LinesCarrier::lines(l), [l])
-  @test.assert_eq(LinesCarrier::lines(ls).length(), 2)
-  @test.assert_eq(LinesCarrier::lines(mls).length(), 2)
-  @test.assert_eq(LinesCarrier::lines(polygon).length(), 4)
-  @test.assert_eq(LinesCarrier::lines(mpoly).length(), 4)
-  @test.assert_eq(LinesCarrier::lines(r).length(), 4)
-  @test.assert_eq(LinesCarrier::lines(tri).length(), 3)
-  @test.assert_eq(LinesCarrier::lines(gc).length(), 2)
+  @test.assert_eq(@geo.LinesCarrier::lines(l), [l])
+  @test.assert_eq(@geo.LinesCarrier::lines(ls).length(), 2)
+  @test.assert_eq(@geo.LinesCarrier::lines(mls).length(), 2)
+  @test.assert_eq(@geo.LinesCarrier::lines(polygon).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(mpoly).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(r).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(tri).length(), 3)
+  @test.assert_eq(@geo.LinesCarrier::lines(gc).length(), 2)
 }
 ```
 
@@ -142,15 +144,15 @@ test "LinesCarrier::lines - Geometry dispatch hits every match arm" {
       ),
     ]),
   )
-  @test.assert_eq(LinesCarrier::lines(pt), [])
-  @test.assert_eq(LinesCarrier::lines(mp), [])
-  @test.assert_eq(LinesCarrier::lines(l).length(), 1)
-  @test.assert_eq(LinesCarrier::lines(ls).length(), 1)
-  @test.assert_eq(LinesCarrier::lines(mls).length(), 1)
-  @test.assert_eq(LinesCarrier::lines(g_polygon).length(), 4)
-  @test.assert_eq(LinesCarrier::lines(g_mpoly).length(), 4)
-  @test.assert_eq(LinesCarrier::lines(g_rect).length(), 4)
-  @test.assert_eq(LinesCarrier::lines(g_tri).length(), 3)
-  @test.assert_eq(LinesCarrier::lines(g_gc).length(), 1)
+  @test.assert_eq(@geo.LinesCarrier::lines(pt), [])
+  @test.assert_eq(@geo.LinesCarrier::lines(mp), [])
+  @test.assert_eq(@geo.LinesCarrier::lines(l).length(), 1)
+  @test.assert_eq(@geo.LinesCarrier::lines(ls).length(), 1)
+  @test.assert_eq(@geo.LinesCarrier::lines(mls).length(), 1)
+  @test.assert_eq(@geo.LinesCarrier::lines(g_polygon).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(g_mpoly).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(g_rect).length(), 4)
+  @test.assert_eq(@geo.LinesCarrier::lines(g_tri).length(), 3)
+  @test.assert_eq(@geo.LinesCarrier::lines(g_gc).length(), 1)
 }
 ```

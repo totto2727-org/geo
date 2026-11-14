@@ -35,7 +35,7 @@ test "voronoi_vertices - single triangle" {
     @type.Coord(2.0, 0.0),
     @type.Coord(1.0, 2.0),
   ]
-  let result = voronoi_vertices(points)
+  let result = @geo.voronoi_vertices(points)
   match result {
     Some(vs) => {
       @test.assert_eq(vs.length(), 1)
@@ -57,7 +57,7 @@ test "voronoi_vertices - collinear returns None" {
     @type.Coord(1.0, 0.0),
     @type.Coord(2.0, 0.0),
   ]
-  let result = voronoi_vertices(points)
+  let result = @geo.voronoi_vertices(points)
   @test.assert_eq(result, None)
 }
 ```
@@ -73,7 +73,7 @@ test "voronoi_vertices - 5x5 grid count matches Delaunay" {
       points.push(@type.Coord(i.to_double(), j.to_double()))
     }
   }
-  let result = voronoi_vertices(points)
+  let result = @geo.voronoi_vertices(points)
   match result {
     Some(vs) => @test.assert_eq(vs.length(), 32)
     None => abort("expected Some(vertices)")
@@ -97,7 +97,7 @@ test "voronoi_vertices - 5x5 grid count matches Delaunay" {
 ///|
 test "voronoi_diagram - empty" {
   let bbox = @type.Rect::Rect(@type.Coord(-1.0, -1.0), @type.Coord(1.0, 1.0))
-  let result = voronoi_diagram([], bbox)
+  let result = @geo.voronoi_diagram([], bbox)
   @test.assert_eq(result, None)
 }
 ```
@@ -116,7 +116,7 @@ test "voronoi_diagram - collinear returns None" {
     @type.Coord(-10.0, -10.0),
     @type.Coord(10.0, 10.0),
   )
-  let result = voronoi_diagram(points, bbox)
+  let result = @geo.voronoi_diagram(points, bbox)
   @test.assert_eq(result, None)
 }
 ```
@@ -136,7 +136,7 @@ test "voronoi_diagram - single triangle" {
     @type.Coord(-10.0, -10.0),
     @type.Coord(10.0, 10.0),
   )
-  let result = voronoi_diagram(points, bbox)
+  let result = @geo.voronoi_diagram(points, bbox)
   match result {
     Some(edges) => {
       @test.assert_eq(edges.length(), 3)
@@ -166,7 +166,7 @@ test "voronoi_diagram - square has 4 boundary rays" {
     @type.Coord(-10.0, -10.0),
     @type.Coord(10.0, 10.0),
   )
-  let result = voronoi_diagram(points, bbox)
+  let result = @geo.voronoi_diagram(points, bbox)
   match result {
     Some(edges) => {
       @test.assert_eq(edges.length(), 4)
@@ -197,7 +197,7 @@ test "voronoi_diagram - square plus center has 8 edges" {
     @type.Coord(-10.0, -10.0),
     @type.Coord(10.0, 10.0),
   )
-  let result = voronoi_diagram(points, bbox)
+  let result = @geo.voronoi_diagram(points, bbox)
   match result {
     Some(edges) => @test.assert_eq(edges.length(), 8)
     None => abort("expected Some(edges)")

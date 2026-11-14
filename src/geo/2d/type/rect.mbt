@@ -7,10 +7,11 @@
 ///
 /// The constructor normalises the input so that `min.x <= max.x` and
 /// `min.y <= max.y`.
+#derive(Eq, Debug, Hash)
 pub struct Rect {
   min : Coord
   max : Coord
-} derive(Eq, Debug, Hash)
+}
 
 ///|
 /// Creates a new `Rect` from two coordinates. Order is not significant — the
@@ -27,7 +28,7 @@ pub fn Rect::Rect(c1 : Coord, c2 : Coord) -> Rect {
   } else {
     (c2.y(), c1.y())
   }
-  Rect::{ min: Coord(min_x, min_y), max: Coord(max_x, max_y) }
+  Rect::{ min: Coord(min_x, min_y), max: Coord(max_x, max_y), }
 }
 
 ///|

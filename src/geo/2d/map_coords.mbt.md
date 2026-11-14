@@ -25,7 +25,7 @@ Per-`Coord` transformation lifted over every geometry shape via the `MapCoords::
 test "MapCoords::map_coords - Point shifts the coord" {
   let p = @type.Point::Point(1.0, 2.0)
   @test.assert_eq(
-    MapCoords::map_coords(p, fn(c) {
+    @geo.MapCoords::map_coords(p, fn(c) {
       @type.Coord::Coord(c.x() + 10.0, c.y() + 20.0)
     }),
     @type.Point::Point(11.0, 22.0),
@@ -45,7 +45,7 @@ test "MapCoords::map_coords - Polygon transforms every ring's coords" {
     (0.0, 1.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [])
-  let scaled = MapCoords::map_coords(polygon, fn(c) { c.mul(2.0) })
+  let scaled = @geo.MapCoords::map_coords(polygon, fn(c) { c.mul(2.0) })
   let scaled_coords = scaled.exterior().coords()
   @test.assert_eq(scaled_coords[1], @type.Coord::Coord(2.0, 0.0))
   @test.assert_eq(scaled_coords[2], @type.Coord::Coord(2.0, 2.0))
@@ -85,16 +85,16 @@ test "MapCoords::map_coords - direct dispatch on every concrete type" {
   let gc = @type.GeometryCollection::GeometryCollection([
     @type.Geometry::Point(pt),
   ])
-  @test.assert_eq(MapCoords::map_coords(pt, identity), pt)
-  @test.assert_eq(MapCoords::map_coords(l, identity), l)
-  @test.assert_eq(MapCoords::map_coords(ls, identity), ls)
-  @test.assert_eq(MapCoords::map_coords(mp, identity), mp)
-  @test.assert_eq(MapCoords::map_coords(mls, identity), mls)
-  @test.assert_eq(MapCoords::map_coords(polygon, identity), polygon)
-  @test.assert_eq(MapCoords::map_coords(mpoly, identity), mpoly)
-  @test.assert_eq(MapCoords::map_coords(r, identity), r)
-  @test.assert_eq(MapCoords::map_coords(tri, identity), tri)
-  @test.assert_eq(MapCoords::map_coords(gc, identity), gc)
+  @test.assert_eq(@geo.MapCoords::map_coords(pt, identity), pt)
+  @test.assert_eq(@geo.MapCoords::map_coords(l, identity), l)
+  @test.assert_eq(@geo.MapCoords::map_coords(ls, identity), ls)
+  @test.assert_eq(@geo.MapCoords::map_coords(mp, identity), mp)
+  @test.assert_eq(@geo.MapCoords::map_coords(mls, identity), mls)
+  @test.assert_eq(@geo.MapCoords::map_coords(polygon, identity), polygon)
+  @test.assert_eq(@geo.MapCoords::map_coords(mpoly, identity), mpoly)
+  @test.assert_eq(@geo.MapCoords::map_coords(r, identity), r)
+  @test.assert_eq(@geo.MapCoords::map_coords(tri, identity), tri)
+  @test.assert_eq(@geo.MapCoords::map_coords(gc, identity), gc)
 }
 ```
 
@@ -105,6 +105,6 @@ test "MapCoords::map_coords - direct dispatch on every concrete type" {
 test "MapCoords::map_coords - Geometry::Point round-trip with identity" {
   let p = @type.Point::Point(3.5, 7.0)
   let g = @type.Geometry::Point(p)
-  @test.assert_eq(MapCoords::map_coords(g, fn(c) { c }), g)
+  @test.assert_eq(@geo.MapCoords::map_coords(g, fn(c) { c }), g)
 }
 ```

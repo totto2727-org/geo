@@ -22,7 +22,7 @@ Discrete Fréchet distance between two `LineString`s. Two empty inputs give 0; a
 ///|
 test "frechet_distance - identical lines give 0" {
   let a = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
-  @test.assert_eq(frechet_distance(a, a), 0.0)
+  @test.assert_eq(@geo.frechet_distance(a, a), 0.0)
 }
 ```
 
@@ -33,8 +33,8 @@ test "frechet_distance - identical lines give 0" {
 test "frechet_distance - parallel translated lines give the offset" {
   let a = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
   let b = @type.LineString::from_tuples([(0.0, 5.0), (10.0, 5.0)])
-  let d = frechet_distance(a, b)
-  assert_true((d - 5.0).abs() < TOLERANCE)
+  let d = @geo.frechet_distance(a, b)
+  assert_true((d - 5.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -44,6 +44,6 @@ test "frechet_distance - parallel translated lines give the offset" {
 ///|
 test "frechet_distance - both empty give 0" {
   let a = @type.LineString::empty()
-  @test.assert_eq(frechet_distance(a, a), 0.0)
+  @test.assert_eq(@geo.frechet_distance(a, a), 0.0)
 }
 ```

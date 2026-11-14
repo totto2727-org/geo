@@ -26,7 +26,7 @@
 pub fn indexed_contains_polygons(
   polygons : Array[@type.Polygon],
 ) -> (@type.Coord) -> Bool {
-  let entries : Array[@rtree.Entry[Int]] = []
+  let entries : Array[@rtree.Entry[Int32]] = []
   for i = 0; i < polygons.length(); i = i + 1 {
     match bounding_rect_of_polygon(polygons[i]) {
       Some(rect) => entries.push(@rtree.Entry(rect, i))
@@ -73,8 +73,8 @@ pub fn indexed_nearest_point(
 /// produces a closure that always returns `[]`.
 pub fn indexed_intersecting_polygons(
   polygons : Array[@type.Polygon],
-) -> (@type.Polygon) -> Array[Int] {
-  let entries : Array[@rtree.Entry[Int]] = []
+) -> (@type.Polygon) -> Array[Int32] {
+  let entries : Array[@rtree.Entry[Int32]] = []
   for i = 0; i < polygons.length(); i = i + 1 {
     match bounding_rect_of_polygon(polygons[i]) {
       Some(rect) => entries.push(@rtree.Entry(rect, i))

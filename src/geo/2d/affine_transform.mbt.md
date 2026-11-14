@@ -27,7 +27,7 @@ A 2D affine transform stored as a pair of `AffineRow`s (`row_x` / `row_y`) repre
 ```mbt check
 ///|
 test "AffineRow::AffineRow - simple initialization" {
-  let row = AffineRow::AffineRow(2.0, 0.5, 7.0)
+  let row = @geo.AffineRow::AffineRow(2.0, 0.5, 7.0)
   debug_inspect(
     row,
     content=(
@@ -44,9 +44,9 @@ test "AffineRow::AffineRow - simple initialization" {
 ```mbt check
 ///|
 test "AffineTransform::AffineTransform - simple initialization" {
-  let t = AffineTransform::AffineTransform(
-    AffineRow::AffineRow(1.0, 0.0, 0.0),
-    AffineRow::AffineRow(1.0, 0.0, 0.0),
+  let t = @geo.AffineTransform::AffineTransform(
+    @geo.AffineRow::AffineRow(1.0, 0.0, 0.0),
+    @geo.AffineRow::AffineRow(1.0, 0.0, 0.0),
   )
   debug_inspect(
     t,
@@ -67,7 +67,7 @@ test "AffineTransform::AffineTransform - simple initialization" {
 ```mbt check
 ///|
 test "AffineTransform::identity - leaves coordinate unchanged" {
-  let t = AffineTransform::identity()
+  let t = @geo.AffineTransform::identity()
   @test.assert_eq(
     t.apply(@type.Coord::Coord(3.0, 4.0)),
     @type.Coord::Coord(3.0, 4.0),
@@ -82,7 +82,7 @@ test "AffineTransform::identity - leaves coordinate unchanged" {
 ```mbt check
 ///|
 test "AffineTransform::translate_xy - pure translation" {
-  let t = AffineTransform::translate_xy(1.0, 2.0)
+  let t = @geo.AffineTransform::translate_xy(1.0, 2.0)
   @test.assert_eq(
     t.apply(@type.Coord::Coord(0.0, 0.0)),
     @type.Coord::Coord(1.0, 2.0),
@@ -97,7 +97,7 @@ test "AffineTransform::translate_xy - pure translation" {
 ```mbt check
 ///|
 test "AffineTransform::scale_xy - pure scaling" {
-  let t = AffineTransform::scale_xy(2.0, 3.0)
+  let t = @geo.AffineTransform::scale_xy(2.0, 3.0)
   @test.assert_eq(
     t.apply(@type.Coord::Coord(1.0, 1.0)),
     @type.Coord::Coord(2.0, 3.0),
@@ -112,11 +112,11 @@ test "AffineTransform::scale_xy - pure scaling" {
 ```mbt check
 ///|
 test "AffineTransform::rotate_origin - 90 degrees CCW" {
-  let t = AffineTransform::rotate_origin(90.0)
+  let t = @geo.AffineTransform::rotate_origin(90.0)
   let p = t.apply(@type.Coord::Coord(1.0, 0.0))
   // Up to ~`TOLERANCE` floating-point round-off the result is (0, 1).
-  assert_true(p.x().abs() < TOLERANCE)
-  assert_true((p.y() - 1.0).abs() < TOLERANCE)
+  assert_true(p.x().abs() < @geo.TOLERANCE)
+  assert_true((p.y() - 1.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -127,11 +127,11 @@ test "AffineTransform::rotate_origin - 90 degrees CCW" {
 ```mbt check
 ///|
 test "AffineTransform::skew_origin - 45 deg X-skew shifts y onto x" {
-  let t = AffineTransform::skew_origin(45.0, 0.0)
+  let t = @geo.AffineTransform::skew_origin(45.0, 0.0)
   let p = t.apply(@type.Coord::Coord(0.0, 1.0))
   // Up to floating-point round-off the result is (1, 1) since tan(45°) = 1.
-  assert_true((p.x() - 1.0).abs() < TOLERANCE)
-  assert_true((p.y() - 1.0).abs() < TOLERANCE)
+  assert_true((p.x() - 1.0).abs() < @geo.TOLERANCE)
+  assert_true((p.y() - 1.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -146,8 +146,8 @@ Exercised by every `identity` / `translate_xy` / `scale_xy` / `rotate_origin` / 
 ```mbt check
 ///|
 test "AffineTransform::compose - translate then scale" {
-  let t1 = AffineTransform::translate_xy(1.0, 1.0)
-  let t2 = AffineTransform::scale_xy(2.0, 2.0)
+  let t1 = @geo.AffineTransform::translate_xy(1.0, 1.0)
+  let t2 = @geo.AffineTransform::scale_xy(2.0, 2.0)
   let combined = t1.compose(t2)
   @test.assert_eq(
     combined.apply(@type.Coord::Coord(0.0, 0.0)),
@@ -163,7 +163,7 @@ test "AffineTransform::compose - translate then scale" {
 ```mbt check
 ///|
 test "AffineTransform::transform - applies to a Point via MapCoords" {
-  let t = AffineTransform::translate_xy(10.0, 20.0)
+  let t = @geo.AffineTransform::translate_xy(10.0, 20.0)
   let p = @type.Point::Point(1.0, 2.0)
   @test.assert_eq(t.transform(p), @type.Point::Point(11.0, 22.0))
 }
@@ -178,9 +178,9 @@ test "AffineTransform::transform - applies to a Point via MapCoords" {
 ```mbt check
 ///|
 test "AffineTransform Eq::op_equal - equal and unequal" {
-  let a = AffineTransform::identity()
-  let b = AffineTransform::identity()
-  let c = AffineTransform::scale_xy(2.0, 2.0)
+  let a = @geo.AffineTransform::identity()
+  let b = @geo.AffineTransform::identity()
+  let c = @geo.AffineTransform::scale_xy(2.0, 2.0)
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }

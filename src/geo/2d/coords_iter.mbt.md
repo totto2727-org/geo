@@ -23,7 +23,7 @@ Iterates the coordinates of every concrete geometry plus the dispatch over `Geom
 ///|
 test "coords_count - Point has one coord" {
   let g = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
-  @test.assert_eq(coords_count(g), 1)
+  @test.assert_eq(@geo.coords_count(g), 1)
 }
 ```
 
@@ -33,7 +33,7 @@ test "coords_count - Point has one coord" {
 ///|
 test "coords_count - MultiPoint counts inner points" {
   let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
-  @test.assert_eq(coords_count(@type.Geometry::MultiPoint(mp)), 3)
+  @test.assert_eq(@geo.coords_count(@type.Geometry::MultiPoint(mp)), 3)
 }
 ```
 
@@ -53,7 +53,7 @@ test "coords_count - MultiPoint counts inner points" {
 ///|
 test "CoordsCarrier::coords - Point yields its coord" {
   let p = @type.Point::Point(1.0, 2.0)
-  @test.assert_eq(CoordsCarrier::coords(p), [@type.Coord::Coord(1.0, 2.0)])
+  @test.assert_eq(@geo.CoordsCarrier::coords(p), [@type.Coord::Coord(1.0, 2.0)])
 }
 ```
 
@@ -67,7 +67,7 @@ test "CoordsCarrier::coords - MultiPoint preserves order" {
     (20.0, 20.0),
     (30.0, 40.0),
   ])
-  @test.assert_eq(CoordsCarrier::coords(mp), [
+  @test.assert_eq(@geo.CoordsCarrier::coords(mp), [
     @type.Coord::Coord(-10.0, 0.0),
     @type.Coord::Coord(20.0, 20.0),
     @type.Coord::Coord(30.0, 40.0),
@@ -93,8 +93,8 @@ test "CoordsCarrier::coords - Polygon walks exterior then interiors" {
     (3.0, 7.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [interior])
-  let all_coords = CoordsCarrier::coords(polygon)
-  let exterior_coords = ExteriorCoordsCarrier::exterior_coords(polygon)
+  let all_coords = @geo.CoordsCarrier::coords(polygon)
+  let exterior_coords = @geo.ExteriorCoordsCarrier::exterior_coords(polygon)
   assert_true(all_coords.length() > exterior_coords.length())
 }
 ```
@@ -106,19 +106,19 @@ test "CoordsCarrier::coords - Polygon walks exterior then interiors" {
 test "CoordsCarrier::coords - dispatch covers every variant cardinality" {
   // Line: 2 coords.
   @test.assert_eq(
-    CoordsCarrier::coords(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))).length(),
+    @geo.CoordsCarrier::coords(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))).length(),
     2,
   )
   // LineString: matches input length.
   @test.assert_eq(
-    CoordsCarrier::coords(
+    @geo.CoordsCarrier::coords(
       @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)]),
     ).length(),
     3,
   )
   // MultiLineString: sum of component lengths.
   @test.assert_eq(
-    CoordsCarrier::coords(
+    @geo.CoordsCarrier::coords(
       @type.MultiLineString::MultiLineString([
         @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
         @type.LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)]),
@@ -137,12 +137,12 @@ test "CoordsCarrier::coords - dispatch covers every variant cardinality" {
     [],
   )
   @test.assert_eq(
-    CoordsCarrier::coords(@type.MultiPolygon::MultiPolygon([polygon])).length(),
+    @geo.CoordsCarrier::coords(@type.MultiPolygon::MultiPolygon([polygon])).length(),
     5,
   )
   // Rect: 4 corners.
   @test.assert_eq(
-    CoordsCarrier::coords(
+    @geo.CoordsCarrier::coords(
       @type.Rect::Rect(
         @type.Coord::Coord(0.0, 0.0),
         @type.Coord::Coord(1.0, 1.0),
@@ -152,7 +152,7 @@ test "CoordsCarrier::coords - dispatch covers every variant cardinality" {
   )
   // Triangle: 3 vertices.
   @test.assert_eq(
-    CoordsCarrier::coords(
+    @geo.CoordsCarrier::coords(
       @type.Triangle::Triangle(
         @type.Coord::Coord(0.0, 0.0),
         @type.Coord::Coord(1.0, 0.0),
@@ -163,7 +163,7 @@ test "CoordsCarrier::coords - dispatch covers every variant cardinality" {
   )
   // GeometryCollection: sum of component coord counts.
   @test.assert_eq(
-    CoordsCarrier::coords(
+    @geo.CoordsCarrier::coords(
       @type.GeometryCollection::GeometryCollection([
         @type.Geometry::Point(@type.Point::Point(0.0, 0.0)),
         @type.Geometry::Point(@type.Point::Point(1.0, 1.0)),
@@ -173,7 +173,7 @@ test "CoordsCarrier::coords - dispatch covers every variant cardinality" {
   )
   // Geometry::Line dispatch: 2 coords.
   @test.assert_eq(
-    CoordsCarrier::coords(
+    @geo.CoordsCarrier::coords(
       @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))),
     ).length(),
     2,
@@ -201,10 +201,12 @@ test "ExteriorCoordsCarrier::exterior_coords - MultiPolygon and Geometry" {
   )
   let mp = @type.MultiPolygon::MultiPolygon([polygon])
   // 5 coords per polygon (auto-closed).
-  @test.assert_eq(ExteriorCoordsCarrier::exterior_coords(mp).length(), 5)
+  @test.assert_eq(@geo.ExteriorCoordsCarrier::exterior_coords(mp).length(), 5)
   // Geometry::Polygon dispatches via exterior_coords_of_geometry.
   @test.assert_eq(
-    ExteriorCoordsCarrier::exterior_coords(@type.Geometry::Polygon(polygon)).length(),
+    @geo.ExteriorCoordsCarrier::exterior_coords(
+      @type.Geometry::Polygon(polygon),
+    ).length(),
     5,
   )
 }
@@ -222,6 +224,9 @@ test "ExteriorCoordsCarrier::exterior_coords - Polygon yields auto-closed exteri
     (0.0, 10.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [])
-  @test.assert_eq(ExteriorCoordsCarrier::exterior_coords(polygon).length(), 5)
+  @test.assert_eq(
+    @geo.ExteriorCoordsCarrier::exterior_coords(polygon).length(),
+    5,
+  )
 }
 ```

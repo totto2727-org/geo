@@ -32,7 +32,7 @@ A lightweight 2D Cartesian coordinate (`x : Double`, `y : Double`) ported from `
 ```mbt check
 ///|
 test "Coord::Coord - simple initialization" {
-  let c = Coord::Coord(1.0, 2.0)
+  let c = @type.Coord::Coord(1.0, 2.0)
   debug_inspect(
     c,
     content=(
@@ -49,7 +49,7 @@ test "Coord::Coord - simple initialization" {
 ```mbt check
 ///|
 test "Coord::zero - origin" {
-  @test.assert_eq(Coord::zero(), Coord::Coord(0.0, 0.0))
+  @test.assert_eq(@type.Coord::zero(), @type.Coord::Coord(0.0, 0.0))
 }
 ```
 
@@ -60,7 +60,7 @@ test "Coord::zero - origin" {
 ```mbt check
 ///|
 test "Coord is_zero - origin" {
-  let c = Coord::zero()
+  let c = @type.Coord::zero()
   assert_true(c.is_zero())
 }
 ```
@@ -72,7 +72,7 @@ test "Coord is_zero - origin" {
 ```mbt check
 ///|
 test "Coord x - returns x component" {
-  let c = Coord::Coord(1.0, 2.0)
+  let c = @type.Coord::Coord(1.0, 2.0)
   @test.assert_eq(c.x(), 1.0)
 }
 ```
@@ -84,7 +84,7 @@ test "Coord x - returns x component" {
 ```mbt check
 ///|
 test "Coord y - returns y component" {
-  let c = Coord::Coord(1.0, 2.0)
+  let c = @type.Coord::Coord(1.0, 2.0)
   @test.assert_eq(c.y(), 2.0)
 }
 ```
@@ -96,7 +96,7 @@ test "Coord y - returns y component" {
 ```mbt check
 ///|
 test "Coord x_y - returns tuple" {
-  let c = Coord::Coord(40.02, 116.34)
+  let c = @type.Coord::Coord(40.02, 116.34)
   @test.assert_eq(c.x_y(), (40.02, 116.34))
 }
 ```
@@ -108,7 +108,7 @@ test "Coord x_y - returns tuple" {
 ```mbt check
 ///|
 test "Coord::from_tuple - round-trip" {
-  let c = Coord::from_tuple((40.02, 116.34))
+  let c = @type.Coord::from_tuple((40.02, 116.34))
   @test.assert_eq(c.x_y(), (40.02, 116.34))
 }
 ```
@@ -125,7 +125,7 @@ test "Coord::from_tuple - round-trip" {
 ```mbt check
 ///|
 test "Coord::from_array - round-trip" {
-  let c = Coord::from_array([1.0, 2.0])
+  let c = @type.Coord::from_array([1.0, 2.0])
   @test.assert_eq(c.to_array(), [1.0, 2.0])
 }
 ```
@@ -135,7 +135,7 @@ test "Coord::from_array - round-trip" {
 ```mbt check
 ///|
 test "panic_Coord::from_array - wrong length" {
-  Coord::from_array([1.0]) |> ignore
+  @type.Coord::from_array([1.0]) |> ignore
 }
 ```
 
@@ -146,7 +146,7 @@ test "panic_Coord::from_array - wrong length" {
 ```mbt check
 ///|
 test "Coord to_array - 2-element array" {
-  let c = Coord::Coord(1.0, 2.0)
+  let c = @type.Coord::Coord(1.0, 2.0)
   @test.assert_eq(c.to_array(), [1.0, 2.0])
 }
 ```
@@ -160,8 +160,8 @@ test "Coord to_array - 2-element array" {
 ```mbt check
 ///|
 test "Coord Neg::neg - basic negation" {
-  let p = Coord::Coord(1.25, 2.5)
-  @test.assert_eq(-p, Coord::Coord(-1.25, -2.5))
+  let p = @type.Coord::Coord(1.25, 2.5)
+  @test.assert_eq(-p, @type.Coord::Coord(-1.25, -2.5))
 }
 ```
 
@@ -174,9 +174,9 @@ test "Coord Neg::neg - basic negation" {
 ```mbt check
 ///|
 test "Coord Add::add - component-wise addition" {
-  let p = Coord::Coord(1.25, 2.5)
-  let q = Coord::Coord(1.5, 2.5)
-  @test.assert_eq(p + q, Coord::Coord(2.75, 5.0))
+  let p = @type.Coord::Coord(1.25, 2.5)
+  let q = @type.Coord::Coord(1.5, 2.5)
+  @test.assert_eq(p + q, @type.Coord::Coord(2.75, 5.0))
 }
 ```
 
@@ -189,9 +189,9 @@ test "Coord Add::add - component-wise addition" {
 ```mbt check
 ///|
 test "Coord Sub::sub - component-wise subtraction" {
-  let p = Coord::Coord(1.5, 2.5)
-  let q = Coord::Coord(1.25, 2.5)
-  @test.assert_eq(p - q, Coord::Coord(0.25, 0.0))
+  let p = @type.Coord::Coord(1.5, 2.5)
+  let q = @type.Coord::Coord(1.25, 2.5)
+  @test.assert_eq(p - q, @type.Coord::Coord(0.25, 0.0))
 }
 ```
 
@@ -202,8 +202,8 @@ test "Coord Sub::sub - component-wise subtraction" {
 ```mbt check
 ///|
 test "Coord mul - scalar multiplication" {
-  let p = Coord::Coord(1.25, 2.5)
-  @test.assert_eq(p.mul(4.0), Coord::Coord(5.0, 10.0))
+  let p = @type.Coord::Coord(1.25, 2.5)
+  @test.assert_eq(p.mul(4.0), @type.Coord::Coord(5.0, 10.0))
 }
 ```
 
@@ -214,8 +214,8 @@ test "Coord mul - scalar multiplication" {
 ```mbt check
 ///|
 test "Coord div - scalar division" {
-  let p = Coord::Coord(5.0, 10.0)
-  @test.assert_eq(p.div(4.0), Coord::Coord(1.25, 2.5))
+  let p = @type.Coord::Coord(5.0, 10.0)
+  @test.assert_eq(p.div(4.0), @type.Coord::Coord(1.25, 2.5))
 }
 ```
 
@@ -226,8 +226,8 @@ test "Coord div - scalar division" {
 ```mbt check
 ///|
 test "Coord dot - basic dot product" {
-  let p = Coord::Coord(1.0, 2.0)
-  let q = Coord::Coord(3.0, 4.0)
+  let p = @type.Coord::Coord(1.0, 2.0)
+  let q = @type.Coord::Coord(3.0, 4.0)
   // 1*3 + 2*4 = 11
   @test.assert_eq(p.dot(q), 11.0)
 }
@@ -247,8 +247,8 @@ test "Coord dot - basic dot product" {
 ```mbt check
 ///|
 test "Coord cross - CCW positive" {
-  let p = Coord::Coord(1.0, 0.0)
-  let q = Coord::Coord(0.0, 1.0)
+  let p = @type.Coord::Coord(1.0, 0.0)
+  let q = @type.Coord::Coord(0.0, 1.0)
   @test.assert_eq(p.cross(q), 1.0)
 }
 ```
@@ -258,8 +258,8 @@ test "Coord cross - CCW positive" {
 ```mbt check
 ///|
 test "Coord cross - CW negative" {
-  let p = Coord::Coord(0.0, 1.0)
-  let q = Coord::Coord(1.0, 0.0)
+  let p = @type.Coord::Coord(0.0, 1.0)
+  let q = @type.Coord::Coord(1.0, 0.0)
   @test.assert_eq(p.cross(q), -1.0)
 }
 ```
@@ -273,9 +273,9 @@ test "Coord cross - CW negative" {
 ```mbt check
 ///|
 test "Coord Eq::op_equal - equal and unequal" {
-  let a = Coord::Coord(1.0, 2.0)
-  let b = Coord::Coord(1.0, 2.0)
-  let c = Coord::Coord(1.0, 3.0)
+  let a = @type.Coord::Coord(1.0, 2.0)
+  let b = @type.Coord::Coord(1.0, 2.0)
+  let c = @type.Coord::Coord(1.0, 3.0)
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -290,7 +290,7 @@ test "Coord Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "Coord Default::default - is zero" {
-  let d : Coord = Coord::default()
-  @test.assert_eq(d, Coord::zero())
+  let d : @type.Coord = @type.Coord::default()
+  @test.assert_eq(d, @type.Coord::zero())
 }
 ```

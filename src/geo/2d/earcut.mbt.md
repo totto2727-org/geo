@@ -15,7 +15,7 @@ Mapbox earcut polygon triangulation. Takes a flat array of `[x0, y0, x1, y1, …
 ```mbt check
 ///|
 test "earcut - empty input returns Some([])" {
-  match earcut([], [], 2) {
+  match @geo.earcut([], [], 2) {
     Some(t) => @test.assert_eq(t, [])
     None => @test.fail("expected Some([])")
   }
@@ -28,7 +28,7 @@ test "earcut - empty input returns Some([])" {
 ///|
 test "earcut - single triangle yields one triangle" {
   let v = [0.0, 0.0, 1.0, 0.0, 1.0, 1.0]
-  match earcut(v, [], 2) {
+  match @geo.earcut(v, [], 2) {
     Some(t) => {
       @test.assert_eq(t.length(), 3)
       // Must reference exactly indices {0, 1, 2}
@@ -51,7 +51,7 @@ test "earcut - square yields two triangles" {
   // CCW square in math coords (CW in screen) — earcut accepts either
   // because `linked_list` flips winding to match.
   let v = [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
-  match earcut(v, [], 2) {
+  match @geo.earcut(v, [], 2) {
     Some(t) => @test.assert_eq(t.length(), 6)
     None => @test.fail("expected Some(...)")
   }
@@ -69,7 +69,7 @@ test "earcut - square with one square hole yields 8 triangles" {
     // hole
      2.0, 2.0, 8.0, 2.0, 8.0, 8.0, 2.0, 8.0,
   ]
-  match earcut(v, [4], 2) {
+  match @geo.earcut(v, [4], 2) {
     Some(t) => @test.assert_eq(t.length(), 24)
     None => @test.fail("expected Some(...)")
   }
@@ -86,7 +86,7 @@ test "earcut - building fixture gives 13 triangles" {
     771.0, 114.0, 750.0, 114.0, 750.0, 113.0, 742.0, 113.0, 742.0, 106.0, 710.0,
     106.0, 710.0, 113.0, 666.0, 113.0, 666.0, 112.0,
   ]
-  match earcut(v, [], 2) {
+  match @geo.earcut(v, [], 2) {
     Some(t) => @test.assert_eq(t.length(), 13 * 3)
     None => @test.fail("expected Some(...)")
   }
@@ -104,7 +104,7 @@ test "earcut - empty-square fixture gives 0 triangles" {
     // hole (identical)
      0.0, 0.0, 4000.0, 0.0, 4000.0, 4000.0, 0.0, 4000.0,
   ]
-  match earcut(v, [4], 2) {
+  match @geo.earcut(v, [4], 2) {
     Some(t) => @test.assert_eq(t.length(), 0)
     None => @test.fail("expected Some(...)")
   }
@@ -126,7 +126,7 @@ test "earcut - eberly-3 fixture (6-vertex outer + 6-vertex hole) topology" {
     159.969527283741631, 68.350160826928912, 161.339527283766071, 67.640160826966172,
     159.649527283763751, 63.310160826891662, 155.759527283749781, 64.880160826258362,
   ]
-  match earcut(v, [6], 2) {
+  match @geo.earcut(v, [6], 2) {
     Some(t) =>
       // For a polygon with N total vertices and H holes, a valid
       // triangulation produces N + 2*H - 2 triangles. Here N=12, H=1 →
@@ -143,7 +143,7 @@ test "earcut - eberly-3 fixture (6-vertex outer + 6-vertex hole) topology" {
 ///|
 test "earcut - odd-length vertices returns None" {
   let v = [0.0, 0.0, 1.0]
-  match earcut(v, [], 2) {
+  match @geo.earcut(v, [], 2) {
     Some(_) => @test.fail("expected None for odd-length input")
     None => ()
   }
@@ -158,7 +158,7 @@ test "earcut - hole index overflowing vertices returns None" {
   // 2 vertex pairs in the array, but hole_indices says hole starts at
   // vertex 5 (i.e. coord index 10 ≥ vertices.length()).
   let v = [0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0]
-  match earcut(v, [5], 2) {
+  match @geo.earcut(v, [5], 2) {
     Some(_) => @test.fail("expected None for out-of-range hole")
     None => ()
   }
