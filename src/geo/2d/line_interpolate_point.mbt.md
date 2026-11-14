@@ -23,7 +23,10 @@ Returns the `Point` at a fractional position `0..=1` along a `Line` (or `LineStr
 ///|
 test "line_interpolate_point - f=0 returns start" {
   let l = @type.Line::from_tuples((1.0, 2.0), (5.0, 10.0))
-  @test.assert_eq(line_interpolate_point(l, 0.0), @type.Point::Point(1.0, 2.0))
+  @test.assert_eq(
+    @geo.line_interpolate_point(l, 0.0),
+    @type.Point::Point(1.0, 2.0),
+  )
 }
 ```
 
@@ -33,7 +36,10 @@ test "line_interpolate_point - f=0 returns start" {
 ///|
 test "line_interpolate_point - f=1 returns end" {
   let l = @type.Line::from_tuples((1.0, 2.0), (5.0, 10.0))
-  @test.assert_eq(line_interpolate_point(l, 1.0), @type.Point::Point(5.0, 10.0))
+  @test.assert_eq(
+    @geo.line_interpolate_point(l, 1.0),
+    @type.Point::Point(5.0, 10.0),
+  )
 }
 ```
 
@@ -43,7 +49,10 @@ test "line_interpolate_point - f=1 returns end" {
 ///|
 test "line_interpolate_point - f=0.5 returns midpoint" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 20.0))
-  @test.assert_eq(line_interpolate_point(l, 0.5), @type.Point::Point(5.0, 10.0))
+  @test.assert_eq(
+    @geo.line_interpolate_point(l, 0.5),
+    @type.Point::Point(5.0, 10.0),
+  )
 }
 ```
 
@@ -55,12 +64,12 @@ test "line_interpolate_point - f=0.5 returns midpoint" {
 ///|
 test "line_string_interpolate_point - half-way along" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0), (10.0, 10.0)])
-  let p = match line_string_interpolate_point(ls, 0.5) {
+  let p = match @geo.line_string_interpolate_point(ls, 0.5) {
     Some(p) => p
     None => abort("expected Some for non-empty linestring")
   }
   // Up to floating-point round-off the result is (10, 0).
-  assert_true((p.x() - 10.0).abs() < TOLERANCE)
-  assert_true(p.y().abs() < TOLERANCE)
+  assert_true((p.x() - 10.0).abs() < @geo.TOLERANCE)
+  assert_true(p.y().abs() < @geo.TOLERANCE)
 }
 ```

@@ -31,13 +31,13 @@ A bounded two-dimensional area defined by an `exterior` ring (`LineString`) and 
 ```mbt check
 ///|
 test "Polygon::Polygon - simple initialization" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
+  let polygon = @type.Polygon::Polygon(exterior, [])
   debug_inspect(
     polygon,
     content=(
@@ -63,13 +63,13 @@ test "Polygon::Polygon - simple initialization" {
 ```mbt check
 ///|
 test "Polygon::Polygon - auto-closes open exterior" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
+  let polygon = @type.Polygon::Polygon(exterior, [])
   assert_true(polygon.exterior().is_closed())
   @test.assert_eq(polygon.exterior().length(), 5)
 }
@@ -80,19 +80,19 @@ test "Polygon::Polygon - auto-closes open exterior" {
 ```mbt check
 ///|
 test "Polygon::Polygon - auto-closes each interior" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let interior = LineString::from_tuples([
+  let interior = @type.LineString::from_tuples([
     (3.0, 3.0),
     (7.0, 3.0),
     (7.0, 7.0),
     (3.0, 7.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [interior])
+  let polygon = @type.Polygon::Polygon(exterior, [interior])
   assert_true(polygon.interiors()[0].is_closed())
 }
 ```
@@ -102,14 +102,14 @@ test "Polygon::Polygon - auto-closes each interior" {
 ```mbt check
 ///|
 test "Polygon::Polygon - already-closed exterior is preserved" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
     (0.0, 0.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
+  let polygon = @type.Polygon::Polygon(exterior, [])
   @test.assert_eq(polygon.exterior().length(), 5)
 }
 ```
@@ -119,13 +119,13 @@ test "Polygon::Polygon - already-closed exterior is preserved" {
 ```mbt check
 ///|
 test "Polygon::Polygon - does not mutate input LineStrings" {
-  let user_exterior = LineString::from_tuples([
+  let user_exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let user_interior = LineString::from_tuples([
+  let user_interior = @type.LineString::from_tuples([
     (0.3, 0.3),
     (0.7, 0.3),
     (0.7, 0.7),
@@ -133,7 +133,7 @@ test "Polygon::Polygon - does not mutate input LineStrings" {
   ])
   let exterior_len_before = user_exterior.length()
   let interior_len_before = user_interior.length()
-  let _ = Polygon::Polygon(user_exterior, [user_interior])
+  let _ = @type.Polygon::Polygon(user_exterior, [user_interior])
   // Caller's references remain unmutated even though the canonical
   // constructor closes both rings inside the resulting Polygon.
   @test.assert_eq(user_exterior.length(), exterior_len_before)
@@ -150,13 +150,13 @@ test "Polygon::Polygon - does not mutate input LineStrings" {
 ```mbt check
 ///|
 test "Polygon exterior - returns the closed exterior ring" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
+  let polygon = @type.Polygon::Polygon(exterior, [])
   @test.assert_eq(polygon.exterior(), exterior.closed())
 }
 ```
@@ -168,19 +168,19 @@ test "Polygon exterior - returns the closed exterior ring" {
 ```mbt check
 ///|
 test "Polygon interiors - returns array of closed interior rings" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let interior = LineString::from_tuples([
+  let interior = @type.LineString::from_tuples([
     (3.0, 3.0),
     (7.0, 3.0),
     (7.0, 7.0),
     (3.0, 7.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [interior])
+  let polygon = @type.Polygon::Polygon(exterior, [interior])
   @test.assert_eq(polygon.interiors(), [interior.closed()])
 }
 ```
@@ -197,13 +197,13 @@ test "Polygon interiors - returns array of closed interior rings" {
 ```mbt check
 ///|
 test "Polygon num_interiors - zero when no holes" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  @test.assert_eq(Polygon::Polygon(exterior, []).num_interiors(), 0)
+  @test.assert_eq(@type.Polygon::Polygon(exterior, []).num_interiors(), 0)
 }
 ```
 
@@ -212,19 +212,22 @@ test "Polygon num_interiors - zero when no holes" {
 ```mbt check
 ///|
 test "Polygon num_interiors - counts interior rings" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let interior = LineString::from_tuples([
+  let interior = @type.LineString::from_tuples([
     (3.0, 3.0),
     (7.0, 3.0),
     (7.0, 7.0),
     (3.0, 7.0),
   ])
-  @test.assert_eq(Polygon::Polygon(exterior, [interior]).num_interiors(), 1)
+  @test.assert_eq(
+    @type.Polygon::Polygon(exterior, [interior]).num_interiors(),
+    1,
+  )
 }
 ```
 
@@ -235,15 +238,15 @@ test "Polygon num_interiors - counts interior rings" {
 ```mbt check
 ///|
 test "Polygon num_rings - equals num_interiors + 1" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let solo = Polygon::Polygon(exterior, [])
+  let solo = @type.Polygon::Polygon(exterior, [])
   @test.assert_eq(solo.num_rings(), solo.num_interiors() + 1)
-  let interior = LineString::from_tuples([
+  let interior = @type.LineString::from_tuples([
     (3.0, 3.0),
     (7.0, 3.0),
     (7.0, 7.0),
@@ -268,13 +271,13 @@ test "Polygon num_rings - equals num_interiors + 1" {
 ```mbt check
 ///|
 test "Polygon IsEmpty::is_empty - false when exterior is non-empty" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
+  let polygon = @type.Polygon::Polygon(exterior, [])
   assert_false(polygon.is_empty())
 }
 ```
@@ -284,9 +287,9 @@ test "Polygon IsEmpty::is_empty - false when exterior is non-empty" {
 ```mbt check
 ///|
 test "Polygon IsEmpty::is_empty - true when exterior is empty" {
-  let polygon = Polygon::Polygon(LineString::empty(), [])
+  let polygon = @type.Polygon::Polygon(@type.LineString::empty(), [])
   assert_true(polygon.is_empty())
-  assert_true(IsEmpty::is_empty(polygon))
+  assert_true(@type.IsEmpty::is_empty(polygon))
 }
 ```
 
@@ -305,14 +308,14 @@ test "Polygon IsEmpty::is_empty - true when exterior is empty" {
 ```mbt check
 ///|
 test "Polygon pushed_interior - appends and auto-closes new interior" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let original = Polygon::Polygon(exterior, [])
-  let new_interior = LineString::from_tuples([
+  let original = @type.Polygon::Polygon(exterior, [])
+  let new_interior = @type.LineString::from_tuples([
     (3.0, 3.0),
     (7.0, 3.0),
     (7.0, 7.0),
@@ -331,15 +334,20 @@ test "Polygon pushed_interior - appends and auto-closes new interior" {
 ```mbt check
 ///|
 test "Polygon pushed_interior - original polygon is not modified" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let original = Polygon::Polygon(exterior, [])
+  let original = @type.Polygon::Polygon(exterior, [])
   let _ = original.pushed_interior(
-    LineString::from_tuples([(3.0, 3.0), (7.0, 3.0), (7.0, 7.0), (3.0, 7.0)]),
+    @type.LineString::from_tuples([
+      (3.0, 3.0),
+      (7.0, 3.0),
+      (7.0, 7.0),
+      (3.0, 7.0),
+    ]),
   )
   @test.assert_eq(original.num_interiors(), 0)
 }
@@ -350,14 +358,14 @@ test "Polygon pushed_interior - original polygon is not modified" {
 ```mbt check
 ///|
 test "Polygon pushed_interior - input LineString is not mutated" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (10.0, 0.0),
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
-  let user_interior = LineString::from_tuples([
+  let polygon = @type.Polygon::Polygon(exterior, [])
+  let user_interior = @type.LineString::from_tuples([
     (3.0, 3.0),
     (7.0, 3.0),
     (7.0, 7.0),
@@ -376,26 +384,26 @@ test "Polygon pushed_interior - input LineString is not mutated" {
 ```mbt check
 ///|
 test "Polygon pushed_interior - existing interiors preserved in order" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (20.0, 0.0),
     (20.0, 20.0),
     (0.0, 20.0),
   ])
-  let interior_a = LineString::from_tuples([
+  let interior_a = @type.LineString::from_tuples([
     (3.0, 3.0),
     (5.0, 3.0),
     (5.0, 5.0),
     (3.0, 5.0),
   ])
-  let interior_b = LineString::from_tuples([
+  let interior_b = @type.LineString::from_tuples([
     (10.0, 10.0),
     (12.0, 10.0),
     (12.0, 12.0),
     (10.0, 12.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [interior_a, interior_b])
-  let extra = LineString::from_tuples([
+  let polygon = @type.Polygon::Polygon(exterior, [interior_a, interior_b])
+  let extra = @type.LineString::from_tuples([
     (15.0, 15.0),
     (17.0, 15.0),
     (17.0, 17.0),
@@ -418,21 +426,21 @@ test "Polygon pushed_interior - existing interiors preserved in order" {
 ```mbt check
 ///|
 test "Polygon Eq::op_equal - equal and unequal" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let other_exterior = LineString::from_tuples([
+  let other_exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (2.0, 0.0),
     (2.0, 2.0),
     (0.0, 2.0),
   ])
-  let a = Polygon::Polygon(exterior, [])
-  let b = Polygon::Polygon(exterior, [])
-  let c = Polygon::Polygon(other_exterior, [])
+  let a = @type.Polygon::Polygon(exterior, [])
+  let b = @type.Polygon::Polygon(exterior, [])
+  let c = @type.Polygon::Polygon(other_exterior, [])
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }

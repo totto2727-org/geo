@@ -28,7 +28,7 @@ test "is_convex - closed unit square is convex" {
     (0.0, 1.0),
     (0.0, 0.0),
   ])
-  assert_true(is_convex(ls))
+  assert_true(@geo.is_convex(ls))
 }
 ```
 
@@ -46,7 +46,7 @@ test "is_convex - L-shape is not convex" {
     (0.0, 2.0),
     (0.0, 0.0),
   ])
-  assert_false(is_convex(ls))
+  assert_false(@geo.is_convex(ls))
 }
 ```
 
@@ -69,7 +69,7 @@ test "is_strictly_convex - closed unit square is strictly convex" {
     (0.0, 1.0),
     (0.0, 0.0),
   ])
-  assert_true(is_strictly_convex(ls))
+  assert_true(@geo.is_strictly_convex(ls))
 }
 ```
 
@@ -86,7 +86,7 @@ test "is_strictly_convex - collinear triple rejected by strict mode" {
     (0.0, 2.0),
     (0.0, 0.0),
   ])
-  assert_true(is_convex(ls))
-  assert_false(is_strictly_convex(ls))
+  assert_true(@geo.is_convex(ls))
+  assert_false(@geo.is_strictly_convex(ls))
 }
 ```

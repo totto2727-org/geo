@@ -22,10 +22,11 @@
 /// are circumcenters of adjacent Delaunay triangles; for a boundary
 /// edge that would extend to infinity, the unbounded endpoint is
 /// replaced by the projection onto the supplied bbox.
+#derive(Eq, Debug)
 pub struct VoronoiEdge {
   start : @type.Coord
   end : @type.Coord
-} derive(Eq, Debug)
+}
 
 ///|
 /// Compute the Voronoi diagram of a set of 2D points by triangulating
@@ -104,10 +105,10 @@ fn build_voronoi_edges(
   // Flatten triangle edges into parallel arrays. `edges_third` stores
   // the index of the third triangle vertex (the one not on this edge),
   // needed to orient the outward Voronoi ray for boundary edges.
-  let edges_u : Array[Int] = []
-  let edges_v : Array[Int] = []
-  let edges_tri : Array[Int] = []
-  let edges_third : Array[Int] = []
+  let edges_u : Array[Int32] = []
+  let edges_v : Array[Int32] = []
+  let edges_tri : Array[Int32] = []
+  let edges_third : Array[Int32] = []
   for i = 0; i < n_tri; i = i + 1 {
     let t = triangles[i]
     push_edge_record(edges_u, edges_v, edges_tri, edges_third, t.a, t.b, t.c, i)
@@ -147,7 +148,7 @@ fn build_voronoi_edges(
           // e.g. for the perfect square where both adjacent triangles
           // share a circumcenter at the diagonal midpoint.
           if cc1.x() != cc2.x() || cc1.y() != cc2.y() {
-            result.push(VoronoiEdge::{ start: cc1, end: cc2 })
+            result.push(VoronoiEdge::{ start: cc1, end: cc2, })
           }
         }
       } else {
@@ -159,7 +160,7 @@ fn build_voronoi_edges(
           let pc = points[edges_third[k]]
           match clip_ray_to_bbox(cc, pa, pb, pc, bbox) {
             Some(endpoint) =>
-              result.push(VoronoiEdge::{ start: cc, end: endpoint })
+              result.push(VoronoiEdge::{ start: cc, end: endpoint, })
             None => ()
           }
         }
@@ -202,14 +203,14 @@ fn circumcenter(
 /// (smaller index first) so two triangles sharing the edge produce
 /// matching `(edges_u, edges_v)` entries.
 fn push_edge_record(
-  edges_u : Array[Int],
-  edges_v : Array[Int],
-  edges_tri : Array[Int],
-  edges_third : Array[Int],
-  u : Int,
-  v : Int,
-  w : Int,
-  tri_idx : Int,
+  edges_u : Array[Int32],
+  edges_v : Array[Int32],
+  edges_tri : Array[Int32],
+  edges_third : Array[Int32],
+  u : Int32,
+  v : Int32,
+  w : Int32,
+  tri_idx : Int32,
 ) -> Unit {
   if u < v {
     edges_u.push(u)

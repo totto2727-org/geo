@@ -4,11 +4,12 @@
 
 ///|
 /// Orientation of three coordinates `p`, `q`, `r` in the plane.
+#derive(Eq, Debug)
 pub(all) enum Orientation {
   CounterClockwise
   Clockwise
   Collinear
-} derive(Eq, Debug)
+}
 
 ///|
 /// Returns the `Orientation` of three coordinates using a robust predicate

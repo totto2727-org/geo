@@ -18,10 +18,10 @@ test "property: signed_area flips sign when coords are reversed" {
     (0.0, 6.0),
     (0.0, 0.0),
   ])
-  let exterior_cw = reverse_line_string(exterior_ccw)
+  let exterior_cw = @geo.reverse_line_string(exterior_ccw)
   @test.assert_eq(
-    HasArea::signed_area(@type.Polygon::Polygon(exterior_ccw, [])),
-    -HasArea::signed_area(@type.Polygon::Polygon(exterior_cw, [])),
+    @geo.HasArea::signed_area(@type.Polygon::Polygon(exterior_ccw, [])),
+    -@geo.HasArea::signed_area(@type.Polygon::Polygon(exterior_cw, [])),
   )
 }
 ```
@@ -41,12 +41,12 @@ test "property: centroid lies inside or on boundary of convex polygon" {
     ]),
     [],
   )
-  let c = match HasCentroid::centroid(p) {
+  let c = match @geo.HasCentroid::centroid(p) {
     Some(c) => c
     None => abort("expected centroid for convex polygon")
   }
-  let pos = CoordPositionFor::coord_position(p, c.coord())
-  assert_true(pos == CoordPos::Inside || pos == CoordPos::OnBoundary)
+  let pos = @geo.CoordPositionFor::coord_position(p, c.coord())
+  assert_true(pos == @geo.CoordPos::Inside || pos == @geo.CoordPos::OnBoundary)
 }
 ```
 
@@ -63,7 +63,7 @@ test "property: bounding rect contains every coord of the geometry" {
     (0.0, 7.0),
   ]
   let mp = @type.MultiPoint::from_tuples(coords_input)
-  let bbox = match Bounded::bbox(mp) {
+  let bbox = match @geo.Bounded::bbox(mp) {
     Some(r) => r
     None => abort("expected bounding rect for non-empty MultiPoint")
   }
@@ -89,7 +89,7 @@ test "property: convex hull of n points is convex" {
     (3.0, 7.0),
     (7.0, 3.0),
   ])
-  assert_true(is_convex(HasConvexHull::convex_hull(mp).exterior()))
+  assert_true(@geo.is_convex(@geo.HasConvexHull::convex_hull(mp).exterior()))
 }
 ```
 
@@ -99,14 +99,14 @@ test "property: convex hull of n points is convex" {
 ///|
 test "property: translate is invertible" {
   let g = @type.Geometry::Point(@type.Point::Point(3.0, 4.0))
-  let restored = translate_geometry(
-    translate_geometry(g, 10.0, -5.0),
+  let restored = @geo.translate_geometry(
+    @geo.translate_geometry(g, 10.0, -5.0),
     -10.0,
     5.0,
   )
   let pt = try! restored.try_into_point()
-  assert_true((pt.x() - 3.0).abs() < TOLERANCE)
-  assert_true((pt.y() - 4.0).abs() < TOLERANCE)
+  assert_true((pt.x() - 3.0).abs() < @geo.TOLERANCE)
+  assert_true((pt.y() - 4.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -122,7 +122,7 @@ test "property: simplify preserves first and last coord" {
     (3.0, 0.001),
     (10.0, 0.0),
   ])
-  let simplified_coords = Simplify::simplify(ls, 1.0).coords()
+  let simplified_coords = @geo.Simplify::simplify(ls, 1.0).coords()
   let original_coords = ls.coords()
   @test.assert_eq(simplified_coords[0], original_coords[0])
   @test.assert_eq(
@@ -139,12 +139,12 @@ test "property: simplify preserves first and last coord" {
 test "property: line_locate after line_interpolate is approximately identity" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 10.0))
   for f in [0.0, 0.1, 0.25, 0.5, 0.75, 0.9, 1.0] {
-    let p = line_interpolate_point(l, f)
-    let f2 = match line_locate_point(l, p.coord()) {
+    let p = @geo.line_interpolate_point(l, f)
+    let f2 = match @geo.line_locate_point(l, p.coord()) {
       Some(f2) => f2
       None => abort("expected Some(fraction) for non-degenerate line")
     }
-    assert_true((f - f2).abs() < TOLERANCE)
+    assert_true((f - f2).abs() < @geo.TOLERANCE)
   }
 }
 ```
@@ -164,8 +164,11 @@ test "property: orient_polygon is idempotent" {
     ]),
     [],
   )
-  let oriented_once = Orient::orient(p, OrientDirection::Default)
-  let oriented_twice = Orient::orient(oriented_once, OrientDirection::Default)
+  let oriented_once = @geo.Orient::orient(p, @geo.OrientDirection::Default)
+  let oriented_twice = @geo.Orient::orient(
+    oriented_once,
+    @geo.OrientDirection::Default,
+  )
   @test.assert_eq(
     oriented_once.exterior().coords(),
     oriented_twice.exterior().coords(),
@@ -185,8 +188,8 @@ test "property: hausdorff_distance is symmetric" {
   ]
   let b = [@type.Coord::Coord(5.0, 5.0), @type.Coord::Coord(6.0, 6.0)]
   @test.assert_eq(
-    hausdorff_distance_coords(a, b),
-    hausdorff_distance_coords(b, a),
+    @geo.hausdorff_distance_coords(a, b),
+    @geo.hausdorff_distance_coords(b, a),
   )
 }
 ```
@@ -198,11 +201,11 @@ test "property: hausdorff_distance is symmetric" {
 test "property: frechet_distance is at least the endpoint distance" {
   let a = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 10.0)])
   let b = @type.LineString::from_tuples([(0.0, 5.0), (10.0, 15.0)])
-  let endpoint_dist = euclidean_distance_coords(
+  let endpoint_dist = @geo.euclidean_distance_coords(
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(0.0, 5.0),
   )
-  assert_true(frechet_distance(a, b) >= endpoint_dist - TOLERANCE)
+  assert_true(@geo.frechet_distance(a, b) >= endpoint_dist - @geo.TOLERANCE)
 }
 ```
 
@@ -221,15 +224,15 @@ test "property: scale by factor f scales area by f²" {
     ]),
     [],
   )
-  let original_area = HasArea::unsigned_area(p)
-  let scaled = try! scale_geometry_around(
+  let original_area = @geo.HasArea::unsigned_area(p)
+  let scaled = try! @geo.scale_geometry_around(
     @type.Geometry::Polygon(p),
     2.0,
     2.0,
     @type.Coord::Coord(0.0, 0.0),
   ).try_into_polygon()
-  let scaled_area = HasArea::unsigned_area(scaled)
+  let scaled_area = @geo.HasArea::unsigned_area(scaled)
   // Area scales by factor² = 4.
-  assert_true((scaled_area - original_area * 4.0).abs() < TOLERANCE)
+  assert_true((scaled_area - original_area * 4.0).abs() < @geo.TOLERANCE)
 }
 ```

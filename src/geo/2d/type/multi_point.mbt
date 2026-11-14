@@ -4,9 +4,10 @@
 ///|
 /// A collection of `Point`s. Can be created from a list of points, or from
 /// tuples / coords via the helper constructors.
+#derive(Eq, Debug, Default)
 pub struct MultiPoint {
   points : Array[Point]
-} derive(Eq, Debug, Default)
+}
 
 ///|
 pub fn MultiPoint::MultiPoint(points : Array[Point]) -> MultiPoint {

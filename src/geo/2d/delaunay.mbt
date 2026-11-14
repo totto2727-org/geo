@@ -29,19 +29,20 @@
 ///|
 /// One triangle in the triangulation, identified by indices into the
 /// original `points` array passed to `delaunay_triangulation`.
+#derive(Eq, Debug)
 pub struct DelaunayTriangle {
-  a : Int
-  b : Int
-  c : Int
-} derive(Eq, Debug)
+  a : Int32
+  b : Int32
+  c : Int32
+}
 
 ///|
 /// Internal triangle that may reference super-triangle vertices via
 /// indices `>= n` (where `n = points.length()`).
 priv struct InternalTri {
-  a : Int
-  b : Int
-  c : Int
+  a : Int32
+  b : Int32
+  c : Int32
 }
 
 ///|
@@ -110,7 +111,7 @@ pub fn delaunay_triangulation(
 
   // Initial triangulation = the super-triangle alone (CCW: bl, br, top).
   let mut triangles : Array[InternalTri] = [
-    InternalTri::{ a: n, b: n + 1, c: n + 2 },
+    InternalTri::{ a: n, b: n + 1, c: n + 2, },
   ]
 
   // Insert each input point.
@@ -118,7 +119,7 @@ pub fn delaunay_triangulation(
     let p = points[i]
 
     // 1) Find bad triangles (those whose circumcircle contains p).
-    let bad : Array[Int] = []
+    let bad : Array[Int32] = []
     for j = 0; j < triangles.length(); j = j + 1 {
       let t = triangles[j]
       let pa = pts[t.a]
@@ -131,16 +132,16 @@ pub fn delaunay_triangulation(
 
     // 2) Polygonal hole boundary = edges that appear exactly once
     //    among the bad triangles.
-    let edges_u : Array[Int] = []
-    let edges_v : Array[Int] = []
+    let edges_u : Array[Int32] = []
+    let edges_v : Array[Int32] = []
     for j = 0; j < bad.length(); j = j + 1 {
       let t = triangles[bad[j]]
       push_normalized_edge(edges_u, edges_v, t.a, t.b)
       push_normalized_edge(edges_u, edges_v, t.b, t.c)
       push_normalized_edge(edges_u, edges_v, t.c, t.a)
     }
-    let boundary_u : Array[Int] = []
-    let boundary_v : Array[Int] = []
+    let boundary_u : Array[Int32] = []
+    let boundary_v : Array[Int32] = []
     for k = 0; k < edges_u.length(); k = k + 1 {
       let mut count = 0
       for l = 0; l < edges_u.length(); l = l + 1 {
@@ -176,9 +177,9 @@ pub fn delaunay_triangulation(
       let pv = pts[v]
       let o = @robust.orient2d(pu, pv, p)
       if o > 0.0 {
-        next_triangles.push(InternalTri::{ a: u, b: v, c: i })
+        next_triangles.push(InternalTri::{ a: u, b: v, c: i, })
       } else if o < 0.0 {
-        next_triangles.push(InternalTri::{ a: v, b: u, c: i })
+        next_triangles.push(InternalTri::{ a: v, b: u, c: i, })
       }
     }
     triangles = next_triangles
@@ -189,7 +190,7 @@ pub fn delaunay_triangulation(
   for k = 0; k < triangles.length(); k = k + 1 {
     let t = triangles[k]
     if t.a < n && t.b < n && t.c < n {
-      result.push(DelaunayTriangle::{ a: t.a, b: t.b, c: t.c })
+      result.push(DelaunayTriangle::{ a: t.a, b: t.b, c: t.c, })
     }
   }
   if result.length() == 0 {
@@ -203,10 +204,10 @@ pub fn delaunay_triangulation(
 /// normalised form (smaller index first) so equality comparisons can
 /// be done component-wise.
 fn push_normalized_edge(
-  edges_u : Array[Int],
-  edges_v : Array[Int],
-  u : Int,
-  v : Int,
+  edges_u : Array[Int32],
+  edges_v : Array[Int32],
+  u : Int32,
+  v : Int32,
 ) -> Unit {
   if u < v {
     edges_u.push(u)

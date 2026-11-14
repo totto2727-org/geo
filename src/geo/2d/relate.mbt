@@ -32,7 +32,7 @@ pub fn IntersectionMatrix::empty() -> IntersectionMatrix {
 }
 
 ///|
-fn pos_to_idx(p : CoordPos) -> Int {
+fn pos_to_idx(p : CoordPos) -> Int32 {
   match p {
     Inside => 0
     OnBoundary => 1

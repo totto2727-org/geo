@@ -26,7 +26,7 @@ Andrew's monotone-chain convex hull. Exposed via `HasConvexHull::convex_hull` (i
 test "HasConvexHull::convex_hull - triangle hull is the triangle" {
   let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 0.0), (0.0, 1.0)])
   // 3 unique + closing = 4 coords.
-  @test.assert_eq(HasConvexHull::convex_hull(mp).exterior().length(), 4)
+  @test.assert_eq(@geo.HasConvexHull::convex_hull(mp).exterior().length(), 4)
 }
 ```
 
@@ -43,7 +43,7 @@ test "HasConvexHull::convex_hull - interior point is dropped from hull" {
     (5.0, 5.0),
   ])
   // 4 corners + closing = 5 coords.
-  @test.assert_eq(HasConvexHull::convex_hull(mp).exterior().length(), 5)
+  @test.assert_eq(@geo.HasConvexHull::convex_hull(mp).exterior().length(), 5)
 }
 ```
 
@@ -58,10 +58,12 @@ test "HasConvexHull::convex_hull - hull is closed and CCW" {
     (10.0, 10.0),
     (0.0, 10.0),
   ])
-  let exterior = HasConvexHull::convex_hull(mp).exterior()
+  let exterior = @geo.HasConvexHull::convex_hull(mp).exterior()
   assert_true(exterior.is_closed())
   // CCW orientation → positive signed area.
-  assert_true(HasArea::signed_area(@type.Polygon::Polygon(exterior, [])) > 0.0)
+  assert_true(
+    @geo.HasArea::signed_area(@type.Polygon::Polygon(exterior, [])) > 0.0,
+  )
 }
 ```
 
@@ -77,9 +79,12 @@ test "HasConvexHull::convex_hull - LineString and Polygon direct dispatch" {
     (0.0, 10.0),
   ])
   // Hull of an open square outline has 5 coords (4 corners + closing).
-  @test.assert_eq(HasConvexHull::convex_hull(ls).exterior().length(), 5)
+  @test.assert_eq(@geo.HasConvexHull::convex_hull(ls).exterior().length(), 5)
   let polygon = @type.Polygon::Polygon(ls, [])
-  @test.assert_eq(HasConvexHull::convex_hull(polygon).exterior().length(), 5)
+  @test.assert_eq(
+    @geo.HasConvexHull::convex_hull(polygon).exterior().length(),
+    5,
+  )
 }
 ```
 
@@ -96,7 +101,7 @@ test "HasConvexHull::convex_hull - Geometry variant dispatches via convex_hull_o
   ])
   let g = @type.Geometry::MultiPoint(mp)
   // 4 corners + closing = 5 coords.
-  @test.assert_eq(HasConvexHull::convex_hull(g).exterior().length(), 5)
+  @test.assert_eq(@geo.HasConvexHull::convex_hull(g).exterior().length(), 5)
 }
 ```
 
@@ -106,7 +111,7 @@ test "HasConvexHull::convex_hull - Geometry variant dispatches via convex_hull_o
 ///|
 test "HasConvexHull::convex_hull - empty input yields empty exterior" {
   let mp = @type.MultiPoint::empty()
-  @test.assert_eq(HasConvexHull::convex_hull(mp).exterior().length(), 0)
+  @test.assert_eq(@geo.HasConvexHull::convex_hull(mp).exterior().length(), 0)
 }
 ```
 
@@ -116,7 +121,7 @@ test "HasConvexHull::convex_hull - empty input yields empty exterior" {
 ///|
 test "HasConvexHull::convex_hull - single point degenerate output" {
   let mp = @type.MultiPoint::from_tuples([(5.0, 5.0)])
-  let coords = HasConvexHull::convex_hull(mp).exterior().coords()
+  let coords = @geo.HasConvexHull::convex_hull(mp).exterior().coords()
   // For a single point we degenerate to a 2-coord linestring (start == end);
   // the contract is just "doesn't crash and yields ≥ 2 coords".
   assert_true(coords.length() >= 2)

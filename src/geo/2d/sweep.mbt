@@ -26,7 +26,7 @@ priv struct SweepInterval {
 ///|
 /// Comparator that orders intervals by their `inserted_x` (min-x). Ties
 /// fall through as 0 — stable ordering is not required for correctness.
-fn sweep_interval_cmp(a : SweepInterval, b : SweepInterval) -> Int {
+fn sweep_interval_cmp(a : SweepInterval, b : SweepInterval) -> Int32 {
   if a.inserted_x < b.inserted_x {
     -1
   } else if a.inserted_x > b.inserted_x {
@@ -47,7 +47,7 @@ fn build_sweep_intervals(segments : Array[@type.Line]) -> Array[SweepInterval] {
     let sx = s.start().x()
     let ex = s.end().x()
     let (lo, hi) = if sx < ex { (sx, ex) } else { (ex, sx) }
-    intervals.push(SweepInterval::{ inserted_x: lo, deleted_x: hi, segment: s })
+    intervals.push(SweepInterval::{ inserted_x: lo, deleted_x: hi, segment: s, })
     k = k + 1
   }
   intervals.sort_by(sweep_interval_cmp)

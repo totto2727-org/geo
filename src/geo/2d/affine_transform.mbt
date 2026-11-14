@@ -15,11 +15,12 @@
 ///|
 /// One row of the affine matrix:
 /// `output = scale * own_axis + skew * other_axis + translate`.
+#derive(Eq, Debug)
 pub struct AffineRow {
   scale : Double
   skew : Double
   translate : Double
-} derive(Eq, Debug)
+}
 
 ///|
 /// Canonical constructor for `AffineRow`.
@@ -28,16 +29,17 @@ pub fn AffineRow::AffineRow(
   skew : Double,
   translate : Double,
 ) -> AffineRow {
-  AffineRow::{ scale, skew, translate }
+  AffineRow::{ scale, skew, translate, }
 }
 
 ///|
 /// 2D affine transformation: a pair of rows of the underlying 3×3 row-major
 /// matrix. The implicit third row is `[0, 0, 1]`.
+#derive(Eq, Debug)
 pub struct AffineTransform {
   row_x : AffineRow
   row_y : AffineRow
-} derive(Eq, Debug)
+}
 
 ///|
 /// Canonical constructor for `AffineTransform`.
@@ -45,7 +47,7 @@ pub fn AffineTransform::AffineTransform(
   row_x : AffineRow,
   row_y : AffineRow,
 ) -> AffineTransform {
-  AffineTransform::{ row_x, row_y }
+  AffineTransform::{ row_x, row_y, }
 }
 
 ///|

@@ -32,19 +32,20 @@ fn rhumb_calc(origin : @type.Point, destination : @type.Point) -> RhumbCalc {
     @math.tan(phi1 / 2.0 + @math.PI / 4.0),
   )
   let delta_phi = phi2 - phi1
-  RhumbCalc::{ phi1, delta_lambda, delta_phi, delta_psi }
+  RhumbCalc::{ phi1, delta_lambda, delta_phi, delta_psi, }
 }
 
 ///|
 /// A sphere parameterised by its radius for rhumb-line calculations.
+#derive(Eq)
 pub(all) struct RhumbMeasure {
   radius : Double
-} derive(Eq)
+}
 
 ///|
 /// Standard Earth mean radius for rhumb calculations.
 pub fn rhumb() -> RhumbMeasure {
-  RhumbMeasure::{ radius: 6_371_008.8 }
+  RhumbMeasure::{ radius: 6_371_008.8, }
 }
 
 ///|

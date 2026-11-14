@@ -27,7 +27,7 @@ The function returns `Some((centroids, labels))` on success, where `centroids[j]
 ```mbt check
 ///|
 test "kmeans - empty input returns None" {
-  let result = kmeans([], 1, 100)
+  let result = @geo.kmeans([], 1, 100)
   assert_true(result is None)
 }
 ```
@@ -38,7 +38,7 @@ test "kmeans - empty input returns None" {
 ///|
 test "kmeans - k=0 returns None" {
   let points = [@type.Point::Point(0.0, 0.0), @type.Point::Point(1.0, 0.0)]
-  let result = kmeans(points, 0, 100)
+  let result = @geo.kmeans(points, 0, 100)
   assert_true(result is None)
 }
 ```
@@ -49,7 +49,7 @@ test "kmeans - k=0 returns None" {
 ///|
 test "kmeans - k greater than N returns None" {
   let points = [@type.Point::Point(0.0, 0.0)]
-  let result = kmeans(points, 5, 100)
+  let result = @geo.kmeans(points, 5, 100)
   assert_true(result is None)
 }
 ```
@@ -75,7 +75,7 @@ test "kmeans - 3 well-separated clusters" {
     @type.Point::Point(21.0, 0.0),
     @type.Point::Point(20.0, 1.0),
   ]
-  match kmeans(points, 3, 100) {
+  match @geo.kmeans(points, 3, 100) {
     Some((centroids, labels)) => {
       @test.assert_eq(centroids.length(), 3)
       @test.assert_eq(labels.length(), 9)
@@ -109,7 +109,7 @@ test "kmeans - k=1 centroid is the mean" {
     @type.Point::Point(0.0, 2.0),
     @type.Point::Point(2.0, 2.0),
   ]
-  match kmeans(points, 1, 100) {
+  match @geo.kmeans(points, 1, 100) {
     Some((centroids, labels)) => {
       @test.assert_eq(centroids.length(), 1)
       // Mean is (1.0, 1.0); ((0+2+0+2)/4, (0+0+2+2)/4) — exact in f64.
@@ -134,7 +134,7 @@ test "kmeans - k=N partitions each point alone" {
     @type.Point::Point(10.0, 0.0),
     @type.Point::Point(0.0, 10.0),
   ]
-  match kmeans(points, 3, 100) {
+  match @geo.kmeans(points, 3, 100) {
     Some((centroids, labels)) => {
       @test.assert_eq(centroids.length(), 3)
       @test.assert_eq(labels.length(), 3)

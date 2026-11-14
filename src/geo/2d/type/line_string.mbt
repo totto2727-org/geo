@@ -10,9 +10,10 @@
 /// - 0 or 1 points: empty interior and boundary, treated as invalid in many APIs.
 /// - 2 or more points: interior is the union of the line segments; boundary is
 ///   the start and end coordinate (open) or empty (closed, i.e. start == end).
+#derive(Eq, Debug, Default)
 pub struct LineString {
   coords : Array[Coord]
-} derive(Eq, Debug, Default)
+}
 
 ///|
 /// Creates a new `LineString` from an array of `Coord`s.

@@ -21,7 +21,7 @@ Chaikin's corner-cutting smoothing of a `LineString`. Each segment `(p_i, p_{i+1
 ///|
 test "chaikin_smoothing - 0 iterations is identity" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
-  @test.assert_eq(chaikin_smoothing(ls, 0), ls)
+  @test.assert_eq(@geo.chaikin_smoothing(ls, 0), ls)
 }
 ```
 
@@ -31,6 +31,6 @@ test "chaikin_smoothing - 0 iterations is identity" {
 ///|
 test "chaikin_smoothing - 1 iteration on 2-coord open line yields 4 coords" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
-  @test.assert_eq(chaikin_smoothing(ls, 1).coords().length(), 4)
+  @test.assert_eq(@geo.chaikin_smoothing(ls, 1).coords().length(), 4)
 }
 ```

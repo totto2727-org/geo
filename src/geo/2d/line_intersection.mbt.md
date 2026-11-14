@@ -24,13 +24,13 @@ Computes the intersection of two `Line` segments. The result is a `LineIntersect
 test "line_intersection - classic crossing intersects at center" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (10.0, 10.0))
   let l2 = @type.Line::from_tuples((0.0, 10.0), (10.0, 0.0))
-  let result = match line_intersection(l1, l2) {
-    Some(LineIntersection::SinglePoint(c, proper)) => (c, proper)
+  let result = match @geo.line_intersection(l1, l2) {
+    Some(@geo.LineIntersection::SinglePoint(c, proper)) => (c, proper)
     _ => abort("expected SinglePoint")
   }
   // Up to floating-point round-off the intersection is (5, 5), proper=true.
-  assert_true((result.0.x() - 5.0).abs() < TOLERANCE)
-  assert_true((result.0.y() - 5.0).abs() < TOLERANCE)
+  assert_true((result.0.x() - 5.0).abs() < @geo.TOLERANCE)
+  assert_true((result.0.y() - 5.0).abs() < @geo.TOLERANCE)
   assert_true(result.1)
 }
 ```
@@ -42,7 +42,7 @@ test "line_intersection - classic crossing intersects at center" {
 test "line_intersection - parallel non-overlapping returns None" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   let l2 = @type.Line::from_tuples((0.0, 1.0), (10.0, 1.0))
-  @test.assert_eq(line_intersection(l1, l2), None)
+  @test.assert_eq(@geo.line_intersection(l1, l2), None)
 }
 ```
 
@@ -54,9 +54,9 @@ test "line_intersection - collinear overlapping segments share a sub-line" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   let l2 = @type.Line::from_tuples((5.0, 0.0), (15.0, 0.0))
   @test.assert_eq(
-    line_intersection(l1, l2),
+    @geo.line_intersection(l1, l2),
     Some(
-      LineIntersection::Collinear(
+      @geo.LineIntersection::Collinear(
         @type.Line::Line(
           @type.Coord::Coord(5.0, 0.0),
           @type.Coord::Coord(10.0, 0.0),

@@ -4,9 +4,10 @@
 ///|
 /// A collection of `Geometry` values. Useful for representing heterogeneous
 /// collections (the GeoJSON `GeometryCollection`).
+#derive(Eq, Debug, Default)
 pub struct GeometryCollection {
   geometries : Array[Geometry]
-} derive(Eq, Debug, Default)
+}
 
 ///|
 pub fn GeometryCollection::GeometryCollection(

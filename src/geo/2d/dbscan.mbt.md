@@ -29,7 +29,7 @@ Cluster IDs are 1-based; `0` is reserved for noise so the returned `Array[Int]` 
 ```mbt check
 ///|
 test "dbscan - empty input" {
-  let labels = dbscan([], 1.0, 2)
+  let labels = @geo.dbscan([], 1.0, 2)
   @test.assert_eq(labels.length(), 0)
 }
 ```
@@ -56,7 +56,7 @@ test "dbscan - 5 well-separated clusters" {
     @type.Point::Point(20.5, 20.0),
     @type.Point::Point(20.0, 20.5),
   ]
-  let labels = dbscan(points, 1.0, 2)
+  let labels = @geo.dbscan(points, 1.0, 2)
   @test.assert_eq(labels.length(), 15)
   // Within each cluster the three points share a label.
   let mut k = 0
@@ -97,7 +97,7 @@ test "dbscan - noise only when neighbourhoods are empty" {
     @type.Point::Point(100.0, 0.0),
     @type.Point::Point(0.0, 100.0),
   ]
-  let labels = dbscan(points, 1.0, 2)
+  let labels = @geo.dbscan(points, 1.0, 2)
   @test.assert_eq(labels[0], 0)
   @test.assert_eq(labels[1], 0)
   @test.assert_eq(labels[2], 0)
@@ -114,7 +114,7 @@ test "dbscan - eps zero gives all noise" {
     @type.Point::Point(1.0, 0.0),
     @type.Point::Point(0.0, 1.0),
   ]
-  let labels = dbscan(points, 0.0, 2)
+  let labels = @geo.dbscan(points, 0.0, 2)
   for i = 0; i < 3; i = i + 1 {
     @test.assert_eq(labels[i], 0)
   }
@@ -131,7 +131,7 @@ test "dbscan - min_pts=1 produces no noise" {
     @type.Point::Point(100.0, 0.0),
     @type.Point::Point(0.0, 100.0),
   ]
-  let labels = dbscan(points, 1.0, 1)
+  let labels = @geo.dbscan(points, 1.0, 1)
   for i = 0; i < 3; i = i + 1 {
     assert_true(labels[i] > 0)
   }
@@ -155,7 +155,7 @@ test "dbscan_outliers - extracts noise indices" {
     @type.Point::Point(0.0, 0.5),
     @type.Point::Point(100.0, 100.0),
   ]
-  let outliers = dbscan_outliers(points, 1.0, 3)
+  let outliers = @geo.dbscan_outliers(points, 1.0, 3)
   @test.assert_eq(outliers.length(), 1)
   @test.assert_eq(outliers[0], 3)
 }

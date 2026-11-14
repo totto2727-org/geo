@@ -3,9 +3,10 @@
 
 ///|
 /// A collection of `LineString`s.
+#derive(Eq, Debug, Default)
 pub struct MultiLineString {
   line_strings : Array[LineString]
-} derive(Eq, Debug, Default)
+}
 
 ///|
 pub fn MultiLineString::MultiLineString(

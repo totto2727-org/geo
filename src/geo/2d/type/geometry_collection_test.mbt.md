@@ -23,9 +23,9 @@ A heterogeneous collection of `Geometry` values, mirroring the GeoJSON `Geometry
 ```mbt check
 ///|
 test "GeometryCollection::GeometryCollection - simple initialization" {
-  let gc = GeometryCollection::GeometryCollection([
-    Geometry::Point(Point::Point(1.0, 2.0)),
-    Geometry::Line(Line::from_tuples((0.0, 0.0), (1.0, 1.0))),
+  let gc = @type.GeometryCollection::GeometryCollection([
+    @type.Geometry::Point(@type.Point::Point(1.0, 2.0)),
+    @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))),
   ])
   debug_inspect(
     gc,
@@ -49,8 +49,8 @@ test "GeometryCollection::GeometryCollection - simple initialization" {
 ///|
 test "GeometryCollection::empty - equivalent to GeometryCollection([])" {
   @test.assert_eq(
-    GeometryCollection::empty(),
-    GeometryCollection::GeometryCollection([]),
+    @type.GeometryCollection::empty(),
+    @type.GeometryCollection::GeometryCollection([]),
   )
 }
 ```
@@ -62,9 +62,9 @@ test "GeometryCollection::empty - equivalent to GeometryCollection([])" {
 ```mbt check
 ///|
 test "GeometryCollection geometries - returns underlying array" {
-  let p = Geometry::Point(Point::Point(1.0, 2.0))
-  let l = Geometry::Line(Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
-  let gc = GeometryCollection::GeometryCollection([p, l])
+  let p = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
+  let l = @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
+  let gc = @type.GeometryCollection::GeometryCollection([p, l])
   @test.assert_eq(gc.geometries(), [p, l])
 }
 ```
@@ -78,12 +78,12 @@ test "GeometryCollection geometries - returns underlying array" {
 ```mbt check
 ///|
 test "GeometryCollection HasLength::length - returns number of geometries" {
-  let gc = GeometryCollection::GeometryCollection([
-    Geometry::Point(Point::Point(1.0, 2.0)),
-    Geometry::Line(Line::from_tuples((0.0, 0.0), (1.0, 1.0))),
+  let gc = @type.GeometryCollection::GeometryCollection([
+    @type.Geometry::Point(@type.Point::Point(1.0, 2.0)),
+    @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))),
   ])
   @test.assert_eq(gc.length(), 2)
-  @test.assert_eq(HasLength::length(gc), 2)
+  @test.assert_eq(@type.HasLength::length(gc), 2)
 }
 ```
 
@@ -101,8 +101,8 @@ test "GeometryCollection HasLength::length - returns number of geometries" {
 ```mbt check
 ///|
 test "GeometryCollection IsEmpty::is_empty - false when non-empty" {
-  let gc = GeometryCollection::GeometryCollection([
-    Geometry::Point(Point::Point(1.0, 2.0)),
+  let gc = @type.GeometryCollection::GeometryCollection([
+    @type.Geometry::Point(@type.Point::Point(1.0, 2.0)),
   ])
   assert_false(gc.is_empty())
 }
@@ -113,7 +113,7 @@ test "GeometryCollection IsEmpty::is_empty - false when non-empty" {
 ```mbt check
 ///|
 test "GeometryCollection IsEmpty::is_empty - true when empty" {
-  assert_true(GeometryCollection::empty().is_empty())
+  assert_true(@type.GeometryCollection::empty().is_empty())
 }
 ```
 
@@ -126,11 +126,11 @@ test "GeometryCollection IsEmpty::is_empty - true when empty" {
 ```mbt check
 ///|
 test "GeometryCollection Eq::op_equal - equal and unequal" {
-  let p = Geometry::Point(Point::Point(1.0, 2.0))
-  let q = Geometry::Point(Point::Point(3.0, 4.0))
-  let a = GeometryCollection::GeometryCollection([p])
-  let b = GeometryCollection::GeometryCollection([p])
-  let c = GeometryCollection::GeometryCollection([q])
+  let p = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
+  let q = @type.Geometry::Point(@type.Point::Point(3.0, 4.0))
+  let a = @type.GeometryCollection::GeometryCollection([p])
+  let b = @type.GeometryCollection::GeometryCollection([p])
+  let c = @type.GeometryCollection::GeometryCollection([q])
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -145,7 +145,7 @@ test "GeometryCollection Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "GeometryCollection Default::default - is empty" {
-  let d : GeometryCollection = GeometryCollection::default()
-  @test.assert_eq(d, GeometryCollection::empty())
+  let d : @type.GeometryCollection = @type.GeometryCollection::default()
+  @test.assert_eq(d, @type.GeometryCollection::empty())
 }
 ```

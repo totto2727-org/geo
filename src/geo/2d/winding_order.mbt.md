@@ -30,7 +30,10 @@ test "winding_order - CCW closed square" {
     (0.0, 1.0),
     (0.0, 0.0),
   ])
-  @test.assert_eq(winding_order(ls), Some(WindingOrder::CounterClockwise))
+  @test.assert_eq(
+    @geo.winding_order(ls),
+    Some(@geo.WindingOrder::CounterClockwise),
+  )
 }
 ```
 
@@ -46,7 +49,7 @@ test "winding_order - CW closed square" {
     (1.0, 0.0),
     (0.0, 0.0),
   ])
-  @test.assert_eq(winding_order(ls), Some(WindingOrder::Clockwise))
+  @test.assert_eq(@geo.winding_order(ls), Some(@geo.WindingOrder::Clockwise))
 }
 ```
 
@@ -56,7 +59,7 @@ test "winding_order - CW closed square" {
 ///|
 test "winding_order - open ring returns None" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)])
-  @test.assert_eq(winding_order(ls), None)
+  @test.assert_eq(@geo.winding_order(ls), None)
 }
 ```
 
@@ -69,7 +72,7 @@ test "winding_order - open ring returns None" {
 test "reverse_line_string - reverses coord order" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)])
   @test.assert_eq(
-    reverse_line_string(ls),
+    @geo.reverse_line_string(ls),
     @type.LineString::from_tuples([(1.0, 1.0), (1.0, 0.0), (0.0, 0.0)]),
   )
 }

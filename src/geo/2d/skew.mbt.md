@@ -17,10 +17,10 @@ Geometry skew (shear). `skew_geometry` applies the shear around the origin; `ske
 ///|
 test "skew_geometry - 45 deg X-skew shifts (1,1) to (2,1)" {
   let g = @type.Geometry::Point(@type.Point::Point(1.0, 1.0))
-  let pt = try! skew_geometry(g, 45.0, 0.0).try_into_point()
+  let pt = try! @geo.skew_geometry(g, 45.0, 0.0).try_into_point()
   // Up to floating-point round-off the result is (2, 1).
-  assert_true((pt.x() - 2.0).abs() < TOLERANCE)
-  assert_true((pt.y() - 1.0).abs() < TOLERANCE)
+  assert_true((pt.x() - 2.0).abs() < @geo.TOLERANCE)
+  assert_true((pt.y() - 1.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -32,14 +32,14 @@ test "skew_geometry - 45 deg X-skew shifts (1,1) to (2,1)" {
 ///|
 test "skew_geometry_around - pivot at the point leaves it unchanged" {
   let g = @type.Geometry::Point(@type.Point::Point(3.0, 4.0))
-  let sheared = skew_geometry_around(
+  let sheared = @geo.skew_geometry_around(
     g,
     45.0,
     30.0,
     @type.Coord::Coord(3.0, 4.0),
   )
   let pt = try! sheared.try_into_point()
-  assert_true((pt.x() - 3.0).abs() < TOLERANCE)
-  assert_true((pt.y() - 4.0).abs() < TOLERANCE)
+  assert_true((pt.x() - 3.0).abs() < @geo.TOLERANCE)
+  assert_true((pt.y() - 4.0).abs() < @geo.TOLERANCE)
 }
 ```

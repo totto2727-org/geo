@@ -3,13 +3,14 @@
 
 ///|
 /// The convention for ring orientation in a `Polygon`.
+#derive(Eq, Debug)
 pub(all) enum OrientDirection {
   /// CCW exterior, CW interiors (the default per the OGC SFA / GeoJSON
   /// canonical orientation).
   Default
   /// CW exterior, CCW interiors.
   Reversed
-} derive(Eq, Debug)
+}
 
 ///|
 /// Returns a `LineString` with the requested winding order.

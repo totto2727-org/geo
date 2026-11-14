@@ -38,8 +38,8 @@ test "is_valid - 4-coord exterior auto-closes and validates" {
     (0.0, 1.0),
   ])
   let g = @type.Geometry::Polygon(@type.Polygon::Polygon(exterior, []))
-  assert_true(is_valid(g))
-  @test.assert_eq(validation_problems(g), [])
+  assert_true(@geo.is_valid(g))
+  @test.assert_eq(@geo.validation_problems(g), [])
 }
 ```
 
@@ -51,8 +51,10 @@ test "validation_problems - 1-coord LineString reports TooFewPoints" {
   let g = @type.Geometry::LineString(
     @type.LineString::from_tuples([(0.0, 0.0)]),
   )
-  assert_false(is_valid(g))
-  @test.assert_eq(validation_problems(g), [ValidationProblem::TooFewPoints])
+  assert_false(@geo.is_valid(g))
+  @test.assert_eq(@geo.validation_problems(g), [
+    @geo.ValidationProblem::TooFewPoints,
+  ])
 }
 ```
 
@@ -64,7 +66,7 @@ test "is_valid - 2-coord LineString is valid" {
   let g = @type.Geometry::LineString(
     @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   )
-  assert_true(is_valid(g))
+  assert_true(@geo.is_valid(g))
 }
 ```
 
@@ -74,8 +76,8 @@ test "is_valid - 2-coord LineString is valid" {
 ///|
 test "validation_problems - Point with NaN reports NonFinitePointCoord" {
   let g = @type.Geometry::Point(@type.Point::Point(0.0 / 0.0, 0.0))
-  @test.assert_eq(validation_problems(g), [
-    ValidationProblem::NonFinitePointCoord,
+  @test.assert_eq(@geo.validation_problems(g), [
+    @geo.ValidationProblem::NonFinitePointCoord,
   ])
 }
 ```
@@ -87,8 +89,8 @@ test "validation_problems - Point with NaN reports NonFinitePointCoord" {
 test "validation_problems - 2-coord exterior reports RingTooFewPoints" {
   let exterior = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
   let g = @type.Geometry::Polygon(@type.Polygon::Polygon(exterior, []))
-  @test.assert_eq(validation_problems(g), [
-    ValidationProblem::RingTooFewPoints(RingRole::Exterior),
+  @test.assert_eq(@geo.validation_problems(g), [
+    @geo.ValidationProblem::RingTooFewPoints(@geo.RingRole::Exterior),
   ])
 }
 ```
@@ -101,8 +103,8 @@ test "validation_problems - Line identical coords reports LineIdenticalCoords" {
   let g = @type.Geometry::Line(
     @type.Line::Line(@type.Coord::Coord(0.0, 0.0), @type.Coord::Coord(0.0, 0.0)),
   )
-  @test.assert_eq(validation_problems(g), [
-    ValidationProblem::LineIdenticalCoords,
+  @test.assert_eq(@geo.validation_problems(g), [
+    @geo.ValidationProblem::LineIdenticalCoords,
   ])
 }
 ```
@@ -121,12 +123,14 @@ test "validation_problems - self-intersecting ring reports SelfIntersection" {
     (0.0, 0.0),
   ])
   let g = @type.Geometry::Polygon(@type.Polygon::Polygon(ring, []))
-  let ps = validation_problems(g)
+  let ps = @geo.validation_problems(g)
   // Should include SelfIntersection(Exterior)
   assert_true(
     ps
     .iter()
-    .any(fn(p) { p == ValidationProblem::SelfIntersection(RingRole::Exterior) }),
+    .any(fn(p) {
+      p == @geo.ValidationProblem::SelfIntersection(@geo.RingRole::Exterior)
+    }),
   )
 }
 ```
@@ -142,8 +146,8 @@ test "validation_problems - collinear triangle reports TriangleCollinearCoords" 
     @type.Coord::Coord(1.0, 1.0),
   )
   let g = @type.Geometry::Triangle(t)
-  @test.assert_eq(validation_problems(g), [
-    ValidationProblem::TriangleCollinearCoords,
+  @test.assert_eq(@geo.validation_problems(g), [
+    @geo.ValidationProblem::TriangleCollinearCoords,
   ])
 }
 ```

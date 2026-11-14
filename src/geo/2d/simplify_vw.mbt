@@ -23,7 +23,7 @@ fn triangle_area_2x(
 ///|
 /// Removes the element at `idx` from `arr`, returning a new array. Pure:
 /// `arr` is not mutated.
-fn[T] array_dropped_at(arr : Array[T], idx : Int) -> Array[T] {
+fn[T] array_dropped_at(arr : Array[T], idx : Int32) -> Array[T] {
   Array::makei(arr.length() - 1, fn(k) {
     if k < idx {
       arr[k]
@@ -39,10 +39,10 @@ fn[T] array_dropped_at(arr : Array[T], idx : Int) -> Array[T] {
 /// dropped. Otherwise returns `None` to signal that the simplification has
 /// converged.
 fn vw_step(
-  kept : Array[Int],
+  kept : Array[Int32],
   coords : Array[@type.Coord],
   area_threshold : Double,
-) -> Array[Int]? {
+) -> Array[Int32]? {
   if kept.length() <= 2 {
     return None
   }
@@ -72,10 +72,10 @@ fn vw_step(
 /// Tail-recursive driver — keeps reducing `kept` until `vw_step` reports no
 /// further reduction is possible.
 fn vw_simplify_indices(
-  kept : Array[Int],
+  kept : Array[Int32],
   coords : Array[@type.Coord],
   area_threshold : Double,
-) -> Array[Int] {
+) -> Array[Int32] {
   match vw_step(kept, coords, area_threshold) {
     Some(next) => vw_simplify_indices(next, coords, area_threshold)
     None => kept

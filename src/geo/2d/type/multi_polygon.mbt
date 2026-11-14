@@ -3,9 +3,10 @@
 
 ///|
 /// A collection of `Polygon`s.
+#derive(Eq, Debug, Default)
 pub struct MultiPolygon {
   polygons : Array[Polygon]
-} derive(Eq, Debug, Default)
+}
 
 ///|
 pub fn MultiPolygon::MultiPolygon(polygons : Array[Polygon]) -> MultiPolygon {

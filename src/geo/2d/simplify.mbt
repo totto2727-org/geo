@@ -8,10 +8,10 @@
 /// input `coords` is never mutated.
 fn rdp_recurse(
   coords : Array[@type.Coord],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
   epsilon : Double,
-) -> Array[Int] {
+) -> Array[Int32] {
   if end <= start + 1 {
     return []
   }
@@ -59,7 +59,7 @@ fn simplify_line_string(
 pub fn simplify_line_string_indices(
   ls : @type.LineString,
   epsilon : Double,
-) -> Array[Int] {
+) -> Array[Int32] {
   let coords = ls.coords()
   if coords.length() < 3 {
     return Array::makei(coords.length(), fn(i) { i })
