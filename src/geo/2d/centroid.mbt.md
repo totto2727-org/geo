@@ -31,12 +31,12 @@ test "HasCentroid::centroid - unit square Polygon centroid is (0.5, 0.5)" {
     (0.0, 0.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [])
-  let c = match HasCentroid::centroid(polygon) {
+  let c = match @geo.HasCentroid::centroid(polygon) {
     Some(p) => p
     None => abort("expected centroid for non-empty polygon")
   }
-  assert_true((c.x() - 0.5).abs() < TOLERANCE)
-  assert_true((c.y() - 0.5).abs() < TOLERANCE)
+  assert_true((c.x() - 0.5).abs() < @geo.TOLERANCE)
+  assert_true((c.y() - 0.5).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -46,7 +46,10 @@ test "HasCentroid::centroid - unit square Polygon centroid is (0.5, 0.5)" {
 ///|
 test "HasCentroid::centroid - LineString and MultiPolygon direct dispatch" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
-  @test.assert_eq(HasCentroid::centroid(ls), Some(@type.Point::Point(5.0, 0.0)))
+  @test.assert_eq(
+    @geo.HasCentroid::centroid(ls),
+    Some(@type.Point::Point(5.0, 0.0)),
+  )
   let polygon = @type.Polygon::Polygon(
     @type.LineString::from_tuples([
       (0.0, 0.0),
@@ -57,7 +60,10 @@ test "HasCentroid::centroid - LineString and MultiPolygon direct dispatch" {
     [],
   )
   let mp = @type.MultiPolygon::MultiPolygon([polygon])
-  @test.assert_eq(HasCentroid::centroid(mp), Some(@type.Point::Point(2.0, 2.0)))
+  @test.assert_eq(
+    @geo.HasCentroid::centroid(mp),
+    Some(@type.Point::Point(2.0, 2.0)),
+  )
 }
 ```
 
@@ -71,7 +77,7 @@ test "HasCentroid::centroid - Triangle centroid is the average of its vertices" 
     @type.Coord::Coord(6.0, 0.0),
     @type.Coord::Coord(0.0, 9.0),
   )
-  let c = match HasCentroid::centroid(@type.Geometry::Triangle(t)) {
+  let c = match @geo.HasCentroid::centroid(@type.Geometry::Triangle(t)) {
     Some(p) => p
     None => abort("expected centroid for non-degenerate triangle")
   }
@@ -88,7 +94,7 @@ test "HasCentroid::centroid - Rect centroid is Rect::center" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(10.0, 20.0),
   )
-  let c = match HasCentroid::centroid(@type.Geometry::Rect(r)) {
+  let c = match @geo.HasCentroid::centroid(@type.Geometry::Rect(r)) {
     Some(p) => p
     None => abort("expected centroid for non-degenerate rect")
   }
@@ -103,12 +109,14 @@ test "HasCentroid::centroid - Rect centroid is Rect::center" {
 test "HasCentroid::centroid - dispatch covers every Geometry variant" {
   // Point: centroid is the point itself.
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::Point(@type.Point::Point(3.0, 4.0))),
+    @geo.HasCentroid::centroid(
+      @type.Geometry::Point(@type.Point::Point(3.0, 4.0)),
+    ),
     Some(@type.Point::Point(3.0, 4.0)),
   )
   // Line: centroid is the midpoint.
   @test.assert_eq(
-    HasCentroid::centroid(
+    @geo.HasCentroid::centroid(
       @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (10.0, 20.0))),
     ),
     Some(@type.Point::Point(5.0, 10.0)),
@@ -116,13 +124,13 @@ test "HasCentroid::centroid - dispatch covers every Geometry variant" {
   // LineString: weighted by segment length.
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::LineString(ls)),
+    @geo.HasCentroid::centroid(@type.Geometry::LineString(ls)),
     Some(@type.Point::Point(5.0, 0.0)),
   )
   // MultiPoint: average of points.
   let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (4.0, 0.0), (2.0, 6.0)])
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::MultiPoint(mp)),
+    @geo.HasCentroid::centroid(@type.Geometry::MultiPoint(mp)),
     Some(@type.Point::Point(2.0, 2.0)),
   )
   // MultiLineString: length-weighted across components.
@@ -130,7 +138,7 @@ test "HasCentroid::centroid - dispatch covers every Geometry variant" {
     @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)]),
   ])
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::MultiLineString(mls)),
+    @geo.HasCentroid::centroid(@type.Geometry::MultiLineString(mls)),
     Some(@type.Point::Point(5.0, 0.0)),
   )
   // MultiPolygon: area-weighted across polygons.
@@ -146,7 +154,7 @@ test "HasCentroid::centroid - dispatch covers every Geometry variant" {
     ),
   ])
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::MultiPolygon(mp_poly)),
+    @geo.HasCentroid::centroid(@type.Geometry::MultiPolygon(mp_poly)),
     Some(@type.Point::Point(2.0, 2.0)),
   )
   // GeometryCollection: arithmetic mean of component centroids.
@@ -155,7 +163,7 @@ test "HasCentroid::centroid - dispatch covers every Geometry variant" {
     @type.Geometry::Point(@type.Point::Point(4.0, 0.0)),
   ])
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::GeometryCollection(gc)),
+    @geo.HasCentroid::centroid(@type.Geometry::GeometryCollection(gc)),
     Some(@type.Point::Point(2.0, 0.0)),
   )
 }
@@ -167,23 +175,25 @@ test "HasCentroid::centroid - dispatch covers every Geometry variant" {
 ///|
 test "HasCentroid::centroid - degenerate inputs return None" {
   @test.assert_eq(
-    HasCentroid::centroid(
+    @geo.HasCentroid::centroid(
       @type.Geometry::MultiPolygon(@type.MultiPolygon::empty()),
     ),
     None,
   )
   @test.assert_eq(
-    HasCentroid::centroid(@type.Geometry::LineString(@type.LineString::empty())),
+    @geo.HasCentroid::centroid(
+      @type.Geometry::LineString(@type.LineString::empty()),
+    ),
     None,
   )
   @test.assert_eq(
-    HasCentroid::centroid(
+    @geo.HasCentroid::centroid(
       @type.Geometry::GeometryCollection(@type.GeometryCollection::empty()),
     ),
     None,
   )
   @test.assert_eq(
-    HasCentroid::centroid(
+    @geo.HasCentroid::centroid(
       @type.Geometry::MultiLineString(@type.MultiLineString::empty()),
     ),
     None,

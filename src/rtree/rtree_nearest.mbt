@@ -36,7 +36,7 @@ fn[T] collect_entries_with_dist(
 pub fn[T] RTree::nearest_neighbors(
   self : RTree[T],
   pt : @type.Coord,
-  k : Int?,
+  k : Int32?,
 ) -> Array[T] {
   let pairs : Array[(T, Double)] = []
   match self.root {

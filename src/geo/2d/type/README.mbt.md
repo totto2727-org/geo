@@ -9,7 +9,7 @@ Normalize clockwise survey vertices before handing a closed boundary to a polygo
 ```mbt check
 ///|
 test "normalize a triangle boundary" {
-  let triangle = Triangle::ccw(
+  let triangle = @type.Triangle::ccw(
     Coord(0.0, 0.0),
     Coord(0.0, 6.0),
     Coord(4.0, 0.0),

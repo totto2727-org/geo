@@ -3,11 +3,12 @@
 
 ///|
 /// The position of a `Coord` relative to a geometry.
+#derive(Eq, Debug)
 pub(all) enum CoordPos {
   OnBoundary
   Inside
   Outside
-} derive(Eq, Debug)
+}
 
 ///|
 /// Returns whether `value` lies between `bound_a` and `bound_b` (inclusive).

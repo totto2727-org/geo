@@ -12,28 +12,31 @@
 
 ///|
 /// End-cap style for line buffering.
+#derive(Eq, Debug)
 pub(all) enum BufferEndCap {
   Round
   Square
   Flat
-} derive(Eq, Debug)
+}
 
 ///|
 /// Join style for corners.
+#derive(Eq, Debug)
 pub(all) enum BufferJoin {
   Round
   Miter
   Bevel
-} derive(Eq, Debug)
+}
 
 ///|
 /// Buffer/offset configuration.
+#derive(Eq, Debug)
 pub(all) struct BufferOptions {
   end_cap : BufferEndCap
   join : BufferJoin
   miter_limit : Double
-  arc_segments : Int
-} derive(Eq, Debug)
+  arc_segments : Int32
+}
 
 ///|
 /// Default options: Round end caps, Round joins, miter limit 4.0,
@@ -78,7 +81,7 @@ fn arc_points(
   radius : Double,
   start_angle : Double,
   end_angle : Double,
-  n_segments : Int,
+  n_segments : Int32,
 ) -> Array[@type.Coord] {
   if n_segments < 1 {
     return []

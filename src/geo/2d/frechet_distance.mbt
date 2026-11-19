@@ -44,7 +44,7 @@ fn frechet_first_row(
 ///                  dist(a[i], b[j]))`.
 fn frechet_next_row(
   prev_row : Array[Double],
-  i : Int,
+  i : Int32,
   coords_a : Array[@type.Coord],
   coords_b : Array[@type.Coord],
 ) -> Array[Double] {

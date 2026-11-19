@@ -25,8 +25,8 @@ A collection of `LineString`s. Provides constructors (from a `LineString` array,
 ```mbt check
 ///|
 test "MultiLineString::MultiLineString - simple initialization" {
-  let mls = MultiLineString::MultiLineString([
-    LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+  let mls = @type.MultiLineString::MultiLineString([
+    @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   ])
   debug_inspect(
     mls,
@@ -45,8 +45,8 @@ test "MultiLineString::MultiLineString - simple initialization" {
 ///|
 test "MultiLineString::empty - equivalent to MultiLineString([])" {
   @test.assert_eq(
-    MultiLineString::empty(),
-    MultiLineString::MultiLineString([]),
+    @type.MultiLineString::empty(),
+    @type.MultiLineString::MultiLineString([]),
   )
 }
 ```
@@ -58,9 +58,9 @@ test "MultiLineString::empty - equivalent to MultiLineString([])" {
 ```mbt check
 ///|
 test "MultiLineString line_strings - returns underlying array" {
-  let ls1 = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let ls2 = LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)])
-  let mls = MultiLineString::MultiLineString([ls1, ls2])
+  let ls1 = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let ls2 = @type.LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)])
+  let mls = @type.MultiLineString::MultiLineString([ls1, ls2])
   @test.assert_eq(mls.line_strings(), [ls1, ls2])
 }
 ```
@@ -74,12 +74,12 @@ test "MultiLineString line_strings - returns underlying array" {
 ```mbt check
 ///|
 test "MultiLineString HasLength::length - returns number of line strings" {
-  let mls = MultiLineString::MultiLineString([
-    LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
-    LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)]),
+  let mls = @type.MultiLineString::MultiLineString([
+    @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+    @type.LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)]),
   ])
   @test.assert_eq(mls.length(), 2)
-  @test.assert_eq(HasLength::length(mls), 2)
+  @test.assert_eq(@type.HasLength::length(mls), 2)
 }
 ```
 
@@ -97,8 +97,8 @@ test "MultiLineString HasLength::length - returns number of line strings" {
 ```mbt check
 ///|
 test "MultiLineString IsEmpty::is_empty - false when non-empty" {
-  let mls = MultiLineString::MultiLineString([
-    LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+  let mls = @type.MultiLineString::MultiLineString([
+    @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   ])
   assert_false(mls.is_empty())
 }
@@ -109,7 +109,7 @@ test "MultiLineString IsEmpty::is_empty - false when non-empty" {
 ```mbt check
 ///|
 test "MultiLineString IsEmpty::is_empty - true when empty" {
-  assert_true(MultiLineString::empty().is_empty())
+  assert_true(@type.MultiLineString::empty().is_empty())
 }
 ```
 
@@ -130,7 +130,7 @@ test "MultiLineString IsEmpty::is_empty - true when empty" {
 ```mbt check
 ///|
 test "MultiLineString IsClosed::is_closed - empty is vacuously closed" {
-  assert_true(MultiLineString::empty().is_closed())
+  assert_true(@type.MultiLineString::empty().is_closed())
 }
 ```
 
@@ -139,18 +139,18 @@ test "MultiLineString IsClosed::is_closed - empty is vacuously closed" {
 ```mbt check
 ///|
 test "MultiLineString IsClosed::is_closed - all components closed" {
-  let closed1 = LineString::from_tuples([
+  let closed1 = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 0.0),
   ])
-  let closed2 = LineString::from_tuples([
+  let closed2 = @type.LineString::from_tuples([
     (10.0, 10.0),
     (12.0, 10.0),
     (10.0, 10.0),
   ])
-  let mls = MultiLineString::MultiLineString([closed1, closed2])
+  let mls = @type.MultiLineString::MultiLineString([closed1, closed2])
   assert_true(mls.is_closed())
 }
 ```
@@ -160,8 +160,12 @@ test "MultiLineString IsClosed::is_closed - all components closed" {
 ```mbt check
 ///|
 test "MultiLineString IsClosed::is_closed - single closed" {
-  let closed = LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (0.0, 0.0)])
-  assert_true(MultiLineString::MultiLineString([closed]).is_closed())
+  let closed = @type.LineString::from_tuples([
+    (0.0, 0.0),
+    (1.0, 0.0),
+    (0.0, 0.0),
+  ])
+  assert_true(@type.MultiLineString::MultiLineString([closed]).is_closed())
 }
 ```
 
@@ -170,15 +174,19 @@ test "MultiLineString IsClosed::is_closed - single closed" {
 ```mbt check
 ///|
 test "MultiLineString IsClosed::is_closed - any open component yields false" {
-  let closed = LineString::from_tuples([
+  let closed = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 0.0),
   ])
-  let open_ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  assert_false(MultiLineString::MultiLineString([closed, open_ls]).is_closed())
-  assert_false(MultiLineString::MultiLineString([open_ls, closed]).is_closed())
+  let open_ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  assert_false(
+    @type.MultiLineString::MultiLineString([closed, open_ls]).is_closed(),
+  )
+  assert_false(
+    @type.MultiLineString::MultiLineString([open_ls, closed]).is_closed(),
+  )
 }
 ```
 
@@ -187,8 +195,8 @@ test "MultiLineString IsClosed::is_closed - any open component yields false" {
 ```mbt check
 ///|
 test "MultiLineString IsClosed::is_closed - single open" {
-  let open_ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  assert_false(MultiLineString::MultiLineString([open_ls]).is_closed())
+  let open_ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  assert_false(@type.MultiLineString::MultiLineString([open_ls]).is_closed())
 }
 ```
 
@@ -201,11 +209,11 @@ test "MultiLineString IsClosed::is_closed - single open" {
 ```mbt check
 ///|
 test "MultiLineString Eq::op_equal - equal and unequal" {
-  let ls1 = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let ls2 = LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)])
-  let a = MultiLineString::MultiLineString([ls1, ls2])
-  let b = MultiLineString::MultiLineString([ls1, ls2])
-  let c = MultiLineString::MultiLineString([ls1])
+  let ls1 = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let ls2 = @type.LineString::from_tuples([(2.0, 0.0), (3.0, 1.0)])
+  let a = @type.MultiLineString::MultiLineString([ls1, ls2])
+  let b = @type.MultiLineString::MultiLineString([ls1, ls2])
+  let c = @type.MultiLineString::MultiLineString([ls1])
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -220,7 +228,7 @@ test "MultiLineString Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "MultiLineString Default::default - is empty" {
-  let d : MultiLineString = MultiLineString::default()
-  @test.assert_eq(d, MultiLineString::empty())
+  let d : @type.MultiLineString = @type.MultiLineString::default()
+  @test.assert_eq(d, @type.MultiLineString::empty())
 }
 ```

@@ -22,7 +22,7 @@ Hausdorff distance between two coordinate sets, lifted to whole geometries via t
 ///|
 test "hausdorff_distance_coords - identical sets give 0" {
   let coords = [@type.Coord::Coord(0.0, 0.0), @type.Coord::Coord(1.0, 1.0)]
-  @test.assert_eq(hausdorff_distance_coords(coords, coords), 0.0)
+  @test.assert_eq(@geo.hausdorff_distance_coords(coords, coords), 0.0)
 }
 ```
 
@@ -33,9 +33,9 @@ test "hausdorff_distance_coords - identical sets give 0" {
 test "hausdorff_distance_coords - 2 vs 1 corners gives sqrt 50" {
   let a = [@type.Coord::Coord(0.0, 0.0), @type.Coord::Coord(0.0, 10.0)]
   let b = [@type.Coord::Coord(5.0, 5.0)]
-  let d = hausdorff_distance_coords(a, b)
+  let d = @geo.hausdorff_distance_coords(a, b)
   let expected = (50.0 : Double).sqrt()
-  assert_true((d - expected).abs() < TOLERANCE)
+  assert_true((d - expected).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -47,6 +47,6 @@ test "hausdorff_distance_coords - 2 vs 1 corners gives sqrt 50" {
 ///|
 test "hausdorff_distance_geometry - coincident points give 0" {
   let p = @type.Geometry::Point(@type.Point::Point(3.0, 4.0))
-  @test.assert_eq(hausdorff_distance_geometry(p, p), 0.0)
+  @test.assert_eq(@geo.hausdorff_distance_geometry(p, p), 0.0)
 }
 ```

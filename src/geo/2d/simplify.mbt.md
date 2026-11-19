@@ -18,7 +18,7 @@ Ramer-Douglas-Peucker simplification of a `LineString` (and each ring of a `Poly
 test "simplify_line_string_indices - keeps interior above epsilon" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.001), (10.0, 0.0)])
   // eps=0: middle is 0.001 above the line, retained.
-  @test.assert_eq(simplify_line_string_indices(ls, 0.0), [0, 1, 2])
+  @test.assert_eq(@geo.simplify_line_string_indices(ls, 0.0), [0, 1, 2])
 }
 ```
 
@@ -28,7 +28,7 @@ test "simplify_line_string_indices - keeps interior above epsilon" {
 ///|
 test "simplify_line_string_indices - drops nearly collinear interior" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.001), (10.0, 0.0)])
-  @test.assert_eq(simplify_line_string_indices(ls, 0.01), [0, 2])
+  @test.assert_eq(@geo.simplify_line_string_indices(ls, 0.01), [0, 2])
 }
 ```
 
@@ -48,7 +48,7 @@ test "simplify_line_string_indices - drops nearly collinear interior" {
 ///|
 test "Simplify::simplify - eps 0 keeps non-collinear interior" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.001), (10.0, 0.0)])
-  @test.assert_eq(Simplify::simplify(ls, 0.0).coords().length(), 3)
+  @test.assert_eq(@geo.Simplify::simplify(ls, 0.0).coords().length(), 3)
 }
 ```
 
@@ -58,7 +58,7 @@ test "Simplify::simplify - eps 0 keeps non-collinear interior" {
 ///|
 test "Simplify::simplify - drops nearly collinear interior" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.001), (10.0, 0.0)])
-  @test.assert_eq(Simplify::simplify(ls, 0.01).coords().length(), 2)
+  @test.assert_eq(@geo.Simplify::simplify(ls, 0.01).coords().length(), 2)
 }
 ```
 
@@ -79,7 +79,7 @@ test "Simplify::simplify - Polygon direct dispatch" {
   )
   // The (5, 0.001) interior coord is dropped by eps = 0.01 simplification of
   // the exterior ring.
-  let simplified = Simplify::simplify(polygon, 0.01)
+  let simplified = @geo.Simplify::simplify(polygon, 0.01)
   assert_true(
     simplified.exterior().coords().length() <
     polygon.exterior().coords().length(),
@@ -93,6 +93,6 @@ test "Simplify::simplify - Polygon direct dispatch" {
 ///|
 test "Simplify::simplify - fewer than 3 coords is unchanged" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 10.0)])
-  @test.assert_eq(Simplify::simplify(ls, 1.0), ls)
+  @test.assert_eq(@geo.Simplify::simplify(ls, 1.0), ls)
 }
 ```

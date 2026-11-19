@@ -1,7 +1,7 @@
 // Benchmarks for the R-tree spatial index.
 
 ///|
-fn make_grid_entries(side : Int) -> Array[@rtree.Entry[Int]] {
+fn make_grid_entries(side : Int32) -> Array[@rtree.Entry[Int32]] {
   Array::makei(side * side, fn(idx) {
     let x = idx / side
     let y = idx % side

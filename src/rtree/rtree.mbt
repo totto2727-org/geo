@@ -18,7 +18,7 @@
 /// Maximum number of entries per node. With STR packing, branching factor
 /// of 16 strikes a reasonable balance between depth and per-node scanning
 /// for typical geometric workloads.
-const MAX_ENTRIES : Int = 16
+const MAX_ENTRIES : Int32 = 16
 
 ///|
 /// One entry in an `RTree`: a bounding rectangle and an arbitrary value.
@@ -29,7 +29,7 @@ pub(all) struct Entry[T] {
 
 ///|
 pub fn[T] Entry::Entry(bbox : @type.Rect, value : T) -> Entry[T] {
-  Entry::{ bbox, value }
+  Entry::{ bbox, value, }
 }
 
 ///|
@@ -51,21 +51,21 @@ fn[T] Node::node_bbox(self : Node[T]) -> @type.Rect {
 /// start empty with `RTree::new()` and `insert` / `remove` for dynamic use.
 pub struct RTree[T] {
   mut root : Node[T]?
-  mut size : Int
+  mut size : Int32
 }
 
 ///|
 /// Canonical constructor for `RTree`. Most callers use the higher-level
 /// `RTree::bulk_load` factory; this raw constructor is kept private to the
 /// package and is the single struct-literal entry point for the type.
-fn[T] RTree::RTree(root : Node[T]?, size : Int) -> RTree[T] {
-  RTree::{ root, size }
+fn[T] RTree::RTree(root : Node[T]?, size : Int32) -> RTree[T] {
+  RTree::{ root, size, }
 }
 
 ///|
 /// Returns an empty `RTree`. Use with `insert` / `remove` for dynamic use.
 pub fn[T] RTree::new() -> RTree[T] {
-  RTree::{ root: None, size: 0 }
+  RTree::{ root: None, size: 0, }
 }
 
 ///|
@@ -74,7 +74,7 @@ pub fn[T] RTree::is_empty(self : RTree[T]) -> Bool {
 }
 
 ///|
-pub fn[T] RTree::size(self : RTree[T]) -> Int {
+pub fn[T] RTree::size(self : RTree[T]) -> Int32 {
   self.size
 }
 
@@ -128,7 +128,7 @@ fn[T] nodes_bbox(nodes : Array[Node[T]]) -> @type.Rect {
 ///|
 /// Compares two values by mapping them through `key` and ordering by the
 /// `Double` result.
-fn[T] cmp_by_double(a : T, b : T, key : (T) -> Double) -> Int {
+fn[T] cmp_by_double(a : T, b : T, key : (T) -> Double) -> Int32 {
   let ka = key(a)
   let kb = key(b)
   if ka < kb {
@@ -145,7 +145,7 @@ fn[T] cmp_by_double(a : T, b : T, key : (T) -> Double) -> Int {
 /// into chunks of size up to `slice_size`.
 fn[T] partition_entries_by(
   entries : Array[Entry[T]],
-  slice_size : Int,
+  slice_size : Int32,
   key : (Entry[T]) -> Double,
 ) -> Array[Array[Entry[T]]] {
   let sorted = Array::makei(entries.length(), fn(i) { entries[i] })
@@ -156,7 +156,7 @@ fn[T] partition_entries_by(
 ///|
 fn[T] partition_entries_by_x(
   entries : Array[Entry[T]],
-  slice_size : Int,
+  slice_size : Int32,
 ) -> Array[Array[Entry[T]]] {
   partition_entries_by(entries, slice_size, fn(e) { rect_center_x(e.bbox) })
 }
@@ -164,7 +164,7 @@ fn[T] partition_entries_by_x(
 ///|
 fn[T] partition_entries_by_y(
   entries : Array[Entry[T]],
-  slice_size : Int,
+  slice_size : Int32,
 ) -> Array[Array[Entry[T]]] {
   partition_entries_by(entries, slice_size, fn(e) { rect_center_y(e.bbox) })
 }

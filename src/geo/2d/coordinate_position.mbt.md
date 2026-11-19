@@ -26,11 +26,11 @@ Classifies a `Coord` relative to a geometry as `CoordPos` — `Inside`, `OnBound
 ///|
 test "coord_on_line - endpoints, midpoint, off-line, beyond-end" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
-  assert_true(coord_on_line(@type.Coord::Coord(0.0, 0.0), l))
-  assert_true(coord_on_line(@type.Coord::Coord(10.0, 0.0), l))
-  assert_true(coord_on_line(@type.Coord::Coord(5.0, 0.0), l))
-  assert_false(coord_on_line(@type.Coord::Coord(5.0, 1.0), l))
-  assert_false(coord_on_line(@type.Coord::Coord(11.0, 0.0), l))
+  assert_true(@geo.coord_on_line(@type.Coord::Coord(0.0, 0.0), l))
+  assert_true(@geo.coord_on_line(@type.Coord::Coord(10.0, 0.0), l))
+  assert_true(@geo.coord_on_line(@type.Coord::Coord(5.0, 0.0), l))
+  assert_false(@geo.coord_on_line(@type.Coord::Coord(5.0, 1.0), l))
+  assert_false(@geo.coord_on_line(@type.Coord::Coord(11.0, 0.0), l))
 }
 ```
 
@@ -65,16 +65,16 @@ test "CoordPositionFor::coord_position - Polygon inside, boundary, outside" {
     [],
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(p, @type.Coord::Coord(1.0, 1.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(p, @type.Coord::Coord(1.0, 1.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(p, @type.Coord::Coord(0.0, 1.0)),
-    CoordPos::OnBoundary,
+    @geo.CoordPositionFor::coord_position(p, @type.Coord::Coord(0.0, 1.0)),
+    @geo.CoordPos::OnBoundary,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(p, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(p, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Outside,
   )
 }
 ```
@@ -103,16 +103,16 @@ test "CoordPositionFor::coord_position - Polygon with hole demotes to Outside" {
     ],
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(p, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(p, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Outside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(p, @type.Coord::Coord(3.0, 5.0)),
-    CoordPos::OnBoundary,
+    @geo.CoordPositionFor::coord_position(p, @type.Coord::Coord(3.0, 5.0)),
+    @geo.CoordPos::OnBoundary,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(p, @type.Coord::Coord(1.0, 1.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(p, @type.Coord::Coord(1.0, 1.0)),
+    @geo.CoordPos::Inside,
   )
 }
 ```
@@ -127,16 +127,16 @@ test "CoordPositionFor::coord_position - Rect inside, boundary, outside" {
     @type.Coord::Coord(10.0, 10.0),
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(r, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(r, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(r, @type.Coord::Coord(0.0, 5.0)),
-    CoordPos::OnBoundary,
+    @geo.CoordPositionFor::coord_position(r, @type.Coord::Coord(0.0, 5.0)),
+    @geo.CoordPos::OnBoundary,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(r, @type.Coord::Coord(11.0, 11.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(r, @type.Coord::Coord(11.0, 11.0)),
+    @geo.CoordPos::Outside,
   )
 }
 ```
@@ -148,25 +148,31 @@ test "CoordPositionFor::coord_position - Rect inside, boundary, outside" {
 test "CoordPositionFor::coord_position - Line degenerate / endpoint / interior / off-line" {
   let degenerate = @type.Line::from_tuples((3.0, 4.0), (3.0, 4.0))
   @test.assert_eq(
-    CoordPositionFor::coord_position(degenerate, @type.Coord::Coord(3.0, 4.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(
+      degenerate,
+      @type.Coord::Coord(3.0, 4.0),
+    ),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(degenerate, @type.Coord::Coord(0.0, 0.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(
+      degenerate,
+      @type.Coord::Coord(0.0, 0.0),
+    ),
+    @geo.CoordPos::Outside,
   )
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   @test.assert_eq(
-    CoordPositionFor::coord_position(l, @type.Coord::Coord(0.0, 0.0)),
-    CoordPos::OnBoundary,
+    @geo.CoordPositionFor::coord_position(l, @type.Coord::Coord(0.0, 0.0)),
+    @geo.CoordPos::OnBoundary,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(l, @type.Coord::Coord(5.0, 0.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(l, @type.Coord::Coord(5.0, 0.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(l, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(l, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Outside,
   )
 }
 ```
@@ -177,24 +183,24 @@ test "CoordPositionFor::coord_position - Line degenerate / endpoint / interior /
 ///|
 test "CoordPositionFor::coord_position - LineString empty / endpoint / interior / off-line" {
   @test.assert_eq(
-    CoordPositionFor::coord_position(
+    @geo.CoordPositionFor::coord_position(
       @type.LineString::empty(),
       @type.Coord::Coord(0.0, 0.0),
     ),
-    CoordPos::Outside,
+    @geo.CoordPos::Outside,
   )
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.0), (10.0, 0.0)])
   @test.assert_eq(
-    CoordPositionFor::coord_position(ls, @type.Coord::Coord(0.0, 0.0)),
-    CoordPos::OnBoundary,
+    @geo.CoordPositionFor::coord_position(ls, @type.Coord::Coord(0.0, 0.0)),
+    @geo.CoordPos::OnBoundary,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(ls, @type.Coord::Coord(2.5, 0.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(ls, @type.Coord::Coord(2.5, 0.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(ls, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(ls, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Outside,
   )
 }
 ```
@@ -226,16 +232,16 @@ test "CoordPositionFor::coord_position - MultiPolygon Inside / OnBoundary / Outs
   )
   let mp = @type.MultiPolygon::MultiPolygon([in_polygon, other_polygon])
   @test.assert_eq(
-    CoordPositionFor::coord_position(mp, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(mp, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(mp, @type.Coord::Coord(0.0, 5.0)),
-    CoordPos::OnBoundary,
+    @geo.CoordPositionFor::coord_position(mp, @type.Coord::Coord(0.0, 5.0)),
+    @geo.CoordPos::OnBoundary,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(mp, @type.Coord::Coord(100.0, 100.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(mp, @type.Coord::Coord(100.0, 100.0)),
+    @geo.CoordPos::Outside,
   )
 }
 ```
@@ -251,12 +257,12 @@ test "CoordPositionFor::coord_position - Triangle dispatches via to_polygon" {
     @type.Coord::Coord(0.0, 10.0),
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(t, @type.Coord::Coord(2.0, 2.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(t, @type.Coord::Coord(2.0, 2.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(t, @type.Coord::Coord(20.0, 20.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(t, @type.Coord::Coord(20.0, 20.0)),
+    @geo.CoordPos::Outside,
   )
 }
 ```
@@ -312,49 +318,52 @@ test "CoordPositionFor::coord_position - Geometry dispatch sweep" {
     @type.GeometryCollection::GeometryCollection([g_pt]),
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_pt, @type.Coord::Coord(0.0, 0.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_pt, @type.Coord::Coord(0.0, 0.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_pt, @type.Coord::Coord(1.0, 1.0)),
-    CoordPos::Outside,
+    @geo.CoordPositionFor::coord_position(g_pt, @type.Coord::Coord(1.0, 1.0)),
+    @geo.CoordPos::Outside,
   )
   let inside = @type.Coord::Coord(5.0, 0.0)
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_line, inside),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_line, inside),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_ls, inside),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_ls, inside),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_polygon, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(
+      g_polygon,
+      @type.Coord::Coord(5.0, 5.0),
+    ),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_mp, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_mp, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_mls, @type.Coord::Coord(5.0, 0.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_mls, @type.Coord::Coord(5.0, 0.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_mpoly, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_mpoly, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_rect, @type.Coord::Coord(5.0, 5.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_rect, @type.Coord::Coord(5.0, 5.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_tri, @type.Coord::Coord(2.0, 2.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_tri, @type.Coord::Coord(2.0, 2.0)),
+    @geo.CoordPos::Inside,
   )
   @test.assert_eq(
-    CoordPositionFor::coord_position(g_gc, @type.Coord::Coord(0.0, 0.0)),
-    CoordPos::Inside,
+    @geo.CoordPositionFor::coord_position(g_gc, @type.Coord::Coord(0.0, 0.0)),
+    @geo.CoordPos::Inside,
   )
 }
 ```

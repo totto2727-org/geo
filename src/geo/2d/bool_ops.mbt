@@ -46,11 +46,11 @@ priv enum BoolOp {
 priv struct Vert {
   coord : @type.Coord
   is_intersection : Bool
-  mut neighbor : Int
+  mut neighbor : Int32
   mut entry : Bool
   mut visited : Bool
-  mut next_idx : Int
-  mut prev_idx : Int
+  mut next_idx : Int32
+  mut prev_idx : Int32
 }
 
 // MARK: ring helpers ---------------------------------------------------------
@@ -166,15 +166,15 @@ fn segment_intersection(
 fn build_vertex_lists(
   ring_p : Array[@type.Coord],
   ring_q : Array[@type.Coord],
-) -> (Array[Vert], Array[Vert], Int) {
+) -> (Array[Vert], Array[Vert], Int32) {
   let np = ring_p.length()
   let nq = ring_q.length()
-  let per_p : Array[Array[(Double, Int, @type.Coord)]] = Array::makei(np, fn(
+  let per_p : Array[Array[(Double, Int32, @type.Coord)]] = Array::makei(np, fn(
     _,
   ) {
     []
   })
-  let per_q : Array[Array[(Double, Int, @type.Coord)]] = Array::makei(nq, fn(
+  let per_q : Array[Array[(Double, Int32, @type.Coord)]] = Array::makei(nq, fn(
     _,
   ) {
     []
@@ -197,8 +197,8 @@ fn build_vertex_lists(
     }
   }
   let cmp_alpha = fn(
-    a : (Double, Int, @type.Coord),
-    b : (Double, Int, @type.Coord),
+    a : (Double, Int32, @type.Coord),
+    b : (Double, Int32, @type.Coord),
   ) {
     if a.0 < b.0 {
       -1

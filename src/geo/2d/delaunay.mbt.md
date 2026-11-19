@@ -34,7 +34,7 @@ The "find bad triangles" step is brute force (O(n) per insertion, O(n²) total),
 ```mbt check
 ///|
 test "delaunay_triangulation - empty" {
-  let result = delaunay_triangulation([])
+  let result = @geo.delaunay_triangulation([])
   @test.assert_eq(result, None)
 }
 ```
@@ -49,7 +49,7 @@ test "delaunay_triangulation - collinear returns None" {
     @type.Coord(1.0, 0.0),
     @type.Coord(2.0, 0.0),
   ]
-  let result = delaunay_triangulation(points)
+  let result = @geo.delaunay_triangulation(points)
   @test.assert_eq(result, None)
 }
 ```
@@ -64,7 +64,7 @@ test "delaunay_triangulation - single triangle" {
     @type.Coord(1.0, 0.0),
     @type.Coord(0.0, 1.0),
   ]
-  let result = delaunay_triangulation(points)
+  let result = @geo.delaunay_triangulation(points)
   match result {
     Some(triangles) => {
       @test.assert_eq(triangles.length(), 1)
@@ -91,7 +91,7 @@ test "delaunay_triangulation - square -> 2 triangles" {
     @type.Coord(1.0, 1.0),
     @type.Coord(0.0, 1.0),
   ]
-  let result = delaunay_triangulation(points)
+  let result = @geo.delaunay_triangulation(points)
   match result {
     Some(triangles) => {
       @test.assert_eq(triangles.length(), 2)
@@ -124,7 +124,7 @@ test "delaunay_triangulation - square plus center fans from center" {
     @type.Coord(0.0, 1.0),
     @type.Coord(0.5, 0.5),
   ]
-  let result = delaunay_triangulation(points)
+  let result = @geo.delaunay_triangulation(points)
   match result {
     Some(triangles) => {
       @test.assert_eq(triangles.length(), 4)
@@ -150,7 +150,7 @@ test "delaunay_triangulation - 5x5 grid Euler formula" {
       points.push(@type.Coord(i.to_double(), j.to_double()))
     }
   }
-  let result = delaunay_triangulation(points)
+  let result = @geo.delaunay_triangulation(points)
   match result {
     Some(triangles) => @test.assert_eq(triangles.length(), 32)
     None => abort("expected Some(triangles)")
@@ -175,11 +175,11 @@ test "delaunay_triangles_to_geometries - round-trip square" {
     @type.Coord(1.0, 1.0),
     @type.Coord(0.0, 1.0),
   ]
-  let triangles = match delaunay_triangulation(points) {
+  let triangles = match @geo.delaunay_triangulation(points) {
     Some(ts) => ts
     None => abort("expected Some(triangles)")
   }
-  let geometries = delaunay_triangles_to_geometries(points, triangles)
+  let geometries = @geo.delaunay_triangles_to_geometries(points, triangles)
   @test.assert_eq(geometries.length(), triangles.length())
   for k = 0; k < geometries.length(); k = k + 1 {
     let t = triangles[k]

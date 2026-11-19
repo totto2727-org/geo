@@ -24,9 +24,9 @@ A collection of `Point`s. Provides constructors (from a `Point` array, from `(x,
 ```mbt check
 ///|
 test "MultiPoint::MultiPoint - simple initialization" {
-  let mp = MultiPoint::MultiPoint([
-    Point::Point(0.0, 0.0),
-    Point::Point(1.0, 1.0),
+  let mp = @type.MultiPoint::MultiPoint([
+    @type.Point::Point(0.0, 0.0),
+    @type.Point::Point(1.0, 1.0),
   ])
   debug_inspect(
     mp,
@@ -44,10 +44,13 @@ test "MultiPoint::MultiPoint - simple initialization" {
 ```mbt check
 ///|
 test "MultiPoint::from_tuples - builds from tuple array" {
-  let mp = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
   @test.assert_eq(
     mp,
-    MultiPoint::MultiPoint([Point::Point(0.0, 0.0), Point::Point(1.0, 1.0)]),
+    @type.MultiPoint::MultiPoint([
+      @type.Point::Point(0.0, 0.0),
+      @type.Point::Point(1.0, 1.0),
+    ]),
   )
 }
 ```
@@ -59,7 +62,7 @@ test "MultiPoint::from_tuples - builds from tuple array" {
 ```mbt check
 ///|
 test "MultiPoint::empty - equivalent to MultiPoint([])" {
-  @test.assert_eq(MultiPoint::empty(), MultiPoint::MultiPoint([]))
+  @test.assert_eq(@type.MultiPoint::empty(), @type.MultiPoint::MultiPoint([]))
 }
 ```
 
@@ -70,8 +73,11 @@ test "MultiPoint::empty - equivalent to MultiPoint([])" {
 ```mbt check
 ///|
 test "MultiPoint points - returns underlying point array" {
-  let mp = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  @test.assert_eq(mp.points(), [Point::Point(0.0, 0.0), Point::Point(1.0, 1.0)])
+  let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  @test.assert_eq(mp.points(), [
+    @type.Point::Point(0.0, 0.0),
+    @type.Point::Point(1.0, 1.0),
+  ])
 }
 ```
 
@@ -84,9 +90,9 @@ test "MultiPoint points - returns underlying point array" {
 ```mbt check
 ///|
 test "MultiPoint HasLength::length - returns number of points" {
-  let mp = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
   @test.assert_eq(mp.length(), 2)
-  @test.assert_eq(HasLength::length(mp), 2)
+  @test.assert_eq(@type.HasLength::length(mp), 2)
 }
 ```
 
@@ -104,7 +110,7 @@ test "MultiPoint HasLength::length - returns number of points" {
 ```mbt check
 ///|
 test "MultiPoint IsEmpty::is_empty - false when non-empty" {
-  let mp = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
   assert_false(mp.is_empty())
 }
 ```
@@ -114,7 +120,7 @@ test "MultiPoint IsEmpty::is_empty - false when non-empty" {
 ```mbt check
 ///|
 test "MultiPoint IsEmpty::is_empty - true when empty" {
-  assert_true(MultiPoint::empty().is_empty())
+  assert_true(@type.MultiPoint::empty().is_empty())
 }
 ```
 
@@ -127,9 +133,9 @@ test "MultiPoint IsEmpty::is_empty - true when empty" {
 ```mbt check
 ///|
 test "MultiPoint Eq::op_equal - equal and unequal" {
-  let a = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let b = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let c = MultiPoint::from_tuples([(0.0, 0.0), (2.0, 2.0)])
+  let a = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let b = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let c = @type.MultiPoint::from_tuples([(0.0, 0.0), (2.0, 2.0)])
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -144,7 +150,7 @@ test "MultiPoint Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "MultiPoint Default::default - is empty" {
-  let d : MultiPoint = MultiPoint::default()
-  @test.assert_eq(d, MultiPoint::empty())
+  let d : @type.MultiPoint = @type.MultiPoint::default()
+  @test.assert_eq(d, @type.MultiPoint::empty())
 }
 ```

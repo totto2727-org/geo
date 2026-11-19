@@ -33,9 +33,9 @@ An ordered sequence of `Coord`s representing a path. Provides constructors (from
 ```mbt check
 ///|
 test "LineString::LineString - simple initialization" {
-  let ls = LineString::LineString([
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(1.0, 2.0),
+  let ls = @type.LineString::LineString([
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 2.0),
   ])
   debug_inspect(
     ls,
@@ -53,13 +53,13 @@ test "LineString::LineString - simple initialization" {
 ```mbt check
 ///|
 test "LineString::from_tuples - builds from tuple array" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
   @test.assert_eq(
     ls,
-    LineString::LineString([
-      Coord::Coord(0.0, 0.0),
-      Coord::Coord(1.0, 1.0),
-      Coord::Coord(2.0, 2.0),
+    @type.LineString::LineString([
+      @type.Coord::Coord(0.0, 0.0),
+      @type.Coord::Coord(1.0, 1.0),
+      @type.Coord::Coord(2.0, 2.0),
     ]),
   )
 }
@@ -72,7 +72,7 @@ test "LineString::from_tuples - builds from tuple array" {
 ```mbt check
 ///|
 test "LineString::empty - equivalent to LineString([])" {
-  @test.assert_eq(LineString::empty(), LineString::LineString([]))
+  @test.assert_eq(@type.LineString::empty(), @type.LineString::LineString([]))
 }
 ```
 
@@ -83,8 +83,11 @@ test "LineString::empty - equivalent to LineString([])" {
 ```mbt check
 ///|
 test "LineString coords - returns underlying coord array" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 2.0)])
-  @test.assert_eq(ls.coords(), [Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 2.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 2.0)])
+  @test.assert_eq(ls.coords(), [
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 2.0),
+  ])
 }
 ```
 
@@ -100,11 +103,11 @@ test "LineString coords - returns underlying coord array" {
 ```mbt check
 ///|
 test "LineString points - maps each coord to Point" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 2.0), (3.0, 4.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 2.0), (3.0, 4.0)])
   @test.assert_eq(ls.points(), [
-    Point::Point(0.0, 0.0),
-    Point::Point(1.0, 2.0),
-    Point::Point(3.0, 4.0),
+    @type.Point::Point(0.0, 0.0),
+    @type.Point::Point(1.0, 2.0),
+    @type.Point::Point(3.0, 4.0),
   ])
 }
 ```
@@ -114,7 +117,7 @@ test "LineString points - maps each coord to Point" {
 ```mbt check
 ///|
 test "LineString points - empty yields empty array" {
-  let ls = LineString::LineString([])
+  let ls = @type.LineString::LineString([])
   @test.assert_eq(ls.points(), [])
 }
 ```
@@ -126,7 +129,7 @@ test "LineString points - empty yields empty array" {
 ```mbt check
 ///|
 test "LineString points_iter - matches eager points()" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 2.0), (3.0, 4.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 2.0), (3.0, 4.0)])
   @test.assert_eq(ls.points_iter().collect(), ls.points())
 }
 ```
@@ -136,8 +139,10 @@ test "LineString points_iter - matches eager points()" {
 ```mbt check
 ///|
 test "LineString points_iter - take short-circuits" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 2.0), (3.0, 4.0)])
-  @test.assert_eq(ls.points_iter().take(1).collect(), [Point::Point(0.0, 0.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 2.0), (3.0, 4.0)])
+  @test.assert_eq(ls.points_iter().take(1).collect(), [
+    @type.Point::Point(0.0, 0.0),
+  ])
 }
 ```
 
@@ -154,10 +159,10 @@ test "LineString points_iter - take short-circuits" {
 ```mbt check
 ///|
 test "LineString lines - yields consecutive segments" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)])
   @test.assert_eq(ls.lines(), [
-    Line::from_tuples((0.0, 0.0), (1.0, 1.0)),
-    Line::from_tuples((1.0, 1.0), (2.0, 0.0)),
+    @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)),
+    @type.Line::from_tuples((1.0, 1.0), (2.0, 0.0)),
   ])
 }
 ```
@@ -167,7 +172,7 @@ test "LineString lines - yields consecutive segments" {
 ```mbt check
 ///|
 test "LineString lines - empty yields empty array" {
-  @test.assert_eq(LineString::empty().lines(), [])
+  @test.assert_eq(@type.LineString::empty().lines(), [])
 }
 ```
 
@@ -176,7 +181,7 @@ test "LineString lines - empty yields empty array" {
 ```mbt check
 ///|
 test "LineString lines - single coord yields empty array" {
-  @test.assert_eq(LineString::from_tuples([(1.0, 2.0)]).lines(), [])
+  @test.assert_eq(@type.LineString::from_tuples([(1.0, 2.0)]).lines(), [])
 }
 ```
 
@@ -187,7 +192,7 @@ test "LineString lines - single coord yields empty array" {
 ```mbt check
 ///|
 test "LineString lines_iter - matches eager lines()" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)])
   @test.assert_eq(ls.lines_iter().collect(), ls.lines())
 }
 ```
@@ -197,9 +202,9 @@ test "LineString lines_iter - matches eager lines()" {
 ```mbt check
 ///|
 test "LineString lines_iter - empty or single yields no elements" {
-  @test.assert_eq(LineString::empty().lines_iter().collect(), [])
+  @test.assert_eq(@type.LineString::empty().lines_iter().collect(), [])
   @test.assert_eq(
-    LineString::from_tuples([(1.0, 2.0)]).lines_iter().collect(),
+    @type.LineString::from_tuples([(1.0, 2.0)]).lines_iter().collect(),
     [],
   )
 }
@@ -210,14 +215,14 @@ test "LineString lines_iter - empty or single yields no elements" {
 ```mbt check
 ///|
 test "LineString lines_iter - take short-circuits" {
-  let ls = LineString::from_tuples([
+  let ls = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 1.0),
     (2.0, 0.0),
     (3.0, 5.0),
   ])
   @test.assert_eq(ls.lines_iter().take(1).collect(), [
-    Line::from_tuples((0.0, 0.0), (1.0, 1.0)),
+    @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)),
   ])
 }
 ```
@@ -235,10 +240,10 @@ test "LineString lines_iter - take short-circuits" {
 ```mbt check
 ///|
 test "LineString rev_lines - reversed order with swapped endpoints" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (5.0, 0.0), (7.0, 9.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.0), (7.0, 9.0)])
   @test.assert_eq(ls.rev_lines(), [
-    Line::from_tuples((7.0, 9.0), (5.0, 0.0)),
-    Line::from_tuples((5.0, 0.0), (0.0, 0.0)),
+    @type.Line::from_tuples((7.0, 9.0), (5.0, 0.0)),
+    @type.Line::from_tuples((5.0, 0.0), (0.0, 0.0)),
   ])
 }
 ```
@@ -248,8 +253,8 @@ test "LineString rev_lines - reversed order with swapped endpoints" {
 ```mbt check
 ///|
 test "LineString rev_lines - empty or single yields empty array" {
-  @test.assert_eq(LineString::empty().rev_lines(), [])
-  @test.assert_eq(LineString::from_tuples([(1.0, 2.0)]).rev_lines(), [])
+  @test.assert_eq(@type.LineString::empty().rev_lines(), [])
+  @test.assert_eq(@type.LineString::from_tuples([(1.0, 2.0)]).rev_lines(), [])
 }
 ```
 
@@ -258,7 +263,7 @@ test "LineString rev_lines - empty or single yields empty array" {
 ```mbt check
 ///|
 test "LineString rev_lines - is reverse of lines with swapped endpoints" {
-  let ls = LineString::from_tuples([
+  let ls = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 1.0),
     (2.0, 0.0),
@@ -269,7 +274,7 @@ test "LineString rev_lines - is reverse of lines with swapped endpoints" {
   let n = forward.length()
   let expected = Array::makei(n, fn(i) {
     let f = forward[n - 1 - i]
-    Line::Line(f.end(), f.start())
+    @type.Line::Line(f.end(), f.start())
   })
   @test.assert_eq(reverse, expected)
 }
@@ -282,7 +287,7 @@ test "LineString rev_lines - is reverse of lines with swapped endpoints" {
 ```mbt check
 ///|
 test "LineString rev_lines_iter - matches eager rev_lines()" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (5.0, 0.0), (7.0, 9.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 0.0), (7.0, 9.0)])
   @test.assert_eq(ls.rev_lines_iter().collect(), ls.rev_lines())
 }
 ```
@@ -292,9 +297,9 @@ test "LineString rev_lines_iter - matches eager rev_lines()" {
 ```mbt check
 ///|
 test "LineString rev_lines_iter - empty or single yields no elements" {
-  @test.assert_eq(LineString::empty().rev_lines_iter().collect(), [])
+  @test.assert_eq(@type.LineString::empty().rev_lines_iter().collect(), [])
   @test.assert_eq(
-    LineString::from_tuples([(1.0, 2.0)]).rev_lines_iter().collect(),
+    @type.LineString::from_tuples([(1.0, 2.0)]).rev_lines_iter().collect(),
     [],
   )
 }
@@ -305,14 +310,14 @@ test "LineString rev_lines_iter - empty or single yields no elements" {
 ```mbt check
 ///|
 test "LineString rev_lines_iter - take short-circuits" {
-  let ls = LineString::from_tuples([
+  let ls = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 1.0),
     (2.0, 0.0),
     (3.0, 5.0),
   ])
   @test.assert_eq(ls.rev_lines_iter().take(1).collect(), [
-    Line::from_tuples((3.0, 5.0), (2.0, 0.0)),
+    @type.Line::from_tuples((3.0, 5.0), (2.0, 0.0)),
   ])
 }
 ```
@@ -330,7 +335,7 @@ test "LineString rev_lines_iter - take short-circuits" {
 ```mbt check
 ///|
 test "LineString closed - open input returns closed copy without mutating self" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)])
   let len_before = ls.length()
   let was_closed_before = ls.is_closed()
   let c = ls.closed()
@@ -347,7 +352,7 @@ test "LineString closed - open input returns closed copy without mutating self" 
 ```mbt check
 ///|
 test "LineString closed - already closed input returns self" {
-  let already_closed = LineString::from_tuples([
+  let already_closed = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 1.0),
     (2.0, 0.0),
@@ -362,7 +367,7 @@ test "LineString closed - already closed input returns self" {
 ```mbt check
 ///|
 test "LineString closed - empty input returns self" {
-  let empty = LineString::empty()
+  let empty = @type.LineString::empty()
   @test.assert_eq(empty.closed(), empty)
 }
 ```
@@ -376,9 +381,9 @@ test "LineString closed - empty input returns self" {
 ```mbt check
 ///|
 test "LineString HasLength::length - returns number of coords" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
   @test.assert_eq(ls.length(), 3)
-  @test.assert_eq(HasLength::length(ls), 3)
+  @test.assert_eq(@type.HasLength::length(ls), 3)
 }
 ```
 
@@ -396,7 +401,7 @@ test "LineString HasLength::length - returns number of coords" {
 ```mbt check
 ///|
 test "LineString IsEmpty::is_empty - false when non-empty" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
   assert_false(ls.is_empty())
 }
 ```
@@ -406,7 +411,7 @@ test "LineString IsEmpty::is_empty - false when non-empty" {
 ```mbt check
 ///|
 test "LineString IsEmpty::is_empty - true when empty" {
-  assert_true(LineString::empty().is_empty())
+  assert_true(@type.LineString::empty().is_empty())
 }
 ```
 
@@ -426,7 +431,7 @@ test "LineString IsEmpty::is_empty - true when empty" {
 ```mbt check
 ///|
 test "LineString IsClosed::is_closed - false when open" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0), (2.0, 2.0)])
   assert_false(ls.is_closed())
 }
 ```
@@ -436,7 +441,7 @@ test "LineString IsClosed::is_closed - false when open" {
 ```mbt check
 ///|
 test "LineString IsClosed::is_closed - true when closed" {
-  let ls = LineString::from_tuples([
+  let ls = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 1.0),
     (2.0, 0.0),
@@ -451,7 +456,7 @@ test "LineString IsClosed::is_closed - true when closed" {
 ```mbt check
 ///|
 test "LineString IsClosed::is_closed - false on empty" {
-  assert_false(LineString::empty().is_closed())
+  assert_false(@type.LineString::empty().is_closed())
 }
 ```
 
@@ -460,7 +465,7 @@ test "LineString IsClosed::is_closed - false on empty" {
 ```mbt check
 ///|
 test "LineString IsClosed::is_closed - false on single coord" {
-  let ls = LineString::from_tuples([(1.0, 2.0)])
+  let ls = @type.LineString::from_tuples([(1.0, 2.0)])
   assert_false(ls.is_closed())
 }
 ```
@@ -474,9 +479,9 @@ test "LineString IsClosed::is_closed - false on single coord" {
 ```mbt check
 ///|
 test "LineString Eq::op_equal - equal and unequal" {
-  let a = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let b = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let c = LineString::from_tuples([(0.0, 0.0), (1.0, 2.0)])
+  let a = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let b = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let c = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 2.0)])
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -491,7 +496,7 @@ test "LineString Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "LineString Default::default - is empty" {
-  let d : LineString = LineString::default()
-  @test.assert_eq(d, LineString::empty())
+  let d : @type.LineString = @type.LineString::default()
+  @test.assert_eq(d, @type.LineString::empty())
 }
 ```

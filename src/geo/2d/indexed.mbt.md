@@ -27,7 +27,7 @@ The georust crate ships `PreparedGeometry` (R\*-tree backed `Relate` / `Contains
 ```mbt check
 ///|
 test "indexed_contains_polygons - empty input always returns false" {
-  let pred = indexed_contains_polygons([])
+  let pred = @geo.indexed_contains_polygons([])
   assert_true(!pred(@type.Coord(0.0, 0.0)))
   assert_true(!pred(@type.Coord(100.0, -50.0)))
 }
@@ -48,7 +48,7 @@ test "indexed_contains_polygons - single polygon agrees with direct call" {
     ]),
     [],
   )
-  let pred = indexed_contains_polygons([p])
+  let pred = @geo.indexed_contains_polygons([p])
   let probes = [
     @type.Coord(5.0, 5.0), // strictly inside
     @type.Coord(20.0, 20.0), // strictly outside
@@ -58,7 +58,7 @@ test "indexed_contains_polygons - single polygon agrees with direct call" {
   for i = 0; i < probes.length(); i = i + 1 {
     @test.assert_eq(
       pred(probes[i]),
-      Contains::contains(
+      @geo.Contains::contains(
         p,
         @type.Geometry::Point(@type.Point::from_coord(probes[i])),
       ),
@@ -86,7 +86,7 @@ test "indexed_contains_polygons - 10x10 grid matches brute force" {
       [],
     )
   })
-  let pred = indexed_contains_polygons(polys)
+  let pred = @geo.indexed_contains_polygons(polys)
   for i = 0; i < 100; i = i + 1 {
     let q = @type.Coord(
       (i * 13 % 41).to_double() * 0.5,
@@ -95,7 +95,10 @@ test "indexed_contains_polygons - 10x10 grid matches brute force" {
     let brute = polys
       .iter()
       .any(fn(p) {
-        Contains::contains(p, @type.Geometry::Point(@type.Point::from_coord(q)))
+        @geo.Contains::contains(
+          p,
+          @type.Geometry::Point(@type.Point::from_coord(q)),
+        )
       })
     @test.assert_eq(pred(q), brute)
   }
@@ -121,7 +124,7 @@ test "indexed_contains_polygons - 32x32 stress matches brute force" {
       [],
     )
   })
-  let pred = indexed_contains_polygons(polys)
+  let pred = @geo.indexed_contains_polygons(polys)
   for i = 0; i < 200; i = i + 1 {
     let q = @type.Coord(
       (i * 23 % 131).to_double() * 0.5,
@@ -130,7 +133,10 @@ test "indexed_contains_polygons - 32x32 stress matches brute force" {
     let brute = polys
       .iter()
       .any(fn(p) {
-        Contains::contains(p, @type.Geometry::Point(@type.Point::from_coord(q)))
+        @geo.Contains::contains(
+          p,
+          @type.Geometry::Point(@type.Point::from_coord(q)),
+        )
       })
     @test.assert_eq(pred(q), brute)
   }
@@ -150,7 +156,7 @@ test "indexed_contains_polygons - 32x32 stress matches brute force" {
 ```mbt check
 ///|
 test "indexed_nearest_point - empty input returns None" {
-  let pred = indexed_nearest_point([])
+  let pred = @geo.indexed_nearest_point([])
   assert_true(pred(@type.Coord(0.0, 0.0)) == None)
   assert_true(pred(@type.Coord(42.0, -7.5)) == None)
 }
@@ -162,7 +168,7 @@ test "indexed_nearest_point - empty input returns None" {
 ///|
 test "indexed_nearest_point - single point" {
   let p = @type.Point::Point(3.0, 4.0)
-  let pred = indexed_nearest_point([p])
+  let pred = @geo.indexed_nearest_point([p])
   @test.assert_eq(pred(@type.Coord(0.0, 0.0)).unwrap(), p)
   @test.assert_eq(pred(@type.Coord(100.0, 100.0)).unwrap(), p)
 }
@@ -177,7 +183,7 @@ test "indexed_nearest_point - 1000 points stress matches brute force" {
   let points = Array::makei(1000, fn(idx) {
     @type.Point::Point((idx / 20).to_double(), (idx % 20).to_double() * 1.5)
   })
-  let pred = indexed_nearest_point(points)
+  let pred = @geo.indexed_nearest_point(points)
   for i = 0; i < 100; i = i + 1 {
     let q = @type.Coord(
       (i * 7 % 53).to_double() * 0.9,
@@ -185,16 +191,19 @@ test "indexed_nearest_point - 1000 points stress matches brute force" {
     )
     // Brute-force nearest by squared distance.
     let mut best_idx = 0
-    let mut best_d = euclidean_distance_squared_coords(points[0].coord(), q)
+    let mut best_d = @geo.euclidean_distance_squared_coords(
+      points[0].coord(),
+      q,
+    )
     for j = 1; j < points.length(); j = j + 1 {
-      let d = euclidean_distance_squared_coords(points[j].coord(), q)
+      let d = @geo.euclidean_distance_squared_coords(points[j].coord(), q)
       if d < best_d {
         best_d = d
         best_idx = j
       }
     }
     let got = pred(q).unwrap()
-    let got_d = euclidean_distance_squared_coords(got.coord(), q)
+    let got_d = @geo.euclidean_distance_squared_coords(got.coord(), q)
     // Indexed answer must tie or match the brute-force best distance.
     // (Equal-distance ties may pick a different point.)
     @test.assert_eq(got_d, best_d)
@@ -217,7 +226,7 @@ test "indexed_nearest_point - 1000 points stress matches brute force" {
 ```mbt check
 ///|
 test "indexed_intersecting_polygons - empty input returns []" {
-  let pred = indexed_intersecting_polygons([])
+  let pred = @geo.indexed_intersecting_polygons([])
   let q = @type.Polygon::Polygon(
     @type.LineString::from_tuples([
       (0.0, 0.0),
@@ -247,7 +256,7 @@ test "indexed_intersecting_polygons - single polygon" {
     ]),
     [],
   )
-  let pred = indexed_intersecting_polygons([p])
+  let pred = @geo.indexed_intersecting_polygons([p])
   let self_hits = pred(p)
   @test.assert_eq(self_hits.length(), 1)
   @test.assert_eq(self_hits[0], 0)
@@ -284,7 +293,7 @@ test "indexed_intersecting_polygons - 10x10 grid matches brute force" {
       [],
     )
   })
-  let pred = indexed_intersecting_polygons(polys)
+  let pred = @geo.indexed_intersecting_polygons(polys)
   // Probe with 5 query rectangles of varying sizes / positions.
   let queries = [
     @type.Polygon::Polygon(
@@ -332,9 +341,9 @@ test "indexed_intersecting_polygons - 10x10 grid matches brute force" {
     let q = queries[k]
     let indexed = pred(q)
     // Brute-force expected indices.
-    let expected : Array[Int] = []
+    let expected : Array[Int32] = []
     for i = 0; i < polys.length(); i = i + 1 {
-      if Intersects::intersects(polys[i], @type.Geometry::Polygon(q)) {
+      if @geo.Intersects::intersects(polys[i], @type.Geometry::Polygon(q)) {
         expected.push(i)
       }
     }
@@ -368,7 +377,7 @@ test "indexed_intersecting_polygons - 32x32 stress matches brute force" {
       [],
     )
   })
-  let pred = indexed_intersecting_polygons(polys)
+  let pred = @geo.indexed_intersecting_polygons(polys)
   let queries = [
     @type.Polygon::Polygon(
       @type.LineString::from_tuples([
@@ -404,9 +413,9 @@ test "indexed_intersecting_polygons - 32x32 stress matches brute force" {
   for k = 0; k < queries.length(); k = k + 1 {
     let q = queries[k]
     let indexed = pred(q)
-    let expected : Array[Int] = []
+    let expected : Array[Int32] = []
     for i = 0; i < polys.length(); i = i + 1 {
-      if Intersects::intersects(polys[i], @type.Geometry::Polygon(q)) {
+      if @geo.Intersects::intersects(polys[i], @type.Geometry::Polygon(q)) {
         expected.push(i)
       }
     }

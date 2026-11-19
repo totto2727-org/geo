@@ -8,14 +8,15 @@
 ///
 /// The _interior_ of the point is itself (a singleton set), and its _boundary_
 /// is empty. A point is _valid_ if and only if its `Coord` is valid.
+#derive(Eq, Debug, Hash, Default)
 pub struct Point {
   coord : Coord
-} derive(Eq, Debug, Hash, Default)
+}
 
 ///|
 /// Canonical constructor: creates a new point from `x` and `y`.
 pub fn Point::Point(x : Double, y : Double) -> Point {
-  Point::{ coord: Coord(x, y) }
+  Point::{ coord: Coord(x, y), }
 }
 
 ///|

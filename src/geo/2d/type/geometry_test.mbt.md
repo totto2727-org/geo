@@ -29,7 +29,7 @@ The `Geometry` enum — a tagged union over all 2D geometry types except `Coord`
 ```mbt check
 ///|
 test "Geometry::Point - simple initialization" {
-  let g = Geometry::Point(Point::Point(1.0, 2.0))
+  let g = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
   debug_inspect(
     g,
     content=(
@@ -55,8 +55,8 @@ test "Geometry::Point - simple initialization" {
 ```mbt check
 ///|
 test "Geometry try_into_point - happy path" {
-  let p = Point::Point(1.0, 2.0)
-  let extracted = try! Geometry::Point(p).try_into_point()
+  let p = @type.Point::Point(1.0, 2.0)
+  let extracted = try! @type.Geometry::Point(p).try_into_point()
   @test.assert_eq(extracted, p)
 }
 ```
@@ -66,7 +66,7 @@ test "Geometry try_into_point - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_point - mismatch raises with expected and found" {
-  let g = Geometry::Line(Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
+  let g = @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
   let result = try g.try_into_point() catch {
     MismatchedGeometry(expected~, found~) => (expected, found)
   } noraise {
@@ -83,8 +83,8 @@ test "Geometry try_into_point - mismatch raises with expected and found" {
 ```mbt check
 ///|
 test "Geometry try_into_line - happy path" {
-  let line = Line::from_tuples((0.0, 0.0), (1.0, 1.0))
-  let extracted = try! Geometry::Line(line).try_into_line()
+  let line = @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))
+  let extracted = try! @type.Geometry::Line(line).try_into_line()
   @test.assert_eq(extracted, line)
 }
 ```
@@ -96,8 +96,8 @@ test "Geometry try_into_line - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_line_string - happy path" {
-  let ls = LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let extracted = try! Geometry::LineString(ls).try_into_line_string()
+  let ls = @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let extracted = try! @type.Geometry::LineString(ls).try_into_line_string()
   @test.assert_eq(extracted, ls)
 }
 ```
@@ -109,14 +109,14 @@ test "Geometry try_into_line_string - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_polygon - happy path" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
-  let extracted = try! Geometry::Polygon(polygon).try_into_polygon()
+  let polygon = @type.Polygon::Polygon(exterior, [])
+  let extracted = try! @type.Geometry::Polygon(polygon).try_into_polygon()
   @test.assert_eq(extracted, polygon)
 }
 ```
@@ -128,8 +128,8 @@ test "Geometry try_into_polygon - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_multi_point - happy path" {
-  let mp = MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
-  let extracted = try! Geometry::MultiPoint(mp).try_into_multi_point()
+  let mp = @type.MultiPoint::from_tuples([(0.0, 0.0), (1.0, 1.0)])
+  let extracted = try! @type.Geometry::MultiPoint(mp).try_into_multi_point()
   @test.assert_eq(extracted, mp)
 }
 ```
@@ -141,10 +141,10 @@ test "Geometry try_into_multi_point - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_multi_line_string - happy path" {
-  let mls = MultiLineString::MultiLineString([
-    LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+  let mls = @type.MultiLineString::MultiLineString([
+    @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   ])
-  let extracted = try! Geometry::MultiLineString(mls).try_into_multi_line_string()
+  let extracted = try! @type.Geometry::MultiLineString(mls).try_into_multi_line_string()
   @test.assert_eq(extracted, mls)
 }
 ```
@@ -156,9 +156,15 @@ test "Geometry try_into_multi_line_string - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_multi_polygon - happy path" {
-  let exterior = LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)])
-  let mpoly = MultiPolygon::MultiPolygon([Polygon::Polygon(exterior, [])])
-  let extracted = try! Geometry::MultiPolygon(mpoly).try_into_multi_polygon()
+  let exterior = @type.LineString::from_tuples([
+    (0.0, 0.0),
+    (1.0, 0.0),
+    (1.0, 1.0),
+  ])
+  let mpoly = @type.MultiPolygon::MultiPolygon([
+    @type.Polygon::Polygon(exterior, []),
+  ])
+  let extracted = try! @type.Geometry::MultiPolygon(mpoly).try_into_multi_polygon()
   @test.assert_eq(extracted, mpoly)
 }
 ```
@@ -170,10 +176,10 @@ test "Geometry try_into_multi_polygon - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_geometry_collection - happy path" {
-  let gc = GeometryCollection::GeometryCollection([
-    Geometry::Point(Point::Point(1.0, 2.0)),
+  let gc = @type.GeometryCollection::GeometryCollection([
+    @type.Geometry::Point(@type.Point::Point(1.0, 2.0)),
   ])
-  let extracted = try! Geometry::GeometryCollection(gc).try_into_geometry_collection()
+  let extracted = try! @type.Geometry::GeometryCollection(gc).try_into_geometry_collection()
   @test.assert_eq(extracted, gc)
 }
 ```
@@ -185,8 +191,11 @@ test "Geometry try_into_geometry_collection - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_rect - happy path" {
-  let r = Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 1.0))
-  let extracted = try! Geometry::Rect(r).try_into_rect()
+  let r = @type.Rect::Rect(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 1.0),
+  )
+  let extracted = try! @type.Geometry::Rect(r).try_into_rect()
   @test.assert_eq(extracted, r)
 }
 ```
@@ -198,12 +207,12 @@ test "Geometry try_into_rect - happy path" {
 ```mbt check
 ///|
 test "Geometry try_into_triangle - happy path" {
-  let t = Triangle::Triangle(
-    Coord::Coord(0.0, 0.0),
-    Coord::Coord(1.0, 0.0),
-    Coord::Coord(0.0, 1.0),
+  let t = @type.Triangle::Triangle(
+    @type.Coord::Coord(0.0, 0.0),
+    @type.Coord::Coord(1.0, 0.0),
+    @type.Coord::Coord(0.0, 1.0),
   )
-  let extracted = try! Geometry::Triangle(t).try_into_triangle()
+  let extracted = try! @type.Geometry::Triangle(t).try_into_triangle()
   @test.assert_eq(extracted, t)
 }
 ```
@@ -216,21 +225,23 @@ test "Geometry try_into_* - exhaustive mismatch sweep across all 10 variants" {
   // Each row pairs a source variant with a try_into_* call that does NOT
   // match it. This visits every try_into_*'s mismatch branch (10 of 10) and
   // every Geometry variant in the `found` slot (10 of 10).
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
-  let mpoly = MultiPolygon::MultiPolygon([polygon])
-  let mls = MultiLineString::MultiLineString([
-    LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+  let polygon = @type.Polygon::Polygon(exterior, [])
+  let mpoly = @type.MultiPolygon::MultiPolygon([polygon])
+  let mls = @type.MultiLineString::MultiLineString([
+    @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   ])
-  let gc = GeometryCollection::GeometryCollection([
-    Geometry::Point(Point::Point(0.0, 0.0)),
+  let gc = @type.GeometryCollection::GeometryCollection([
+    @type.Geometry::Point(@type.Point::Point(0.0, 0.0)),
   ])
-  fn extract(thunk : () -> Unit raise MismatchedGeometry) -> (String, String) {
+  fn extract(
+    thunk : () -> Unit raise @type.MismatchedGeometry,
+  ) -> (String, String) {
     try {
       thunk()
       ("(unreachable)", "(unreachable)")
@@ -242,69 +253,76 @@ test "Geometry try_into_* - exhaustive mismatch sweep across all 10 variants" {
     // (source variant, try_into_* call, expected (variant_name(target)), found (variant_name(source)))
     (
       extract(() => {
-        let _ = Geometry::Point(Point::Point(0.0, 0.0)).try_into_line()
+        let _ = @type.Geometry::Point(@type.Point::Point(0.0, 0.0)).try_into_line()
       }),
       ("Line", "Point"),
     ),
     (
       extract(() => {
-        let _ = Geometry::Line(Line::from_tuples((0.0, 0.0), (1.0, 1.0))).try_into_line_string()
+        let _ = @type.Geometry::Line(
+          @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)),
+        ).try_into_line_string()
       }),
       ("LineString", "Line"),
     ),
     (
       extract(() => {
-        let _ = Geometry::LineString(
-          LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+        let _ = @type.Geometry::LineString(
+          @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
         ).try_into_polygon()
       }),
       ("Polygon", "LineString"),
     ),
     (
       extract(() => {
-        let _ = Geometry::Polygon(polygon).try_into_multi_point()
+        let _ = @type.Geometry::Polygon(polygon).try_into_multi_point()
       }),
       ("MultiPoint", "Polygon"),
     ),
     (
       extract(() => {
-        let _ = Geometry::MultiPoint(MultiPoint::from_tuples([(0.0, 0.0)])).try_into_multi_line_string()
+        let _ = @type.Geometry::MultiPoint(
+          @type.MultiPoint::from_tuples([(0.0, 0.0)]),
+        ).try_into_multi_line_string()
       }),
       ("MultiLineString", "MultiPoint"),
     ),
     (
       extract(() => {
-        let _ = Geometry::MultiLineString(mls).try_into_multi_polygon()
+        let _ = @type.Geometry::MultiLineString(mls).try_into_multi_polygon()
       }),
       ("MultiPolygon", "MultiLineString"),
     ),
     (
       extract(() => {
-        let _ = Geometry::MultiPolygon(mpoly).try_into_geometry_collection()
+        let _ = @type.Geometry::MultiPolygon(mpoly).try_into_geometry_collection()
       }),
       ("GeometryCollection", "MultiPolygon"),
     ),
     (
       extract(() => {
-        let _ = Geometry::GeometryCollection(gc).try_into_rect()
+        let _ = @type.Geometry::GeometryCollection(gc).try_into_rect()
       }),
       ("Rect", "GeometryCollection"),
     ),
     (
       extract(() => {
-        let _ = Geometry::Rect(
-          Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 1.0)),
+        let _ = @type.Geometry::Rect(
+          @type.Rect::Rect(
+            @type.Coord::Coord(0.0, 0.0),
+            @type.Coord::Coord(1.0, 1.0),
+          ),
         ).try_into_triangle()
       }),
       ("Triangle", "Rect"),
     ),
     (
       extract(() => {
-        let _ = Geometry::Triangle(
-          Triangle::Triangle(
-            Coord::Coord(0.0, 0.0),
-            Coord::Coord(1.0, 0.0),
-            Coord::Coord(0.0, 1.0),
+        let _ = @type.Geometry::Triangle(
+          @type.Triangle::Triangle(
+            @type.Coord::Coord(0.0, 0.0),
+            @type.Coord::Coord(1.0, 0.0),
+            @type.Coord::Coord(0.0, 1.0),
           ),
         ).try_into_point()
       }),
@@ -336,16 +354,16 @@ test "Geometry try_into_* - exhaustive mismatch sweep across all 10 variants" {
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - single-geometry variants are never empty" {
-  let p = Geometry::Point(Point::Point(0.0, 0.0))
-  let l = Geometry::Line(Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
-  let r = Geometry::Rect(
-    Rect::Rect(Coord::Coord(0.0, 0.0), Coord::Coord(1.0, 1.0)),
+  let p = @type.Geometry::Point(@type.Point::Point(0.0, 0.0))
+  let l = @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
+  let r = @type.Geometry::Rect(
+    @type.Rect::Rect(@type.Coord::Coord(0.0, 0.0), @type.Coord::Coord(1.0, 1.0)),
   )
-  let t = Geometry::Triangle(
-    Triangle::Triangle(
-      Coord::Coord(0.0, 0.0),
-      Coord::Coord(1.0, 0.0),
-      Coord::Coord(0.0, 1.0),
+  let t = @type.Geometry::Triangle(
+    @type.Triangle::Triangle(
+      @type.Coord::Coord(0.0, 0.0),
+      @type.Coord::Coord(1.0, 0.0),
+      @type.Coord::Coord(0.0, 1.0),
     ),
   )
   assert_false(p.is_empty())
@@ -353,7 +371,7 @@ test "Geometry IsEmpty::is_empty - single-geometry variants are never empty" {
   assert_false(r.is_empty())
   assert_false(t.is_empty())
   // Spot-check explicit trait dispatch matches the dot-syntax form.
-  @test.assert_eq(IsEmpty::is_empty(p), p.is_empty())
+  @test.assert_eq(@type.IsEmpty::is_empty(p), p.is_empty())
 }
 ```
 
@@ -362,9 +380,9 @@ test "Geometry IsEmpty::is_empty - single-geometry variants are never empty" {
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - LineString delegates" {
-  let empty = Geometry::LineString(LineString::empty())
-  let non_empty = Geometry::LineString(
-    LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+  let empty = @type.Geometry::LineString(@type.LineString::empty())
+  let non_empty = @type.Geometry::LineString(
+    @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   )
   assert_true(empty.is_empty())
   assert_false(non_empty.is_empty())
@@ -376,8 +394,10 @@ test "Geometry IsEmpty::is_empty - LineString delegates" {
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - MultiPoint delegates" {
-  let empty = Geometry::MultiPoint(MultiPoint::empty())
-  let non_empty = Geometry::MultiPoint(MultiPoint::from_tuples([(0.0, 0.0)]))
+  let empty = @type.Geometry::MultiPoint(@type.MultiPoint::empty())
+  let non_empty = @type.Geometry::MultiPoint(
+    @type.MultiPoint::from_tuples([(0.0, 0.0)]),
+  )
   assert_true(empty.is_empty())
   assert_false(non_empty.is_empty())
 }
@@ -388,13 +408,16 @@ test "Geometry IsEmpty::is_empty - MultiPoint delegates" {
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - MultiLineString true when all components empty" {
-  let all_empty = Geometry::MultiLineString(
-    MultiLineString::MultiLineString([LineString::empty(), LineString::empty()]),
+  let all_empty = @type.Geometry::MultiLineString(
+    @type.MultiLineString::MultiLineString([
+      @type.LineString::empty(),
+      @type.LineString::empty(),
+    ]),
   )
-  let any_filled = Geometry::MultiLineString(
-    MultiLineString::MultiLineString([
-      LineString::empty(),
-      LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
+  let any_filled = @type.Geometry::MultiLineString(
+    @type.MultiLineString::MultiLineString([
+      @type.LineString::empty(),
+      @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
     ]),
   )
   assert_true(all_empty.is_empty())
@@ -407,12 +430,12 @@ test "Geometry IsEmpty::is_empty - MultiLineString true when all components empt
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - Polygon true when exterior is empty" {
-  let empty_exterior = Geometry::Polygon(
-    Polygon::Polygon(LineString::empty(), []),
+  let empty_exterior = @type.Geometry::Polygon(
+    @type.Polygon::Polygon(@type.LineString::empty(), []),
   )
-  let filled_exterior = Geometry::Polygon(
-    Polygon::Polygon(
-      LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)]),
+  let filled_exterior = @type.Geometry::Polygon(
+    @type.Polygon::Polygon(
+      @type.LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)]),
       [],
     ),
   )
@@ -426,17 +449,17 @@ test "Geometry IsEmpty::is_empty - Polygon true when exterior is empty" {
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - MultiPolygon true when every exterior empty" {
-  let all_empty = Geometry::MultiPolygon(
-    MultiPolygon::MultiPolygon([
-      Polygon::Polygon(LineString::empty(), []),
-      Polygon::Polygon(LineString::empty(), []),
+  let all_empty = @type.Geometry::MultiPolygon(
+    @type.MultiPolygon::MultiPolygon([
+      @type.Polygon::Polygon(@type.LineString::empty(), []),
+      @type.Polygon::Polygon(@type.LineString::empty(), []),
     ]),
   )
-  let any_filled = Geometry::MultiPolygon(
-    MultiPolygon::MultiPolygon([
-      Polygon::Polygon(LineString::empty(), []),
-      Polygon::Polygon(
-        LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)]),
+  let any_filled = @type.Geometry::MultiPolygon(
+    @type.MultiPolygon::MultiPolygon([
+      @type.Polygon::Polygon(@type.LineString::empty(), []),
+      @type.Polygon::Polygon(
+        @type.LineString::from_tuples([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0)]),
         [],
       ),
     ]),
@@ -451,16 +474,16 @@ test "Geometry IsEmpty::is_empty - MultiPolygon true when every exterior empty" 
 ```mbt check
 ///|
 test "Geometry IsEmpty::is_empty - GeometryCollection true when all geometries empty" {
-  let all_empty = Geometry::GeometryCollection(
-    GeometryCollection::GeometryCollection([
-      Geometry::LineString(LineString::empty()),
-      Geometry::MultiPoint(MultiPoint::empty()),
+  let all_empty = @type.Geometry::GeometryCollection(
+    @type.GeometryCollection::GeometryCollection([
+      @type.Geometry::LineString(@type.LineString::empty()),
+      @type.Geometry::MultiPoint(@type.MultiPoint::empty()),
     ]),
   )
-  let any_filled = Geometry::GeometryCollection(
-    GeometryCollection::GeometryCollection([
-      Geometry::LineString(LineString::empty()),
-      Geometry::Point(Point::Point(0.0, 0.0)),
+  let any_filled = @type.Geometry::GeometryCollection(
+    @type.GeometryCollection::GeometryCollection([
+      @type.Geometry::LineString(@type.LineString::empty()),
+      @type.Geometry::Point(@type.Point::Point(0.0, 0.0)),
     ]),
   )
   assert_true(all_empty.is_empty())
@@ -477,10 +500,10 @@ test "Geometry IsEmpty::is_empty - GeometryCollection true when all geometries e
 ```mbt check
 ///|
 test "Geometry Eq::op_equal - equal and unequal" {
-  let a = Geometry::Point(Point::Point(1.0, 2.0))
-  let b = Geometry::Point(Point::Point(1.0, 2.0))
-  let c = Geometry::Point(Point::Point(3.0, 4.0))
-  let d = Geometry::Line(Line::from_tuples((1.0, 2.0), (3.0, 4.0)))
+  let a = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
+  let b = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
+  let c = @type.Geometry::Point(@type.Point::Point(3.0, 4.0))
+  let d = @type.Geometry::Line(@type.Line::from_tuples((1.0, 2.0), (3.0, 4.0)))
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
   @test.assert_not_eq(a, d)

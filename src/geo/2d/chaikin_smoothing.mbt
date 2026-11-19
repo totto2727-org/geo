@@ -8,7 +8,7 @@
 /// linestrings; closed linestrings smooth uniformly.
 pub fn chaikin_smoothing(
   ls : @type.LineString,
-  n_iterations : Int,
+  n_iterations : Int32,
 ) -> @type.LineString {
   (0).until(n_iterations).fold(init=ls, fn(acc, _) { chaikin_step(acc) })
 }

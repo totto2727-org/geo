@@ -16,15 +16,16 @@
 /// This type does not represent any geospatial primitive, but is used in their
 /// definitions. The only requirement is that the coordinates it contains are
 /// valid numbers (e.g. not `NaN`).
+#derive(Eq, Debug, Hash, Default)
 pub struct Coord {
   x : Double
   y : Double
-} derive(Eq, Debug, Hash, Default)
+}
 
 ///|
 /// Creates a new `Coord` from the given `x` and `y` ordinate values.
 pub fn Coord::Coord(x : Double, y : Double) -> Coord {
-  Coord::{ x, y }
+  Coord::{ x, y, }
 }
 
 ///|

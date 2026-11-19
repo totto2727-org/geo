@@ -8,15 +8,16 @@
 ///
 /// The _interior_ and _boundary_ are defined as with a `LineString` containing
 /// only the two end points.
+#derive(Eq, Debug, Hash)
 pub struct Line {
   start : Coord
   end : Coord
-} derive(Eq, Debug, Hash)
+}
 
 ///|
 /// Creates a new line segment from two coordinates.
 pub fn Line::Line(start : Coord, end : Coord) -> Line {
-  Line::{ start, end }
+  Line::{ start, end, }
 }
 
 ///|

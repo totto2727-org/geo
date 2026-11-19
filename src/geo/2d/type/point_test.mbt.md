@@ -32,7 +32,7 @@ A single point in 2D space backed by a `Coord` field. Provides accessors, constr
 ```mbt check
 ///|
 test "Point::Point - simple initialization" {
-  let p = Point::Point(1.234, 2.345)
+  let p = @type.Point::Point(1.234, 2.345)
   debug_inspect(
     p,
     content=(
@@ -49,8 +49,8 @@ test "Point::Point - simple initialization" {
 ```mbt check
 ///|
 test "Point::from_coord - round-trip via coord()" {
-  let c = Coord::Coord(10.0, 20.0)
-  let p = Point::from_coord(c)
+  let c = @type.Coord::Coord(10.0, 20.0)
+  let p = @type.Point::from_coord(c)
   @test.assert_eq(p.coord(), c)
 }
 ```
@@ -62,7 +62,7 @@ test "Point::from_coord - round-trip via coord()" {
 ```mbt check
 ///|
 test "Point::from_tuple - round-trip via x_y()" {
-  let p = Point::from_tuple((40.02, 116.34))
+  let p = @type.Point::from_tuple((40.02, 116.34))
   @test.assert_eq(p.x_y(), (40.02, 116.34))
 }
 ```
@@ -74,8 +74,8 @@ test "Point::from_tuple - round-trip via x_y()" {
 ```mbt check
 ///|
 test "Point coord - returns underlying Coord" {
-  let p = Point::Point(1.0, 2.0)
-  @test.assert_eq(p.coord(), Coord::Coord(1.0, 2.0))
+  let p = @type.Point::Point(1.0, 2.0)
+  @test.assert_eq(p.coord(), @type.Coord::Coord(1.0, 2.0))
 }
 ```
 
@@ -86,7 +86,7 @@ test "Point coord - returns underlying Coord" {
 ```mbt check
 ///|
 test "Point x - returns x component" {
-  let p = Point::Point(1.234, 2.345)
+  let p = @type.Point::Point(1.234, 2.345)
   @test.assert_eq(p.x(), 1.234)
 }
 ```
@@ -98,7 +98,7 @@ test "Point x - returns x component" {
 ```mbt check
 ///|
 test "Point y - returns y component" {
-  let p = Point::Point(1.234, 2.345)
+  let p = @type.Point::Point(1.234, 2.345)
   @test.assert_eq(p.y(), 2.345)
 }
 ```
@@ -110,7 +110,7 @@ test "Point y - returns y component" {
 ```mbt check
 ///|
 test "Point x_y - returns tuple" {
-  let p = Point::Point(1.234, 2.345)
+  let p = @type.Point::Point(1.234, 2.345)
   @test.assert_eq(p.x_y(), (1.234, 2.345))
 }
 ```
@@ -122,8 +122,8 @@ test "Point x_y - returns tuple" {
 ```mbt check
 ///|
 test "Point with_x - replaces x preserving y" {
-  let p = Point::Point(1.234, 2.345).with_x(9.876)
-  @test.assert_eq(p, Point::Point(9.876, 2.345))
+  let p = @type.Point::Point(1.234, 2.345).with_x(9.876)
+  @test.assert_eq(p, @type.Point::Point(9.876, 2.345))
 }
 ```
 
@@ -134,8 +134,8 @@ test "Point with_x - replaces x preserving y" {
 ```mbt check
 ///|
 test "Point with_y - replaces y preserving x" {
-  let p = Point::Point(1.234, 2.345).with_y(9.876)
-  @test.assert_eq(p, Point::Point(1.234, 9.876))
+  let p = @type.Point::Point(1.234, 2.345).with_y(9.876)
+  @test.assert_eq(p, @type.Point::Point(1.234, 9.876))
 }
 ```
 
@@ -146,8 +146,8 @@ test "Point with_y - replaces y preserving x" {
 ```mbt check
 ///|
 test "Point dot - basic dot product" {
-  let p = Point::Point(1.5, 0.5)
-  let q = Point::Point(2.0, 4.5)
+  let p = @type.Point::Point(1.5, 0.5)
+  let q = @type.Point::Point(2.0, 4.5)
   // 1.5*2.0 + 0.5*4.5 = 5.25
   @test.assert_eq(p.dot(q), 5.25)
 }
@@ -160,9 +160,9 @@ test "Point dot - basic dot product" {
 ```mbt check
 ///|
 test "Point cross_prod - triangle wedge product" {
-  let a = Point::Point(1.0, 2.0)
-  let b = Point::Point(3.0, 5.0)
-  let c = Point::Point(7.0, 12.0)
+  let a = @type.Point::Point(1.0, 2.0)
+  let b = @type.Point::Point(3.0, 5.0)
+  let c = @type.Point::Point(7.0, 12.0)
   // (3-1)*(12-2) - (5-2)*(7-1) = 20 - 18 = 2
   @test.assert_eq(a.cross_prod(b, c), 2.0)
 }
@@ -177,8 +177,8 @@ test "Point cross_prod - triangle wedge product" {
 ```mbt check
 ///|
 test "Point Neg::neg - basic negation" {
-  let p = -Point::Point(-1.25, 2.5)
-  @test.assert_eq(p, Point::Point(1.25, -2.5))
+  let p = -@type.Point::Point(-1.25, 2.5)
+  @test.assert_eq(p, @type.Point::Point(1.25, -2.5))
 }
 ```
 
@@ -191,8 +191,8 @@ test "Point Neg::neg - basic negation" {
 ```mbt check
 ///|
 test "Point Add::add - component-wise addition" {
-  let p = Point::Point(1.25, 2.5) + Point::Point(1.5, 2.5)
-  @test.assert_eq(p, Point::Point(2.75, 5.0))
+  let p = @type.Point::Point(1.25, 2.5) + @type.Point::Point(1.5, 2.5)
+  @test.assert_eq(p, @type.Point::Point(2.75, 5.0))
 }
 ```
 
@@ -205,8 +205,8 @@ test "Point Add::add - component-wise addition" {
 ```mbt check
 ///|
 test "Point Sub::sub - component-wise subtraction" {
-  let p = Point::Point(1.25, 3.0) - Point::Point(1.5, 2.5)
-  @test.assert_eq(p, Point::Point(-0.25, 0.5))
+  let p = @type.Point::Point(1.25, 3.0) - @type.Point::Point(1.5, 2.5)
+  @test.assert_eq(p, @type.Point::Point(-0.25, 0.5))
 }
 ```
 
@@ -217,8 +217,8 @@ test "Point Sub::sub - component-wise subtraction" {
 ```mbt check
 ///|
 test "Point mul - scalar multiplication" {
-  let p = Point::Point(2.0, 3.0).mul(2.0)
-  @test.assert_eq(p, Point::Point(4.0, 6.0))
+  let p = @type.Point::Point(2.0, 3.0).mul(2.0)
+  @test.assert_eq(p, @type.Point::Point(4.0, 6.0))
 }
 ```
 
@@ -229,8 +229,8 @@ test "Point mul - scalar multiplication" {
 ```mbt check
 ///|
 test "Point div - scalar division" {
-  let p = Point::Point(4.0, 6.0).div(2.0)
-  @test.assert_eq(p, Point::Point(2.0, 3.0))
+  let p = @type.Point::Point(4.0, 6.0).div(2.0)
+  @test.assert_eq(p, @type.Point::Point(2.0, 3.0))
 }
 ```
 
@@ -243,9 +243,9 @@ test "Point div - scalar division" {
 ```mbt check
 ///|
 test "Point Eq::op_equal - equal and unequal" {
-  let a = Point::Point(1.0, 2.0)
-  let b = Point::Point(1.0, 2.0)
-  let c = Point::Point(1.0, 3.0)
+  let a = @type.Point::Point(1.0, 2.0)
+  let b = @type.Point::Point(1.0, 2.0)
+  let c = @type.Point::Point(1.0, 3.0)
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -260,7 +260,7 @@ test "Point Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "Point Default::default - is origin" {
-  let d : Point = Point::default()
-  @test.assert_eq(d, Point::Point(0.0, 0.0))
+  let d : @type.Point = @type.Point::default()
+  @test.assert_eq(d, @type.Point::Point(0.0, 0.0))
 }
 ```

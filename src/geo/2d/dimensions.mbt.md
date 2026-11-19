@@ -18,10 +18,10 @@ The `Dimensions` enum — `Empty`, `ZeroDimensional`, `OneDimensional`, `TwoDime
 ```mbt check
 ///|
 test "Dimensions::rank - 0..3 in natural order" {
-  @test.assert_eq(Dimensions::Empty.rank(), 0)
-  @test.assert_eq(Dimensions::ZeroDimensional.rank(), 1)
-  @test.assert_eq(Dimensions::OneDimensional.rank(), 2)
-  @test.assert_eq(Dimensions::TwoDimensional.rank(), 3)
+  @test.assert_eq(@geo.Dimensions::Empty.rank(), 0)
+  @test.assert_eq(@geo.Dimensions::ZeroDimensional.rank(), 1)
+  @test.assert_eq(@geo.Dimensions::OneDimensional.rank(), 2)
+  @test.assert_eq(@geo.Dimensions::TwoDimensional.rank(), 3)
 }
 ```
 
@@ -32,15 +32,29 @@ test "Dimensions::rank - 0..3 in natural order" {
 ```mbt check
 ///|
 test "dimensions_less - strict less by rank" {
-  assert_true(dimensions_less(Dimensions::Empty, Dimensions::ZeroDimensional))
   assert_true(
-    dimensions_less(Dimensions::OneDimensional, Dimensions::TwoDimensional),
+    @geo.dimensions_less(
+      @geo.Dimensions::Empty,
+      @geo.Dimensions::ZeroDimensional,
+    ),
+  )
+  assert_true(
+    @geo.dimensions_less(
+      @geo.Dimensions::OneDimensional,
+      @geo.Dimensions::TwoDimensional,
+    ),
   )
   assert_false(
-    dimensions_less(Dimensions::TwoDimensional, Dimensions::TwoDimensional),
+    @geo.dimensions_less(
+      @geo.Dimensions::TwoDimensional,
+      @geo.Dimensions::TwoDimensional,
+    ),
   )
   assert_false(
-    dimensions_less(Dimensions::TwoDimensional, Dimensions::OneDimensional),
+    @geo.dimensions_less(
+      @geo.Dimensions::TwoDimensional,
+      @geo.Dimensions::OneDimensional,
+    ),
   )
 }
 ```
@@ -63,10 +77,10 @@ test "dimensions_less - strict less by rank" {
 ///|
 test "HasDimensions::dimensions - Point is ZeroDimensional" {
   @test.assert_eq(
-    HasDimensions::dimensions(
+    @geo.HasDimensions::dimensions(
       @type.Geometry::Point(@type.Point::Point(0.0, 5.0)),
     ),
-    Dimensions::ZeroDimensional,
+    @geo.Dimensions::ZeroDimensional,
   )
 }
 ```
@@ -78,8 +92,8 @@ test "HasDimensions::dimensions - Point is ZeroDimensional" {
 test "HasDimensions::dimensions - non-degenerate LineString is OneDimensional" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (5.0, 5.0), (0.0, 5.0)])
   @test.assert_eq(
-    HasDimensions::dimensions(@type.Geometry::LineString(ls)),
-    Dimensions::OneDimensional,
+    @geo.HasDimensions::dimensions(@type.Geometry::LineString(ls)),
+    @geo.Dimensions::OneDimensional,
   )
 }
 ```
@@ -94,8 +108,8 @@ test "HasDimensions::dimensions - non-degenerate Rect is TwoDimensional" {
     @type.Coord::Coord(10.0, 10.0),
   )
   @test.assert_eq(
-    HasDimensions::dimensions(@type.Geometry::Rect(r)),
-    Dimensions::TwoDimensional,
+    @geo.HasDimensions::dimensions(@type.Geometry::Rect(r)),
+    @geo.Dimensions::TwoDimensional,
   )
 }
 ```
@@ -111,8 +125,8 @@ test "HasDimensions::dimensions - degenerate Rect collapses to lower rank" {
     @type.Coord::Coord(10.0, 10.0),
   )
   @test.assert_eq(
-    HasDimensions::dimensions(zero_height),
-    Dimensions::OneDimensional,
+    @geo.HasDimensions::dimensions(zero_height),
+    @geo.Dimensions::OneDimensional,
   )
   // Zero width and zero height: collapses to a single point.
   let zero_size = @type.Rect::Rect(
@@ -120,8 +134,8 @@ test "HasDimensions::dimensions - degenerate Rect collapses to lower rank" {
     @type.Coord::Coord(10.0, 10.0),
   )
   @test.assert_eq(
-    HasDimensions::dimensions(zero_size),
-    Dimensions::ZeroDimensional,
+    @geo.HasDimensions::dimensions(zero_size),
+    @geo.Dimensions::ZeroDimensional,
   )
 }
 ```
@@ -133,8 +147,8 @@ test "HasDimensions::dimensions - degenerate Rect collapses to lower rank" {
 test "HasDimensions::dimensions - empty MultiPoint is Empty" {
   let mp = @type.MultiPoint::empty()
   @test.assert_eq(
-    HasDimensions::dimensions(@type.Geometry::MultiPoint(mp)),
-    Dimensions::Empty,
+    @geo.HasDimensions::dimensions(@type.Geometry::MultiPoint(mp)),
+    @geo.Dimensions::Empty,
   )
 }
 ```

@@ -10,16 +10,16 @@ Index service areas and return the depot closest to a delivery coordinate:
 ///|
 test "find the nearest depot" {
   let depots = [
-    Entry::Entry(
+    @rtree.Entry::Entry(
       @type.Rect::Rect(@type.Coord(0.0, 0.0), @type.Coord(1.0, 1.0)),
       "west depot",
     ),
-    Entry::Entry(
+    @rtree.Entry::Entry(
       @type.Rect::Rect(@type.Coord(10.0, 10.0), @type.Coord(11.0, 11.0)),
       "east depot",
     ),
   ]
-  let index = RTree::bulk_load(depots)
+  let index = @rtree.RTree::bulk_load(depots)
   @test.assert_eq(
     index.query_nearest(@type.Coord(9.5, 9.5)),
     Some("east depot"),

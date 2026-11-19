@@ -26,8 +26,8 @@ Defines the `Closest` enum (the result of a closest-point query): `Intersection`
 test "ClosestPoint::closest_point - foot of normal at midpoint" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   @test.assert_eq(
-    ClosestPoint::closest_point(l, @type.Coord::Coord(5.0, 5.0)),
-    Closest::SinglePoint(@type.Coord::Coord(5.0, 0.0)),
+    @geo.ClosestPoint::closest_point(l, @type.Coord::Coord(5.0, 5.0)),
+    @geo.Closest::SinglePoint(@type.Coord::Coord(5.0, 0.0)),
   )
 }
 ```
@@ -39,8 +39,8 @@ test "ClosestPoint::closest_point - foot of normal at midpoint" {
 test "ClosestPoint::closest_point - beyond start clamps to start" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   @test.assert_eq(
-    ClosestPoint::closest_point(l, @type.Coord::Coord(-5.0, 5.0)),
-    Closest::SinglePoint(@type.Coord::Coord(0.0, 0.0)),
+    @geo.ClosestPoint::closest_point(l, @type.Coord::Coord(-5.0, 5.0)),
+    @geo.Closest::SinglePoint(@type.Coord::Coord(0.0, 0.0)),
   )
 }
 ```
@@ -52,23 +52,23 @@ test "ClosestPoint::closest_point - beyond start clamps to start" {
 test "ClosestPoint::closest_point - LineString empty / single / multi-segment" {
   // Empty LineString → Indeterminate.
   @test.assert_eq(
-    ClosestPoint::closest_point(
+    @geo.ClosestPoint::closest_point(
       @type.LineString::empty(),
       @type.Coord::Coord(0.0, 0.0),
     ),
-    Closest::Indeterminate,
+    @geo.Closest::Indeterminate,
   )
   // Multi-segment LineString picks the closer segment, exercising the
   // SinglePoint vs SinglePoint comparison branch.
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0), (10.0, 10.0)])
   @test.assert_eq(
-    ClosestPoint::closest_point(ls, @type.Coord::Coord(5.0, -1.0)),
-    Closest::SinglePoint(@type.Coord::Coord(5.0, 0.0)),
+    @geo.ClosestPoint::closest_point(ls, @type.Coord::Coord(5.0, -1.0)),
+    @geo.Closest::SinglePoint(@type.Coord::Coord(5.0, 0.0)),
   )
   // Target on the LineString → Intersection.
   @test.assert_eq(
-    ClosestPoint::closest_point(ls, @type.Coord::Coord(5.0, 0.0)),
-    Closest::Intersection(@type.Coord::Coord(5.0, 0.0)),
+    @geo.ClosestPoint::closest_point(ls, @type.Coord::Coord(5.0, 0.0)),
+    @geo.Closest::Intersection(@type.Coord::Coord(5.0, 0.0)),
   )
 }
 ```
@@ -80,12 +80,12 @@ test "ClosestPoint::closest_point - LineString empty / single / multi-segment" {
 test "ClosestPoint::closest_point - Line degenerate (start == end)" {
   let degenerate = @type.Line::from_tuples((3.0, 4.0), (3.0, 4.0))
   @test.assert_eq(
-    ClosestPoint::closest_point(degenerate, @type.Coord::Coord(3.0, 4.0)),
-    Closest::Intersection(@type.Coord::Coord(3.0, 4.0)),
+    @geo.ClosestPoint::closest_point(degenerate, @type.Coord::Coord(3.0, 4.0)),
+    @geo.Closest::Intersection(@type.Coord::Coord(3.0, 4.0)),
   )
   @test.assert_eq(
-    ClosestPoint::closest_point(degenerate, @type.Coord::Coord(10.0, 10.0)),
-    Closest::SinglePoint(@type.Coord::Coord(3.0, 4.0)),
+    @geo.ClosestPoint::closest_point(degenerate, @type.Coord::Coord(10.0, 10.0)),
+    @geo.Closest::SinglePoint(@type.Coord::Coord(3.0, 4.0)),
   )
 }
 ```
@@ -97,8 +97,8 @@ test "ClosestPoint::closest_point - Line degenerate (start == end)" {
 test "ClosestPoint::closest_point - target on line gives Intersection" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   @test.assert_eq(
-    ClosestPoint::closest_point(l, @type.Coord::Coord(5.0, 0.0)),
-    Closest::Intersection(@type.Coord::Coord(5.0, 0.0)),
+    @geo.ClosestPoint::closest_point(l, @type.Coord::Coord(5.0, 0.0)),
+    @geo.Closest::Intersection(@type.Coord::Coord(5.0, 0.0)),
   )
 }
 ```

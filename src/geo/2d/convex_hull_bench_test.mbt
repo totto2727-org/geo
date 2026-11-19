@@ -55,5 +55,5 @@ test "bench: convex_hull n=50" (b : @bench.T) {
     (4.0, 8.0),
     (10.0, 0.0),
   ])
-  b.bench(fn() { b.keep(HasConvexHull::convex_hull(mp)) })
+  b.bench(fn() { b.keep(@geo.HasConvexHull::convex_hull(mp)) })
 }

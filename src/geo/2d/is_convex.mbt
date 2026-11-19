@@ -24,7 +24,7 @@ pub fn is_strictly_convex(ls : @type.LineString) -> Bool {
 /// `Sign` carries +1 / -1 for CCW / CW; `Fail` short-circuits to `false`.
 priv enum ConvexStep {
   Skip
-  Sign(Int)
+  Sign(Int32)
   Fail
 }
 
@@ -42,7 +42,7 @@ fn is_convex_with_strictness(ls : @type.LineString, strict : Bool) -> Bool {
   // `None` once a sign flip / collinear-strict failure is detected.
   let result = (0)
     .until(effective_n)
-    .fold(init=Some(0), fn(acc : Int?, i : Int) {
+    .fold(init=Some(0), fn(acc : Int32?, i : Int32) {
       match acc {
         None => None
         Some(sign) => {

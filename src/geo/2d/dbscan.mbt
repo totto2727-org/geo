@@ -19,7 +19,7 @@ priv enum PointState {
   Unvisited
   Noise
   Queued
-  Clustered(Int)
+  Clustered(Int32)
 }
 
 ///|
@@ -52,8 +52,8 @@ fn point_state_is_unassigned(state : PointState) -> Bool {
 pub fn dbscan(
   points : Array[@type.Point],
   eps : Double,
-  min_pts : Int,
-) -> Array[Int] {
+  min_pts : Int32,
+) -> Array[Int32] {
   let n = points.length()
   if n == 0 {
     return []
@@ -65,7 +65,7 @@ pub fn dbscan(
   // Build an R*-tree of degenerate point rects so each entry's bbox is
   // the point itself. `locate_within_distance` then returns the indices
   // of every point whose Euclidean distance to the query is `<= eps`.
-  let entries : Array[@rtree.Entry[Int]] = []
+  let entries : Array[@rtree.Entry[Int32]] = []
   for i = 0; i < n; i = i + 1 {
     let c = points[i].coord()
     entries.push(@rtree.Entry(@type.Rect::Rect(c, c), i))
@@ -88,7 +88,7 @@ pub fn dbscan(
           states[point_idx] = PointState::Clustered(cluster_id)
           // BFS expansion. `head` walks the queue without popping so
           // the queue itself stays append-only.
-          let queue : Array[Int] = []
+          let queue : Array[Int32] = []
           for i = 0; i < neighbours.length(); i = i + 1 {
             let nbr = neighbours[i]
             if point_state_is_unassigned(states[nbr]) {
@@ -125,7 +125,7 @@ pub fn dbscan(
       _ => ()
     }
   }
-  let labels : Array[Int] = Array::make(n, 0)
+  let labels : Array[Int32] = Array::make(n, 0)
   for i = 0; i < n; i = i + 1 {
     match states[i] {
       PointState::Clustered(id) => labels[i] = id
@@ -142,10 +142,10 @@ pub fn dbscan(
 pub fn dbscan_outliers(
   points : Array[@type.Point],
   eps : Double,
-  min_pts : Int,
-) -> Array[Int] {
+  min_pts : Int32,
+) -> Array[Int32] {
   let labels = dbscan(points, eps, min_pts)
-  let outliers : Array[Int] = []
+  let outliers : Array[Int32] = []
   for i = 0; i < labels.length(); i = i + 1 {
     if labels[i] == 0 {
       outliers.push(i)

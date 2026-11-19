@@ -35,9 +35,9 @@
 /// no assignment changes between two consecutive iterations.
 pub fn kmeans(
   points : Array[@type.Point],
-  k : Int,
-  max_iter : Int,
-) -> (Array[@type.Coord], Array[Int])? {
+  k : Int32,
+  max_iter : Int32,
+) -> (Array[@type.Coord], Array[Int32])? {
   let n = points.length()
   if k <= 0 || k > n {
     return None
@@ -49,7 +49,7 @@ pub fn kmeans(
   }
   // -1 sentinel forces the first iteration's reassignment to register a
   // change so we always do at least one centroid update before exiting.
-  let assignments : Array[Int] = Array::make(n, -1)
+  let assignments : Array[Int32] = Array::make(n, -1)
   let mut iter = 0
   let mut keep_going = true
   while keep_going && iter < max_iter {
@@ -78,7 +78,7 @@ pub fn kmeans(
       // Update step: each centroid becomes the mean of its members.
       let sums_x : Array[Double] = Array::make(k, 0.0)
       let sums_y : Array[Double] = Array::make(k, 0.0)
-      let counts : Array[Int] = Array::make(k, 0)
+      let counts : Array[Int32] = Array::make(k, 0)
       for i = 0; i < n; i = i + 1 {
         let c = points[i].coord()
         let cluster = assignments[i]

@@ -18,10 +18,11 @@
 ///
 /// This module does not enforce validity; use the `validation` algorithm
 /// (planned for ms-15) for explicit checks.
+#derive(Eq, Debug)
 pub struct Polygon {
   exterior : LineString
   interiors : Array[LineString]
-} derive(Eq, Debug)
+}
 
 ///|
 /// Creates a new `Polygon`.
@@ -38,7 +39,7 @@ pub fn Polygon::Polygon(
 ) -> Polygon {
   let closed_exterior = exterior.closed()
   let closed_interiors = interiors.map(LineString::closed)
-  Polygon::{ exterior: closed_exterior, interiors: closed_interiors }
+  Polygon::{ exterior: closed_exterior, interiors: closed_interiors, }
 }
 
 ///|
@@ -62,14 +63,14 @@ pub fn Polygon::interiors(self : Polygon) -> Array[LineString] {
 
 ///|
 /// Returns the number of interior rings (holes).
-pub fn Polygon::num_interiors(self : Polygon) -> Int {
+pub fn Polygon::num_interiors(self : Polygon) -> Int32 {
   self.interiors.length()
 }
 
 ///|
 /// Returns the total number of rings: exterior (1) plus interiors. Mirrors
 /// Rust upstream `Polygon::num_rings`.
-pub fn Polygon::num_rings(self : Polygon) -> Int {
+pub fn Polygon::num_rings(self : Polygon) -> Int32 {
   self.interiors.length() + 1
 }
 

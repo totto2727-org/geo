@@ -23,13 +23,15 @@ A collection of `Polygon`s. Provides constructors (from a `Polygon` array, empty
 ```mbt check
 ///|
 test "MultiPolygon::MultiPolygon - simple initialization" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let mp = MultiPolygon::MultiPolygon([Polygon::Polygon(exterior, [])])
+  let mp = @type.MultiPolygon::MultiPolygon([
+    @type.Polygon::Polygon(exterior, []),
+  ])
   debug_inspect(
     mp,
     content=(
@@ -61,7 +63,10 @@ test "MultiPolygon::MultiPolygon - simple initialization" {
 ```mbt check
 ///|
 test "MultiPolygon::empty - equivalent to MultiPolygon([])" {
-  @test.assert_eq(MultiPolygon::empty(), MultiPolygon::MultiPolygon([]))
+  @test.assert_eq(
+    @type.MultiPolygon::empty(),
+    @type.MultiPolygon::MultiPolygon([]),
+  )
 }
 ```
 
@@ -72,14 +77,14 @@ test "MultiPolygon::empty - equivalent to MultiPolygon([])" {
 ```mbt check
 ///|
 test "MultiPolygon polygons - returns underlying polygon array" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
-  let mp = MultiPolygon::MultiPolygon([polygon])
+  let polygon = @type.Polygon::Polygon(exterior, [])
+  let mp = @type.MultiPolygon::MultiPolygon([polygon])
   @test.assert_eq(mp.polygons(), [polygon])
 }
 ```
@@ -93,15 +98,17 @@ test "MultiPolygon polygons - returns underlying polygon array" {
 ```mbt check
 ///|
 test "MultiPolygon HasLength::length - returns number of polygons" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let mp = MultiPolygon::MultiPolygon([Polygon::Polygon(exterior, [])])
+  let mp = @type.MultiPolygon::MultiPolygon([
+    @type.Polygon::Polygon(exterior, []),
+  ])
   @test.assert_eq(mp.length(), 1)
-  @test.assert_eq(HasLength::length(mp), 1)
+  @test.assert_eq(@type.HasLength::length(mp), 1)
 }
 ```
 
@@ -119,13 +126,15 @@ test "MultiPolygon HasLength::length - returns number of polygons" {
 ```mbt check
 ///|
 test "MultiPolygon IsEmpty::is_empty - false when non-empty" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let mp = MultiPolygon::MultiPolygon([Polygon::Polygon(exterior, [])])
+  let mp = @type.MultiPolygon::MultiPolygon([
+    @type.Polygon::Polygon(exterior, []),
+  ])
   assert_false(mp.is_empty())
 }
 ```
@@ -135,7 +144,7 @@ test "MultiPolygon IsEmpty::is_empty - false when non-empty" {
 ```mbt check
 ///|
 test "MultiPolygon IsEmpty::is_empty - true when empty" {
-  assert_true(MultiPolygon::empty().is_empty())
+  assert_true(@type.MultiPolygon::empty().is_empty())
 }
 ```
 
@@ -148,23 +157,23 @@ test "MultiPolygon IsEmpty::is_empty - true when empty" {
 ```mbt check
 ///|
 test "MultiPolygon Eq::op_equal - equal and unequal" {
-  let exterior = LineString::from_tuples([
+  let exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (1.0, 0.0),
     (1.0, 1.0),
     (0.0, 1.0),
   ])
-  let other_exterior = LineString::from_tuples([
+  let other_exterior = @type.LineString::from_tuples([
     (0.0, 0.0),
     (2.0, 0.0),
     (2.0, 2.0),
     (0.0, 2.0),
   ])
-  let polygon = Polygon::Polygon(exterior, [])
-  let other_polygon = Polygon::Polygon(other_exterior, [])
-  let a = MultiPolygon::MultiPolygon([polygon])
-  let b = MultiPolygon::MultiPolygon([polygon])
-  let c = MultiPolygon::MultiPolygon([other_polygon])
+  let polygon = @type.Polygon::Polygon(exterior, [])
+  let other_polygon = @type.Polygon::Polygon(other_exterior, [])
+  let a = @type.MultiPolygon::MultiPolygon([polygon])
+  let b = @type.MultiPolygon::MultiPolygon([polygon])
+  let c = @type.MultiPolygon::MultiPolygon([other_polygon])
   @test.assert_eq(a, b)
   @test.assert_not_eq(a, c)
 }
@@ -179,7 +188,7 @@ test "MultiPolygon Eq::op_equal - equal and unequal" {
 ```mbt check
 ///|
 test "MultiPolygon Default::default - is empty" {
-  let d : MultiPolygon = MultiPolygon::default()
-  @test.assert_eq(d, MultiPolygon::empty())
+  let d : @type.MultiPolygon = @type.MultiPolygon::default()
+  @test.assert_eq(d, @type.MultiPolygon::empty())
 }
 ```

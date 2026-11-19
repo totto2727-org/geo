@@ -18,7 +18,7 @@ The monotone partition / `monotone_chain` building block is **not** included in 
 ```mbt check
 ///|
 test "segment_intersections - empty input" {
-  let coords = segment_intersections([])
+  let coords = @geo.segment_intersections([])
   @test.assert_eq(coords.length(), 0)
 }
 ```
@@ -30,7 +30,7 @@ test "segment_intersections - empty input" {
 test "segment_intersections - two disjoint segments" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (1.0, 0.0))
   let l2 = @type.Line::from_tuples((2.0, 1.0), (3.0, 1.0))
-  let coords = segment_intersections([l1, l2])
+  let coords = @geo.segment_intersections([l1, l2])
   @test.assert_eq(coords.length(), 0)
 }
 ```
@@ -42,11 +42,11 @@ test "segment_intersections - two disjoint segments" {
 test "segment_intersections - two crossing segments meet at the center" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (10.0, 10.0))
   let l2 = @type.Line::from_tuples((0.0, 10.0), (10.0, 0.0))
-  let coords = segment_intersections([l1, l2])
+  let coords = @geo.segment_intersections([l1, l2])
   @test.assert_eq(coords.length(), 1)
   let c = coords[0]
-  assert_true((c.x() - 5.0).abs() < TOLERANCE)
-  assert_true((c.y() - 5.0).abs() < TOLERANCE)
+  assert_true((c.x() - 5.0).abs() < @geo.TOLERANCE)
+  assert_true((c.y() - 5.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -61,7 +61,7 @@ test "segment_intersections - triangle yields 3 corner intersections" {
   let ab = @type.Line::Line(a, b)
   let bc = @type.Line::Line(b, c)
   let ca = @type.Line::Line(c, a)
-  let coords = segment_intersections([ab, bc, ca])
+  let coords = @geo.segment_intersections([ab, bc, ca])
   @test.assert_eq(coords.length(), 3)
 }
 ```
@@ -73,10 +73,10 @@ test "segment_intersections - triangle yields 3 corner intersections" {
 test "segment_intersections - endpoint touch is reported" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))
   let l2 = @type.Line::from_tuples((1.0, 1.0), (2.0, 0.0))
-  let coords = segment_intersections([l1, l2])
+  let coords = @geo.segment_intersections([l1, l2])
   @test.assert_eq(coords.length(), 1)
-  assert_true((coords[0].x() - 1.0).abs() < TOLERANCE)
-  assert_true((coords[0].y() - 1.0).abs() < TOLERANCE)
+  assert_true((coords[0].x() - 1.0).abs() < @geo.TOLERANCE)
+  assert_true((coords[0].y() - 1.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -87,7 +87,7 @@ test "segment_intersections - endpoint touch is reported" {
 test "segment_intersections - overlapping collinear segments" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (4.0, 0.0))
   let l2 = @type.Line::from_tuples((2.0, 0.0), (6.0, 0.0))
-  let coords = segment_intersections([l1, l2])
+  let coords = @geo.segment_intersections([l1, l2])
   @test.assert_eq(coords.length(), 2)
   coords.sort_by(fn(a, b) {
     if a.x() < b.x() {
@@ -98,11 +98,11 @@ test "segment_intersections - overlapping collinear segments" {
       0
     }
   })
-  assert_true((coords[0].x() - 2.0).abs() < TOLERANCE)
-  assert_true(coords[0].y().abs() < TOLERANCE)
-  assert_true((coords[1].x() - 4.0).abs() < TOLERANCE)
-  assert_true(coords[1].y().abs() < TOLERANCE)
-  assert_true(has_segment_intersection([l1, l2]))
+  assert_true((coords[0].x() - 2.0).abs() < @geo.TOLERANCE)
+  assert_true(coords[0].y().abs() < @geo.TOLERANCE)
+  assert_true((coords[1].x() - 4.0).abs() < @geo.TOLERANCE)
+  assert_true(coords[1].y().abs() < @geo.TOLERANCE)
+  assert_true(@geo.has_segment_intersection([l1, l2]))
 }
 ```
 
@@ -126,7 +126,7 @@ test "segment_intersections - 3x4 grid yields 12 intersections" {
     segments.push(@type.Line::from_tuples((x, 0.0), (x, 4.0)))
     v = v + 1
   }
-  let coords = segment_intersections(segments)
+  let coords = @geo.segment_intersections(segments)
   @test.assert_eq(coords.length(), 12)
 }
 ```
@@ -138,11 +138,11 @@ test "segment_intersections - 3x4 grid yields 12 intersections" {
 test "segment_intersections - bow-tie has 1 self-intersection" {
   let d1 = @type.Line::from_tuples((0.0, 0.0), (1.0, 1.0))
   let d2 = @type.Line::from_tuples((1.0, 0.0), (0.0, 1.0))
-  let coords = segment_intersections([d1, d2])
+  let coords = @geo.segment_intersections([d1, d2])
   @test.assert_eq(coords.length(), 1)
   let c = coords[0]
-  assert_true((c.x() - 0.5).abs() < TOLERANCE)
-  assert_true((c.y() - 0.5).abs() < TOLERANCE)
+  assert_true((c.x() - 0.5).abs() < @geo.TOLERANCE)
+  assert_true((c.y() - 0.5).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -153,7 +153,7 @@ test "segment_intersections - bow-tie has 1 self-intersection" {
 ```mbt check
 ///|
 test "has_segment_intersection - empty input" {
-  @test.assert_eq(has_segment_intersection([]), false)
+  @test.assert_eq(@geo.has_segment_intersection([]), false)
 }
 ```
 
@@ -164,7 +164,7 @@ test "has_segment_intersection - empty input" {
 test "has_segment_intersection - disjoint segments" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (1.0, 0.0))
   let l2 = @type.Line::from_tuples((2.0, 1.0), (3.0, 1.0))
-  @test.assert_eq(has_segment_intersection([l1, l2]), false)
+  @test.assert_eq(@geo.has_segment_intersection([l1, l2]), false)
 }
 ```
 
@@ -175,6 +175,6 @@ test "has_segment_intersection - disjoint segments" {
 test "has_segment_intersection - crossing segments" {
   let l1 = @type.Line::from_tuples((0.0, 0.0), (10.0, 10.0))
   let l2 = @type.Line::from_tuples((0.0, 10.0), (10.0, 0.0))
-  @test.assert_eq(has_segment_intersection([l1, l2]), true)
+  @test.assert_eq(@geo.has_segment_intersection([l1, l2]), true)
 }
 ```
