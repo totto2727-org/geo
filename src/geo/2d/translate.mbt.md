@@ -16,7 +16,7 @@ Pure translation of geometries by `(xoff, yoff)`. The public surface is the unif
 ///|
 test "translate_geometry - shifts a Point variant" {
   let g = @type.Geometry::Point(@type.Point::Point(1.0, 2.0))
-  let extracted = try! translate_geometry(g, 10.0, 20.0).try_into_point()
+  let extracted = try! @geo.translate_geometry(g, 10.0, 20.0).try_into_point()
   @test.assert_eq(extracted, @type.Point::Point(11.0, 22.0))
 }
 ```
@@ -33,7 +33,7 @@ test "translate_geometry - shifts all coords of a Polygon variant" {
     (0.0, 1.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [])
-  let translated = try! translate_geometry(
+  let translated = try! @geo.translate_geometry(
     @type.Geometry::Polygon(polygon),
     10.0,
     20.0,
@@ -54,7 +54,7 @@ test "translate_geometry - shifts all coords of a Polygon variant" {
 test "AffineTransform::translate_xy().transform - direct typed entry point" {
   let p = @type.Point::Point(1.0, 2.0)
   @test.assert_eq(
-    AffineTransform::translate_xy(10.0, 20.0).transform(p),
+    @geo.AffineTransform::translate_xy(10.0, 20.0).transform(p),
     @type.Point::Point(11.0, 22.0),
   )
 }

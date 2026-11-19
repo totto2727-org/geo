@@ -22,7 +22,7 @@ Treats a `Coord` as a 2D vector and provides magnitude, squared magnitude, 90° 
 ```mbt check
 ///|
 test "magnitude - 3-4-5 right triangle is 5" {
-  @test.assert_eq(magnitude(@type.Coord::Coord(3.0, 4.0)), 5.0)
+  @test.assert_eq(@geo.magnitude(@type.Coord::Coord(3.0, 4.0)), 5.0)
 }
 ```
 
@@ -33,7 +33,7 @@ test "magnitude - 3-4-5 right triangle is 5" {
 ```mbt check
 ///|
 test "magnitude_squared - x² + y²" {
-  @test.assert_eq(magnitude_squared(@type.Coord::Coord(3.0, 4.0)), 25.0)
+  @test.assert_eq(@geo.magnitude_squared(@type.Coord::Coord(3.0, 4.0)), 25.0)
 }
 ```
 
@@ -45,7 +45,7 @@ test "magnitude_squared - x² + y²" {
 ///|
 test "left - rotates 90 deg CCW" {
   @test.assert_eq(
-    left(@type.Coord::Coord(1.0, 0.0)),
+    @geo.left(@type.Coord::Coord(1.0, 0.0)),
     @type.Coord::Coord(0.0, 1.0),
   )
 }
@@ -59,7 +59,7 @@ test "left - rotates 90 deg CCW" {
 ///|
 test "right - rotates 90 deg CW" {
   @test.assert_eq(
-    right(@type.Coord::Coord(1.0, 0.0)),
+    @geo.right(@type.Coord::Coord(1.0, 0.0)),
     @type.Coord::Coord(0.0, -1.0),
   )
 }
@@ -73,7 +73,7 @@ test "right - rotates 90 deg CW" {
 ///|
 test "dot_product - basic" {
   @test.assert_eq(
-    dot_product(@type.Coord::Coord(1.0, 2.0), @type.Coord::Coord(3.0, 4.0)),
+    @geo.dot_product(@type.Coord::Coord(1.0, 2.0), @type.Coord::Coord(3.0, 4.0)),
     11.0,
   )
 }
@@ -87,7 +87,10 @@ test "dot_product - basic" {
 ///|
 test "wedge_product - basic" {
   @test.assert_eq(
-    wedge_product(@type.Coord::Coord(1.0, 2.0), @type.Coord::Coord(3.0, 4.0)),
+    @geo.wedge_product(
+      @type.Coord::Coord(1.0, 2.0),
+      @type.Coord::Coord(3.0, 4.0),
+    ),
     -2.0,
   )
 }
@@ -106,7 +109,7 @@ test "wedge_product - basic" {
 ```mbt check
 ///|
 test "is_finite - all-finite is true" {
-  assert_true(is_finite(@type.Coord::Coord(0.0, 0.0)))
+  assert_true(@geo.is_finite(@type.Coord::Coord(0.0, 0.0)))
 }
 ```
 
@@ -115,7 +118,7 @@ test "is_finite - all-finite is true" {
 ```mbt check
 ///|
 test "is_finite - NaN is false" {
-  assert_false(is_finite(@type.Coord::Coord(0.0 / 0.0, 0.0)))
+  assert_false(@geo.is_finite(@type.Coord::Coord(0.0 / 0.0, 0.0)))
 }
 ```
 
@@ -124,7 +127,7 @@ test "is_finite - NaN is false" {
 ```mbt check
 ///|
 test "is_finite - infinity is false" {
-  assert_false(is_finite(@type.Coord::Coord(1.0 / 0.0, 0.0)))
+  assert_false(@geo.is_finite(@type.Coord::Coord(1.0 / 0.0, 0.0)))
 }
 ```
 
@@ -141,7 +144,7 @@ test "is_finite - infinity is false" {
 ///|
 test "try_normalize - non-zero gives unit vector" {
   @test.assert_eq(
-    try_normalize(@type.Coord::Coord(3.0, 4.0)),
+    @geo.try_normalize(@type.Coord::Coord(3.0, 4.0)),
     Some(@type.Coord::Coord(0.6, 0.8)),
   )
 }
@@ -152,6 +155,6 @@ test "try_normalize - non-zero gives unit vector" {
 ```mbt check
 ///|
 test "try_normalize - zero vector returns None" {
-  @test.assert_eq(try_normalize(@type.Coord::Coord(0.0, 0.0)), None)
+  @test.assert_eq(@geo.try_normalize(@type.Coord::Coord(0.0, 0.0)), None)
 }
 ```

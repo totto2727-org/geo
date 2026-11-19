@@ -35,7 +35,7 @@ test "HasArea::signed_area - Polygon CCW positive" {
     (0.0, 0.0),
   ])
   @test.assert_eq(
-    HasArea::signed_area(@type.Polygon::Polygon(exterior, [])),
+    @geo.HasArea::signed_area(@type.Polygon::Polygon(exterior, [])),
     30.0,
   )
 }
@@ -54,7 +54,7 @@ test "HasArea::signed_area - Polygon CW negative" {
     (0.0, 0.0),
   ])
   @test.assert_eq(
-    HasArea::signed_area(@type.Polygon::Polygon(exterior, [])),
+    @geo.HasArea::signed_area(@type.Polygon::Polygon(exterior, [])),
     -30.0,
   )
 }
@@ -80,7 +80,7 @@ test "HasArea::signed_area - Polygon with hole subtracts interior area" {
     (3.0, 3.0),
   ])
   @test.assert_eq(
-    HasArea::signed_area(@type.Polygon::Polygon(exterior, [interior])),
+    @geo.HasArea::signed_area(@type.Polygon::Polygon(exterior, [interior])),
     100.0 - 16.0,
   )
 }
@@ -95,7 +95,7 @@ test "HasArea::signed_area - Rect is width * height" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(3.0, 4.0),
   )
-  @test.assert_eq(HasArea::signed_area(r), 12.0)
+  @test.assert_eq(@geo.HasArea::signed_area(r), 12.0)
 }
 ```
 
@@ -109,9 +109,9 @@ test "HasArea::signed_area - sub-2D Geometry variants have area zero" {
   let ls = @type.Geometry::LineString(
     @type.LineString::from_tuples([(0.0, 0.0), (1.0, 1.0)]),
   )
-  @test.assert_eq(HasArea::signed_area(p), 0.0)
-  @test.assert_eq(HasArea::signed_area(l), 0.0)
-  @test.assert_eq(HasArea::signed_area(ls), 0.0)
+  @test.assert_eq(@geo.HasArea::signed_area(p), 0.0)
+  @test.assert_eq(@geo.HasArea::signed_area(l), 0.0)
+  @test.assert_eq(@geo.HasArea::signed_area(ls), 0.0)
 }
 ```
 
@@ -135,7 +135,7 @@ test "HasArea::unsigned_area - Polygon equals abs of signed_area" {
     (0.0, 0.0),
   ])
   let polygon = @type.Polygon::Polygon(exterior, [])
-  @test.assert_eq(HasArea::unsigned_area(polygon), 30.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(polygon), 30.0)
 }
 ```
 
@@ -149,7 +149,7 @@ test "HasArea::unsigned_area - right triangle with legs 4 and 6 is 12" {
     @type.Coord::Coord(4.0, 0.0),
     @type.Coord::Coord(0.0, 6.0),
   )
-  @test.assert_eq(HasArea::unsigned_area(t), 12.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(t), 12.0)
 }
 ```
 
@@ -169,8 +169,8 @@ test "HasArea - MultiPolygon direct dispatch (signed and unsigned)" {
     [],
   )
   let mp = @type.MultiPolygon::MultiPolygon([polygon])
-  @test.assert_eq(HasArea::signed_area(mp), 30.0)
-  @test.assert_eq(HasArea::unsigned_area(mp), 30.0)
+  @test.assert_eq(@geo.HasArea::signed_area(mp), 30.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(mp), 30.0)
 }
 ```
 
@@ -183,7 +183,7 @@ test "HasArea::unsigned_area - Rect direct dispatch" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(3.0, 4.0),
   )
-  @test.assert_eq(HasArea::unsigned_area(r), 12.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(r), 12.0)
 }
 ```
 
@@ -198,7 +198,7 @@ test "HasArea::signed_area - Triangle direct dispatch" {
     @type.Coord::Coord(0.0, 6.0),
   )
   // CCW triangle: positive signed area = unsigned area = 12.
-  @test.assert_eq(HasArea::signed_area(t), 12.0)
+  @test.assert_eq(@geo.HasArea::signed_area(t), 12.0)
 }
 ```
 
@@ -217,13 +217,13 @@ test "HasArea::unsigned_area - Geometry dispatch sweep over 2-D variants" {
   let polygon = @type.Polygon::Polygon(exterior, [])
   // Polygon dispatch.
   @test.assert_eq(
-    HasArea::unsigned_area(@type.Geometry::Polygon(polygon)),
+    @geo.HasArea::unsigned_area(@type.Geometry::Polygon(polygon)),
     30.0,
   )
   // MultiPolygon dispatch (sum of polygon areas).
   let mp = @type.MultiPolygon::MultiPolygon([polygon])
   @test.assert_eq(
-    HasArea::unsigned_area(@type.Geometry::MultiPolygon(mp)),
+    @geo.HasArea::unsigned_area(@type.Geometry::MultiPolygon(mp)),
     30.0,
   )
   // Rect dispatch.
@@ -231,21 +231,24 @@ test "HasArea::unsigned_area - Geometry dispatch sweep over 2-D variants" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(3.0, 4.0),
   )
-  @test.assert_eq(HasArea::unsigned_area(@type.Geometry::Rect(r)), 12.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(@type.Geometry::Rect(r)), 12.0)
   // Triangle dispatch via Geometry.
   let t = @type.Triangle::Triangle(
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(4.0, 0.0),
     @type.Coord::Coord(0.0, 6.0),
   )
-  @test.assert_eq(HasArea::unsigned_area(@type.Geometry::Triangle(t)), 12.0)
+  @test.assert_eq(
+    @geo.HasArea::unsigned_area(@type.Geometry::Triangle(t)),
+    12.0,
+  )
   // GeometryCollection dispatch (sum of components).
   let gc = @type.GeometryCollection::GeometryCollection([
     @type.Geometry::Polygon(polygon),
     @type.Geometry::Rect(r),
   ])
   @test.assert_eq(
-    HasArea::unsigned_area(@type.Geometry::GeometryCollection(gc)),
+    @geo.HasArea::unsigned_area(@type.Geometry::GeometryCollection(gc)),
     42.0,
   )
 }

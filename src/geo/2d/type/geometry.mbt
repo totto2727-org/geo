@@ -5,6 +5,7 @@
 ///|
 /// An enumeration of all geometry types except `Coord` (which is not itself a
 /// "geometry" in the OGC sense).
+#derive(Eq, Debug)
 pub(all) enum Geometry {
   Point(Point)
   Line(Line)
@@ -16,16 +17,17 @@ pub(all) enum Geometry {
   GeometryCollection(GeometryCollection)
   Rect(Rect)
   Triangle(Triangle)
-} derive(Eq, Debug)
+}
 
 ///|
 /// Raised by `Geometry::try_into_*` when the variant does not match the
 /// expected one. Carries both the expected variant name and the actual
 /// variant name observed, matching the upstream Rust `MismatchedGeometry`
 /// error.
+#derive(Eq, Debug)
 pub suberror MismatchedGeometry {
   MismatchedGeometry(expected~ : String, found~ : String)
-} derive(Eq, Debug)
+}
 
 ///|
 /// Returns the variant name of the given geometry, used in error messages.

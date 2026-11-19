@@ -9,7 +9,7 @@ Classify a turn before choosing a topology branch:
 ```mbt check
 ///|
 test "classify a left turn" {
-  let determinant = orient2d(
+  let determinant = @robust.orient2d(
     @type.Coord(0.0, 0.0),
     @type.Coord(1.0, 0.0),
     @type.Coord(0.0, 1.0),

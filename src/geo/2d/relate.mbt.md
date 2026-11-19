@@ -45,7 +45,7 @@ Triangle / Rect / Line are reduced to Polygon / LineString first, so their relat
 test "relate - two disjoint points" {
   let a = @type.Geometry::Point(@type.Point::Point(0.0, 0.0))
   let b = @type.Geometry::Point(@type.Point::Point(1.0, 1.0))
-  let m = relate(a, b)
+  let m = @geo.relate(a, b)
   @test.assert_eq(m.get(Inside, Inside), Empty)
   @test.assert_eq(m.get(Outside, Outside), TwoDimensional)
   assert_true(m.is_disjoint())
@@ -59,7 +59,7 @@ test "relate - two disjoint points" {
 ///|
 test "relate - equal points are equal" {
   let p = @type.Geometry::Point(@type.Point::Point(2.0, 3.0))
-  let m = relate(p, p)
+  let m = @geo.relate(p, p)
   assert_true(m.is_equals())
   assert_true(m.is_intersects())
 }
@@ -83,7 +83,7 @@ test "relate - point inside polygon interior is contained" {
       [],
     ),
   )
-  let m = relate(poly, p)
+  let m = @geo.relate(poly, p)
   assert_true(m.is_contains())
   assert_true(m.is_covers())
 }
@@ -107,7 +107,7 @@ test "relate - point on polygon boundary is covered, not contained" {
       [],
     ),
   )
-  let m = relate(poly, p)
+  let m = @geo.relate(poly, p)
   assert_false(m.is_contains())
   assert_true(m.is_covers())
 }
@@ -120,7 +120,7 @@ test "relate - point on polygon boundary is covered, not contained" {
 test "relate - two crossing lines cross" {
   let l1 = @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (1.0, 1.0)))
   let l2 = @type.Geometry::Line(@type.Line::from_tuples((1.0, 0.0), (0.0, 1.0)))
-  let m = relate(l1, l2)
+  let m = @geo.relate(l1, l2)
   assert_true(m.is_crosses())
   assert_true(m.is_intersects())
 }
@@ -143,7 +143,7 @@ test "relate - two equal polygons are equal" {
       [],
     ),
   )
-  let m = relate(poly, poly)
+  let m = @geo.relate(poly, poly)
   assert_true(m.is_equals())
 }
 ```
@@ -177,7 +177,7 @@ test "relate - polygon inside polygon is contained" {
       [],
     ),
   )
-  let m = relate(outer, inner)
+  let m = @geo.relate(outer, inner)
   assert_true(m.is_contains())
 }
 ```
@@ -211,7 +211,7 @@ test "relate - two well-separated polygons are disjoint" {
       [],
     ),
   )
-  let m = relate(p1, p2)
+  let m = @geo.relate(p1, p2)
   assert_true(m.is_disjoint())
   assert_false(m.is_intersects())
 }
@@ -246,7 +246,7 @@ test "relate - polygons sharing one edge touch (not overlap)" {
       [],
     ),
   )
-  let m = relate(p1, p2)
+  let m = @geo.relate(p1, p2)
   assert_true(m.is_touches())
   assert_false(m.is_overlaps())
 }

@@ -3,17 +3,18 @@
 
 ///|
 /// A bounded 2D area whose three vertices are defined by `Coord`s.
+#derive(Eq, Debug, Hash)
 pub struct Triangle {
   v0 : Coord
   v1 : Coord
   v2 : Coord
-} derive(Eq, Debug, Hash)
+}
 
 ///|
 /// Stores vertices as-given (no winding normalisation). Semantically equivalent
 /// to upstream `Triangle::unchecked_winding`.
 pub fn Triangle::Triangle(v0 : Coord, v1 : Coord, v2 : Coord) -> Triangle {
-  Triangle::{ v0, v1, v2 }
+  Triangle::{ v0, v1, v2, }
 }
 
 ///|

@@ -4,12 +4,13 @@
 ///|
 /// Indices and coordinates of the extreme points of a geometry along the four
 /// cardinal directions.
+#derive(Eq, Debug)
 pub(all) struct Outcome {
   x_min : @type.Coord
   x_max : @type.Coord
   y_min : @type.Coord
   y_max : @type.Coord
-} derive(Eq, Debug)
+}
 
 ///|
 /// Canonical constructor for `Outcome`.
@@ -19,7 +20,7 @@ pub fn Outcome::Outcome(
   y_min : @type.Coord,
   y_max : @type.Coord,
 ) -> Outcome {
-  Outcome::{ x_min, x_max, y_min, y_max }
+  Outcome::{ x_min, x_max, y_min, y_max, }
 }
 
 ///|

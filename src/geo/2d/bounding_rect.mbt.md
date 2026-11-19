@@ -29,7 +29,7 @@ test "Bounded::bbox - LineString tight rect over its coords" {
     (42.02, 118.34),
   ])
   @test.assert_eq(
-    Bounded::bbox(ls),
+    @geo.Bounded::bbox(ls),
     Some(
       @type.Rect::Rect(
         @type.Coord::Coord(40.02, 116.34),
@@ -46,7 +46,7 @@ test "Bounded::bbox - LineString tight rect over its coords" {
 ///|
 test "Bounded::bbox - Point is degenerate zero-size rect" {
   let p = @type.Point::Point(1.0, 2.0)
-  let r = match Bounded::bbox(p) {
+  let r = match @geo.Bounded::bbox(p) {
     Some(r) => r
     None => abort("Point always has a bounding rect")
   }
@@ -60,7 +60,7 @@ test "Bounded::bbox - Point is degenerate zero-size rect" {
 ```mbt check
 ///|
 test "Bounded::bbox - empty LineString returns None" {
-  @test.assert_eq(Bounded::bbox(@type.LineString::empty()), None)
+  @test.assert_eq(@geo.Bounded::bbox(@type.LineString::empty()), None)
 }
 ```
 
@@ -71,7 +71,7 @@ test "Bounded::bbox - empty LineString returns None" {
 test "Bounded::bbox - dispatch covers every Geometry variant" {
   // Line: rect over its endpoints.
   @test.assert_eq(
-    Bounded::bbox(
+    @geo.Bounded::bbox(
       @type.Geometry::Line(@type.Line::from_tuples((0.0, 0.0), (3.0, 4.0))),
     ),
     Some(
@@ -87,7 +87,7 @@ test "Bounded::bbox - dispatch covers every Geometry variant" {
     @type.LineString::from_tuples([(-2.0, 3.0), (4.0, 8.0)]),
   ])
   @test.assert_eq(
-    Bounded::bbox(@type.Geometry::MultiLineString(mls)),
+    @geo.Bounded::bbox(@type.Geometry::MultiLineString(mls)),
     Some(
       @type.Rect::Rect(
         @type.Coord::Coord(-2.0, 0.0),
@@ -106,7 +106,7 @@ test "Bounded::bbox - dispatch covers every Geometry variant" {
     [],
   )
   @test.assert_eq(
-    Bounded::bbox(@type.Geometry::Polygon(polygon)),
+    @geo.Bounded::bbox(@type.Geometry::Polygon(polygon)),
     Some(
       @type.Rect::Rect(
         @type.Coord::Coord(0.0, 0.0),
@@ -116,7 +116,7 @@ test "Bounded::bbox - dispatch covers every Geometry variant" {
   )
   // MultiPolygon: rect over every exterior.
   @test.assert_eq(
-    Bounded::bbox(
+    @geo.Bounded::bbox(
       @type.Geometry::MultiPolygon(@type.MultiPolygon::MultiPolygon([polygon])),
     ),
     Some(
@@ -133,7 +133,7 @@ test "Bounded::bbox - dispatch covers every Geometry variant" {
     @type.Coord::Coord(3.0, 9.0),
   )
   @test.assert_eq(
-    Bounded::bbox(@type.Geometry::Triangle(tri)),
+    @geo.Bounded::bbox(@type.Geometry::Triangle(tri)),
     Some(
       @type.Rect::Rect(
         @type.Coord::Coord(0.0, 0.0),
@@ -146,14 +146,14 @@ test "Bounded::bbox - dispatch covers every Geometry variant" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(7.0, 4.0),
   )
-  @test.assert_eq(Bounded::bbox(@type.Geometry::Rect(r)), Some(r))
+  @test.assert_eq(@geo.Bounded::bbox(@type.Geometry::Rect(r)), Some(r))
   // GeometryCollection: rect over all collected coords.
   let gc = @type.GeometryCollection::GeometryCollection([
     @type.Geometry::Point(@type.Point::Point(0.0, 0.0)),
     @type.Geometry::Point(@type.Point::Point(5.0, 5.0)),
   ])
   @test.assert_eq(
-    Bounded::bbox(@type.Geometry::GeometryCollection(gc)),
+    @geo.Bounded::bbox(@type.Geometry::GeometryCollection(gc)),
     Some(
       @type.Rect::Rect(
         @type.Coord::Coord(0.0, 0.0),
@@ -196,16 +196,16 @@ test "Bounded::bbox - direct dispatch on every concrete type" {
   let gc = @type.GeometryCollection::GeometryCollection([
     @type.Geometry::Point(pt),
   ])
-  assert_true(Bounded::bbox(pt) is Some(_))
-  assert_true(Bounded::bbox(l) is Some(_))
-  assert_true(Bounded::bbox(ls) is Some(_))
-  assert_true(Bounded::bbox(mp) is Some(_))
-  assert_true(Bounded::bbox(mls) is Some(_))
-  assert_true(Bounded::bbox(polygon) is Some(_))
-  assert_true(Bounded::bbox(mpoly) is Some(_))
-  assert_true(Bounded::bbox(r) is Some(_))
-  assert_true(Bounded::bbox(tri) is Some(_))
-  assert_true(Bounded::bbox(gc) is Some(_))
+  assert_true(@geo.Bounded::bbox(pt) is Some(_))
+  assert_true(@geo.Bounded::bbox(l) is Some(_))
+  assert_true(@geo.Bounded::bbox(ls) is Some(_))
+  assert_true(@geo.Bounded::bbox(mp) is Some(_))
+  assert_true(@geo.Bounded::bbox(mls) is Some(_))
+  assert_true(@geo.Bounded::bbox(polygon) is Some(_))
+  assert_true(@geo.Bounded::bbox(mpoly) is Some(_))
+  assert_true(@geo.Bounded::bbox(r) is Some(_))
+  assert_true(@geo.Bounded::bbox(tri) is Some(_))
+  assert_true(@geo.Bounded::bbox(gc) is Some(_))
 }
 ```
 
@@ -215,6 +215,6 @@ test "Bounded::bbox - direct dispatch on every concrete type" {
 ///|
 test "Bounded::bbox - Coord is a degenerate zero-size rect at itself" {
   let c = @type.Coord::Coord(3.0, 4.0)
-  @test.assert_eq(Bounded::bbox(c), Some(@type.Rect::Rect(c, c)))
+  @test.assert_eq(@geo.Bounded::bbox(c), Some(@type.Rect::Rect(c, c)))
 }
 ```

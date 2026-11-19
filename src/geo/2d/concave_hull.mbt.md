@@ -32,7 +32,7 @@ The R\*-tree from `@rtree` backs the k-NN candidate query so each walk step cost
 ```mbt check
 ///|
 test "k_nearest_concave_hull - empty" {
-  let result = k_nearest_concave_hull([], 3)
+  let result = @geo.k_nearest_concave_hull([], 3)
   @test.assert_eq(result, None)
 }
 ```
@@ -47,7 +47,7 @@ test "k_nearest_concave_hull - collinear returns None" {
     @type.Point::Point(1.0, 0.0),
     @type.Point::Point(2.0, 0.0),
   ]
-  let result = k_nearest_concave_hull(points, 3)
+  let result = @geo.k_nearest_concave_hull(points, 3)
   @test.assert_eq(result, None)
 }
 ```
@@ -62,7 +62,7 @@ test "k_nearest_concave_hull - 3 points form triangle" {
     @type.Point::Point(2.0, 0.0),
     @type.Point::Point(1.0, 2.0),
   ]
-  let result = k_nearest_concave_hull(points, 3)
+  let result = @geo.k_nearest_concave_hull(points, 3)
   match result {
     Some(ls) => {
       let cs = ls.coords()
@@ -85,7 +85,7 @@ test "k_nearest_concave_hull - square corners" {
     @type.Point::Point(1.0, 1.0),
     @type.Point::Point(0.0, 1.0),
   ]
-  let result = k_nearest_concave_hull(points, 3)
+  let result = @geo.k_nearest_concave_hull(points, 3)
   match result {
     Some(ls) => {
       let cs = ls.coords()
@@ -109,7 +109,7 @@ test "k_nearest_concave_hull - large k drops interior" {
     @type.Point::Point(0.0, 1.0),
     @type.Point::Point(0.5, 0.5),
   ]
-  let result = k_nearest_concave_hull(points, 100)
+  let result = @geo.k_nearest_concave_hull(points, 100)
   match result {
     Some(ls) => {
       let cs = ls.coords()
@@ -140,7 +140,7 @@ test "k_nearest_concave_hull - 5x5 grid is closed and covers all" {
       points.push(@type.Point::Point(i.to_double(), j.to_double()))
     }
   }
-  let result = k_nearest_concave_hull(points, 3)
+  let result = @geo.k_nearest_concave_hull(points, 3)
   match result {
     Some(ls) => {
       let cs = ls.coords()
@@ -166,7 +166,7 @@ test "k_nearest_concave_hull - 5x5 grid is closed and covers all" {
 ```mbt check
 ///|
 test "delaunay_concave_hull - empty" {
-  let result = delaunay_concave_hull([], 2.0)
+  let result = @geo.delaunay_concave_hull([], 2.0)
   @test.assert_eq(result, None)
 }
 ```
@@ -181,7 +181,7 @@ test "delaunay_concave_hull - collinear returns None" {
     @type.Coord(1.0, 0.0),
     @type.Coord(2.0, 0.0),
   ]
-  let result = delaunay_concave_hull(points, 2.0)
+  let result = @geo.delaunay_concave_hull(points, 2.0)
   @test.assert_eq(result, None)
 }
 ```
@@ -196,7 +196,7 @@ test "delaunay_concave_hull - 3 points form triangle" {
     @type.Coord(2.0, 0.0),
     @type.Coord(1.0, 2.0),
   ]
-  let result = delaunay_concave_hull(points, 2.0)
+  let result = @geo.delaunay_concave_hull(points, 2.0)
   match result {
     Some(ls) => {
       let cs = ls.coords()
@@ -219,7 +219,7 @@ test "delaunay_concave_hull - square corners" {
     @type.Coord(1.0, 1.0),
     @type.Coord(0.0, 1.0),
   ]
-  let result = delaunay_concave_hull(points, 10.0)
+  let result = @geo.delaunay_concave_hull(points, 10.0)
   match result {
     Some(ls) => {
       let cs = ls.coords()

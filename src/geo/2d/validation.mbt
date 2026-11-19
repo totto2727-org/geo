@@ -5,20 +5,23 @@
 
 ///|
 /// Identifies which ring within a `Polygon` produced a validation problem.
+#derive(Eq, Debug)
 pub(all) enum RingRole {
   Exterior
-  Interior(Int) // 0-indexed interior ring number
-} derive(Eq, Debug)
+  Interior(Int32) // 0-indexed interior ring number
+}
 
 ///|
 /// Identifies which coordinate within a linear geometry produced a validation
 /// problem. 0-indexed.
-pub(all) struct CoordIndex(Int) derive(Eq, Debug)
+#derive(Eq, Debug)
+pub(all) struct CoordIndex(Int32)
 
 ///|
 /// Identifies which sub-geometry within a `Multi*` or `GeometryCollection`
 /// produced a validation problem. 0-indexed.
-pub(all) struct GeometryIndex(Int) derive(Eq, Debug)
+#derive(Eq, Debug)
+pub(all) struct GeometryIndex(Int32)
 
 // MARK: ValidationProblem -----------------------------------------------------
 
@@ -39,6 +42,7 @@ pub(all) struct GeometryIndex(Int) derive(Eq, Debug)
 /// - MultiPolygon `ElementsOverlaps` / `ElementsTouchOnALine`
 ///
 /// Their variant slots are reserved but they are not yet produced.
+#derive(Eq, Debug)
 pub(all) enum ValidationProblem {
   /// A linestring has fewer than 2 distinct coordinates.
   TooFewPoints
@@ -83,7 +87,7 @@ pub(all) enum ValidationProblem {
   /// Two polygons in a multi-polygon touch on a line.
   /// **Deferred** — depends on DE-9IM relate (ms-20).
   ElementsTouchOnLine(GeometryIndex, GeometryIndex)
-} derive(Eq, Debug)
+}
 
 // MARK: helpers ---------------------------------------------------------------
 
@@ -110,7 +114,7 @@ fn ring_role_exterior() -> RingRole {
 }
 
 ///|
-fn ring_role_interior(idx : Int) -> RingRole {
+fn ring_role_interior(idx : Int32) -> RingRole {
   Interior(idx)
 }
 

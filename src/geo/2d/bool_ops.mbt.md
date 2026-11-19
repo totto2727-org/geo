@@ -49,7 +49,7 @@ test "polygon_intersection - disjoint squares is empty" {
     ]),
     [],
   )
-  let r = polygon_intersection(a, b)
+  let r = @geo.polygon_intersection(a, b)
   @test.assert_eq(r.polygons().length(), 0)
 }
 ```
@@ -75,9 +75,9 @@ test "polygon_union - disjoint squares yields two polygons" {
     ]),
     [],
   )
-  let r = polygon_union(a, b)
+  let r = @geo.polygon_union(a, b)
   @test.assert_eq(r.polygons().length(), 2)
-  @test.assert_eq(HasArea::unsigned_area(r), 2.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(r), 2.0)
 }
 ```
 
@@ -102,9 +102,9 @@ test "polygon_difference - disjoint inputs returns first" {
     ]),
     [],
   )
-  let r = polygon_difference(a, b)
+  let r = @geo.polygon_difference(a, b)
   @test.assert_eq(r.polygons().length(), 1)
-  @test.assert_eq(HasArea::unsigned_area(r), 1.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(r), 1.0)
 }
 ```
 
@@ -129,9 +129,9 @@ test "polygon_xor - disjoint inputs yields both" {
     ]),
     [],
   )
-  let r = polygon_xor(a, b)
+  let r = @geo.polygon_xor(a, b)
   @test.assert_eq(r.polygons().length(), 2)
-  @test.assert_eq(HasArea::unsigned_area(r), 2.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(r), 2.0)
 }
 ```
 
@@ -160,10 +160,10 @@ test "polygon_intersection - overlapping squares" {
     ]),
     [],
   )
-  let r = polygon_intersection(a, b)
+  let r = @geo.polygon_intersection(a, b)
   @test.assert_eq(r.polygons().length(), 1)
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 1.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 1.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -188,11 +188,11 @@ test "polygon_union - overlapping squares" {
     ]),
     [],
   )
-  let r = polygon_union(a, b)
+  let r = @geo.polygon_union(a, b)
   @test.assert_eq(r.polygons().length(), 1)
   // 4 + 4 − 1 = 7
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 7.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 7.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -217,11 +217,11 @@ test "polygon_difference - overlapping squares" {
     ]),
     [],
   )
-  let r = polygon_difference(a, b)
+  let r = @geo.polygon_difference(a, b)
   @test.assert_eq(r.polygons().length(), 1)
   // 4 − 1 = 3
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 3.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 3.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -250,11 +250,11 @@ test "polygon_intersection - inner is contained" {
     ]),
     [],
   )
-  let r = polygon_intersection(outer, inner)
+  let r = @geo.polygon_intersection(outer, inner)
   @test.assert_eq(r.polygons().length(), 1)
   // Intersection equals the inner square — area 16.
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 16.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 16.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -279,11 +279,11 @@ test "polygon_union - inner is contained" {
     ]),
     [],
   )
-  let r = polygon_union(outer, inner)
+  let r = @geo.polygon_union(outer, inner)
   @test.assert_eq(r.polygons().length(), 1)
   // Union equals the outer square — area 100.
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 100.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 100.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -308,12 +308,12 @@ test "polygon_difference - inner is contained yields outer-with-hole" {
     ]),
     [],
   )
-  let r = polygon_difference(outer, inner)
+  let r = @geo.polygon_difference(outer, inner)
   @test.assert_eq(r.polygons().length(), 1)
   @test.assert_eq(r.polygons()[0].interiors().length(), 1)
   // 100 − 16 = 84
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 84.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 84.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -338,12 +338,12 @@ test "polygon_xor - inner is contained yields outer-with-hole" {
     ]),
     [],
   )
-  let r = polygon_xor(outer, inner)
+  let r = @geo.polygon_xor(outer, inner)
   // diff(outer, inner) = outer-with-hole; diff(inner, outer) = empty.
   @test.assert_eq(r.polygons().length(), 1)
   @test.assert_eq(r.polygons()[0].interiors().length(), 1)
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 84.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 84.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -377,12 +377,12 @@ test "polygon_intersection - L-shape ∩ horizontal strip" {
     ]),
     [],
   )
-  let r = polygon_intersection(l, strip)
+  let r = @geo.polygon_intersection(l, strip)
   @test.assert_eq(r.polygons().length(), 1)
   // Intersection: bottom slab (0..3 × 0.5..1) area 1.5 +
   // upper-right slab (1..3 × 1..2) area 2.0 = 3.5
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 3.5).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 3.5).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -407,12 +407,12 @@ test "polygon_union - annulus ∪ identical annulus" {
   ])
   let a = @type.Polygon::Polygon(outer_ring, [hole])
   let b = @type.Polygon::Polygon(outer_ring, [hole])
-  let r = polygon_union(a, b)
+  let r = @geo.polygon_union(a, b)
   @test.assert_eq(r.polygons().length(), 1)
   @test.assert_eq(r.polygons()[0].interiors().length(), 1)
   // 100 - 16 = 84.
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 84.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 84.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -431,8 +431,8 @@ test "polygon_intersection - empty inputs" {
     ]),
     [],
   )
-  @test.assert_eq(polygon_intersection(empty_p, a).polygons().length(), 0)
-  @test.assert_eq(polygon_intersection(a, empty_p).polygons().length(), 0)
+  @test.assert_eq(@geo.polygon_intersection(empty_p, a).polygons().length(), 0)
+  @test.assert_eq(@geo.polygon_intersection(a, empty_p).polygons().length(), 0)
 }
 ```
 
@@ -450,11 +450,11 @@ test "polygon_union and difference - empty inputs" {
     [],
   )
   // a ∪ ∅ = a
-  @test.assert_eq(polygon_union(a, empty_p).polygons().length(), 1)
+  @test.assert_eq(@geo.polygon_union(a, empty_p).polygons().length(), 1)
   // a \ ∅ = a
-  @test.assert_eq(polygon_difference(a, empty_p).polygons().length(), 1)
+  @test.assert_eq(@geo.polygon_difference(a, empty_p).polygons().length(), 1)
   // ∅ \ a = ∅
-  @test.assert_eq(polygon_difference(empty_p, a).polygons().length(), 0)
+  @test.assert_eq(@geo.polygon_difference(empty_p, a).polygons().length(), 0)
 }
 ```
 
@@ -473,7 +473,7 @@ test "clip_line_string - segment fully inside is unchanged" {
     [],
   )
   let ls = @type.LineString::from_tuples([(2.0, 2.0), (8.0, 8.0)])
-  let r = clip_line_string(ls, by)
+  let r = @geo.clip_line_string(ls, by)
   @test.assert_eq(r.line_strings().length(), 1)
   let coords = r.line_strings()[0].coords()
   @test.assert_eq(coords.length(), 2)
@@ -495,7 +495,7 @@ test "clip_line_string - segment fully outside is empty" {
     [],
   )
   let ls = @type.LineString::from_tuples([(20.0, 20.0), (30.0, 30.0)])
-  let r = clip_line_string(ls, by)
+  let r = @geo.clip_line_string(ls, by)
   @test.assert_eq(r.line_strings().length(), 0)
 }
 ```
@@ -514,12 +514,12 @@ test "clip_line_string - segment straddling boundary is clipped" {
   )
   // Horizontal segment from x=-5 to x=15 at y=5; expected clip to x=0..10.
   let ls = @type.LineString::from_tuples([(-5.0, 5.0), (15.0, 5.0)])
-  let r = clip_line_string(ls, by)
+  let r = @geo.clip_line_string(ls, by)
   @test.assert_eq(r.line_strings().length(), 1)
   let coords = r.line_strings()[0].coords()
   @test.assert_eq(coords.length(), 2)
-  assert_true((coords[0].x() - 0.0).abs() < TOLERANCE)
-  assert_true((coords[1].x() - 10.0).abs() < TOLERANCE)
+  assert_true((coords[0].x() - 0.0).abs() < @geo.TOLERANCE)
+  assert_true((coords[1].x() - 10.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -552,8 +552,10 @@ test "intersection_polygon_rect - subject inside clip equals subject area" {
     @type.Coord::Coord(0.0, 0.0),
     @type.Coord::Coord(10.0, 10.0),
   )
-  let area = HasArea::unsigned_area(intersection_polygon_rect(subject, clip))
-  assert_true((area - 4.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(
+    @geo.intersection_polygon_rect(subject, clip),
+  )
+  assert_true((area - 4.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -573,8 +575,10 @@ test "intersection_polygon_rect - clip inside subject equals clip area" {
     @type.Coord::Coord(2.0, 2.0),
     @type.Coord::Coord(4.0, 4.0),
   )
-  let area = HasArea::unsigned_area(intersection_polygon_rect(subject, clip))
-  assert_true((area - 4.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(
+    @geo.intersection_polygon_rect(subject, clip),
+  )
+  assert_true((area - 4.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -595,8 +599,10 @@ test "intersection_polygon_rect - half overlap" {
     @type.Coord::Coord(15.0, 15.0),
   )
   // Right half: 5 × 10 = 50
-  let area = HasArea::unsigned_area(intersection_polygon_rect(subject, clip))
-  assert_true((area - 50.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(
+    @geo.intersection_polygon_rect(subject, clip),
+  )
+  assert_true((area - 50.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -617,7 +623,7 @@ test "intersection_polygon_rect - disjoint inputs give zero area" {
     @type.Coord::Coord(20.0, 20.0),
   )
   @test.assert_eq(
-    HasArea::unsigned_area(intersection_polygon_rect(subject, clip)),
+    @geo.HasArea::unsigned_area(@geo.intersection_polygon_rect(subject, clip)),
     0.0,
   )
 }
@@ -636,11 +642,11 @@ test "intersection_sutherland_hodgman - inner triangle equals clip area" {
     @type.LineString::from_tuples([(2.0, 2.0), (8.0, 2.0), (5.0, 8.0)]),
     [],
   )
-  let area = HasArea::unsigned_area(
-    intersection_sutherland_hodgman(subject, clip),
+  let area = @geo.HasArea::unsigned_area(
+    @geo.intersection_sutherland_hodgman(subject, clip),
   )
   // The clip triangle is entirely inside the subject — area = 0.5 × 6 × 6 = 18.
-  assert_true((area - 18.0).abs() < TOLERANCE)
+  assert_true((area - 18.0).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -659,9 +665,9 @@ test "unary_union - single polygon returns same" {
     [],
   )
   let mp = @type.MultiPolygon::MultiPolygon([a])
-  let r = unary_union(mp)
+  let r = @geo.unary_union(mp)
   @test.assert_eq(r.polygons().length(), 1)
-  @test.assert_eq(HasArea::unsigned_area(r), 1.0)
+  @test.assert_eq(@geo.HasArea::unsigned_area(r), 1.0)
 }
 ```
 
@@ -687,9 +693,9 @@ test "unary_union - two overlapping polygons collapse" {
     [],
   )
   let mp = @type.MultiPolygon::MultiPolygon([a, b])
-  let r = unary_union(mp)
+  let r = @geo.unary_union(mp)
   @test.assert_eq(r.polygons().length(), 1)
-  let area = HasArea::unsigned_area(r)
-  assert_true((area - 7.0).abs() < TOLERANCE)
+  let area = @geo.HasArea::unsigned_area(r)
+  assert_true((area - 7.0).abs() < @geo.TOLERANCE)
 }
 ```

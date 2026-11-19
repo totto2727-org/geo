@@ -12,18 +12,18 @@
 // real nodes start at index 1.
 
 ///|
-let null_idx : Int = 0
+let null_idx : Int32 = 0
 
 ///|
-let dim : Int = 2
+let dim : Int32 = 2
 
 ///|
 priv struct Node {
-  vertices_index : Int
+  vertices_index : Int32
   x : Double
   y : Double
-  mut prev : Int
-  mut next : Int
+  mut prev : Int32
+  mut next : Int32
   mut is_steiner : Bool
 }
 
@@ -42,7 +42,7 @@ fn new_linked_lists() -> LinkedLists {
     next: 0,
     is_steiner: false,
   }
-  LinkedLists::{ nodes: [sentinel] }
+  LinkedLists::{ nodes: [sentinel], }
 }
 
 ///|
@@ -51,13 +51,20 @@ fn new_linked_lists() -> LinkedLists {
 /// node is inserted immediately after `last`.
 fn insert_node(
   ll : LinkedLists,
-  vertices_index : Int,
+  vertices_index : Int32,
   x : Double,
   y : Double,
-  last : Int,
-) -> Int {
+  last : Int32,
+) -> Int32 {
   let new_idx = ll.nodes.length()
-  let node = Node::{ vertices_index, x, y, prev: 0, next: 0, is_steiner: false }
+  let node = Node::{
+    vertices_index,
+    x,
+    y,
+    prev: 0,
+    next: 0,
+    is_steiner: false,
+  }
   if last == null_idx {
     node.prev = new_idx
     node.next = new_idx
@@ -75,7 +82,7 @@ fn insert_node(
 ///|
 /// Detach a node from the doubly-linked list. The node remains in `nodes`
 /// (we don't compact the array), but its prev/next neighbours skip over it.
-fn remove_node(ll : LinkedLists, p_idx : Int) -> Unit {
+fn remove_node(ll : LinkedLists, p_idx : Int32) -> Unit {
   let pi = ll.nodes[p_idx].prev
   let ni = ll.nodes[p_idx].next
   ll.nodes[pi].next = ni
@@ -89,8 +96,8 @@ fn remove_node(ll : LinkedLists, p_idx : Int) -> Unit {
 /// positive for `clockwise == true`.
 fn signed_area_slice(
   vertices : Array[Double],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> Double {
   if end <= start + dim {
     return 0.0
@@ -109,7 +116,7 @@ fn signed_area_slice(
 
 ///|
 /// Whether two nodes have the same (x, y).
-fn xy_eq(ll : LinkedLists, a : Int, b : Int) -> Bool {
+fn xy_eq(ll : LinkedLists, a : Int32, b : Int32) -> Bool {
   ll.nodes[a].x == ll.nodes[b].x && ll.nodes[a].y == ll.nodes[b].y
 }
 
@@ -122,10 +129,10 @@ fn xy_eq(ll : LinkedLists, a : Int, b : Int) -> Bool {
 fn add_contour(
   ll : LinkedLists,
   vertices : Array[Double],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
   clockwise : Bool,
-) -> (Int, Int)? {
+) -> (Int32, Int32)? {
   let n = vertices.length()
   if start > n || end > n || n == 0 {
     return None
@@ -181,10 +188,10 @@ fn add_contour(
 /// Build a doubly-linked list from a single ring of `vertices`.
 fn linked_list(
   vertices : Array[Double],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
   clockwise : Bool,
-) -> (LinkedLists, Int)? {
+) -> (LinkedLists, Int32)? {
   let ll = new_linked_lists()
   match add_contour(ll, vertices, start, end, clockwise) {
     Some((last, _)) => Some((ll, last))
@@ -196,7 +203,12 @@ fn linked_list(
 /// Signed area of triangle (a, b, c) — positive iff a→b→c is clockwise in
 /// screen coordinates. (For CCW triangles in math/standard coords it is
 /// negative.)
-fn area_of_node_triangle(ll : LinkedLists, a : Int, b : Int, c : Int) -> Double {
+fn area_of_node_triangle(
+  ll : LinkedLists,
+  a : Int32,
+  b : Int32,
+  c : Int32,
+) -> Double {
   let ax = ll.nodes[a].x
   let ay = ll.nodes[a].y
   let bx = ll.nodes[b].x
@@ -228,7 +240,7 @@ fn point_in_triangle(
 /// Whether the corner (prev, ear, next) is a valid ear of the polygon
 /// represented by the linked list — i.e. it is convex (signed area < 0)
 /// AND no other reflex node lies inside it.
-fn is_ear(ll : LinkedLists, prev : Int, ear : Int, next : Int) -> Bool {
+fn is_ear(ll : LinkedLists, prev : Int32, ear : Int32, next : Int32) -> Bool {
   if area_of_node_triangle(ll, prev, ear, next) >= 0.0 {
     return false
   }
@@ -259,7 +271,7 @@ fn is_ear(ll : LinkedLists, prev : Int, ear : Int, next : Int) -> Bool {
 /// when the ring is already a self-loop on entry); or (b) we visit `end`
 /// without changes in a full loop. `end` is updated each time `start` is
 /// removed so that the caller's continuation point stays valid.
-fn filter_points(ll : LinkedLists, start : Int, end_in : Int?) -> Int {
+fn filter_points(ll : LinkedLists, start : Int32, end_in : Int32?) -> Int32 {
   let n = ll.nodes.length()
   let mut end = match end_in {
     Some(e) => e
@@ -328,7 +340,7 @@ fn pseudo_intersects(
 
 ///|
 /// Whether the diagonal a-b crosses any edge of the polygon.
-fn intersects_polygon(ll : LinkedLists, a : Int, b : Int) -> Bool {
+fn intersects_polygon(ll : LinkedLists, a : Int32, b : Int32) -> Bool {
   let avi = ll.nodes[a].vertices_index
   let bvi = ll.nodes[b].vertices_index
   let ax = ll.nodes[a].x
@@ -368,7 +380,7 @@ fn intersects_polygon(ll : LinkedLists, a : Int, b : Int) -> Bool {
 
 ///|
 /// Whether the diagonal a-b is locally inside the polygon at `a`.
-fn locally_inside(ll : LinkedLists, a : Int, b : Int) -> Bool {
+fn locally_inside(ll : LinkedLists, a : Int32, b : Int32) -> Bool {
   let ap = ll.nodes[a].prev
   let an = ll.nodes[a].next
   if area_of_node_triangle(ll, ap, a, an) < 0.0 {
@@ -383,7 +395,7 @@ fn locally_inside(ll : LinkedLists, a : Int, b : Int) -> Bool {
 ///|
 /// Whether the midpoint of the diagonal a-b lies inside the polygon.
 /// Ray-casts from the midpoint and counts edge crossings.
-fn middle_inside(ll : LinkedLists, a : Int, b : Int) -> Bool {
+fn middle_inside(ll : LinkedLists, a : Int32, b : Int32) -> Bool {
   let mx = (ll.nodes[a].x + ll.nodes[b].x) / 2.0
   let my = (ll.nodes[a].y + ll.nodes[b].y) / 2.0
   let mut inside = false
@@ -409,7 +421,7 @@ fn middle_inside(ll : LinkedLists, a : Int, b : Int) -> Bool {
 ///|
 /// Whether the diagonal between two polygon nodes is interior — i.e. it
 /// stays inside the polygon and doesn't cross an existing edge.
-fn is_valid_diagonal(ll : LinkedLists, a : Int, b : Int) -> Bool {
+fn is_valid_diagonal(ll : LinkedLists, a : Int32, b : Int32) -> Bool {
   let an = ll.nodes[a].next
   let ap = ll.nodes[a].prev
   ll.nodes[an].vertices_index != ll.nodes[b].vertices_index &&
@@ -425,7 +437,7 @@ fn is_valid_diagonal(ll : LinkedLists, a : Int, b : Int) -> Bool {
 /// appended (copies of `a` and `b` with new indices); their wiring either
 /// merges two rings into one or splits one ring into two. Returns the new
 /// node corresponding to b (i.e. the second new index).
-fn split_bridge_polygon(ll : LinkedLists, a : Int, b : Int) -> Int {
+fn split_bridge_polygon(ll : LinkedLists, a : Int32, b : Int32) -> Int32 {
   let cidx = ll.nodes.length()
   let didx = cidx + 1
   let c = Node::{
@@ -463,7 +475,11 @@ fn split_bridge_polygon(ll : LinkedLists, a : Int, b : Int) -> Int {
 /// David Eberly's algorithm. Find a node on the outer ring that can be
 /// bridged to `hole` (the leftmost node of a hole ring). Returns the
 /// outer-ring node index, or `null_idx` if no bridge can be found.
-fn find_hole_bridge(ll : LinkedLists, hole : Int, outer_node : Int) -> Int {
+fn find_hole_bridge(
+  ll : LinkedLists,
+  hole : Int32,
+  outer_node : Int32,
+) -> Int32 {
   let hx = ll.nodes[hole].x
   let hy = ll.nodes[hole].y
   let mut qx = @double.neg_infinity
@@ -535,7 +551,7 @@ fn find_hole_bridge(ll : LinkedLists, hole : Int, outer_node : Int) -> Int {
 }
 
 ///|
-fn eliminate_hole(ll : LinkedLists, hole : Int, outer_node : Int) -> Unit {
+fn eliminate_hole(ll : LinkedLists, hole : Int32, outer_node : Int32) -> Unit {
   let test_idx = find_hole_bridge(ll, hole, outer_node)
   if test_idx == null_idx {
     return
@@ -548,7 +564,7 @@ fn eliminate_hole(ll : LinkedLists, hole : Int, outer_node : Int) -> Unit {
 ///|
 /// Sort an array of (x, leftmost_node_idx) pairs by ascending x. Insertion
 /// sort — `n` is small (count of holes) in practice.
-fn sort_by_x(items : Array[(Double, Int)]) -> Unit {
+fn sort_by_x(items : Array[(Double, Int32)]) -> Unit {
   let n = items.length()
   let mut i = 1
   while i < n {
@@ -569,11 +585,11 @@ fn sort_by_x(items : Array[(Double, Int)]) -> Unit {
 fn eliminate_holes(
   ll : LinkedLists,
   vertices : Array[Double],
-  hole_indices : Array[Int],
-  outer_node_in : Int,
-) -> Int? {
+  hole_indices : Array[Int32],
+  outer_node_in : Int32,
+) -> Int32? {
   let mut outer_node = outer_node_in
-  let leftmost_per_hole : Array[(Double, Int)] = []
+  let leftmost_per_hole : Array[(Double, Int32)] = []
   let n_holes = hole_indices.length()
   let mut i = 0
   while i < n_holes {
@@ -615,9 +631,9 @@ fn eliminate_holes(
 /// emits a triangle into `triangles`.
 fn cure_local_intersections(
   ll : LinkedLists,
-  in_start : Int,
-  triangles : Array[Int],
-) -> Int {
+  in_start : Int32,
+  triangles : Array[Int32],
+) -> Int32 {
   let mut p = in_start
   let mut start = in_start
   while true {
@@ -659,8 +675,8 @@ fn cure_local_intersections(
 /// diagonal, then triangulate each half independently.
 fn split_earcut(
   ll : LinkedLists,
-  start_idx : Int,
-  triangles : Array[Int],
+  start_idx : Int32,
+  triangles : Array[Int32],
 ) -> Unit {
   let mut a = start_idx
   while true {
@@ -698,9 +714,9 @@ fn split_earcut(
 /// - else: give up
 fn earcut_linked_unhashed(
   ll : LinkedLists,
-  ear_in : Int,
-  triangles : Array[Int],
-  pass : Int,
+  ear_in : Int32,
+  triangles : Array[Int32],
+  pass : Int32,
 ) -> Unit {
   let mut ear = ear_in
   let mut stop_idx = ear
@@ -747,9 +763,9 @@ fn earcut_linked_unhashed(
 /// such as an odd-length `vertices` array.
 pub fn earcut(
   vertices : Array[Double],
-  hole_indices : Array[Int],
-  dims : Int,
-) -> Array[Int]? {
+  hole_indices : Array[Int32],
+  dims : Int32,
+) -> Array[Int32]? {
   if vertices.is_empty() && hole_indices.is_empty() {
     return Some([])
   }
@@ -768,7 +784,7 @@ pub fn earcut(
   } else {
     vertices.length()
   }
-  let triangles : Array[Int] = []
+  let triangles : Array[Int32] = []
   match linked_list(vertices, 0, outer_len, true) {
     None => return None
     Some((ll, outer_node)) => {

@@ -53,7 +53,7 @@
 /// points are collinear.
 pub fn k_nearest_concave_hull(
   points : Array[@type.Point],
-  k : Int,
+  k : Int32,
 ) -> @type.LineString? {
   let raw_coords : Array[@type.Coord] = []
   for i = 0; i < points.length(); i = i + 1 {
@@ -77,10 +77,10 @@ pub fn k_nearest_concave_hull(
 /// convex hull is returned).
 fn k_nearest_concave_hull_inner(
   coords : Array[@type.Coord],
-  k_init : Int,
+  k_init : Int32,
 ) -> @type.LineString? {
   let n = coords.length()
-  let entries : Array[@rtree.Entry[Int]] = []
+  let entries : Array[@rtree.Entry[Int32]] = []
   for i = 0; i < n; i = i + 1 {
     entries.push(@rtree.Entry(@type.Rect::Rect(coords[i], coords[i]), i))
   }
@@ -106,8 +106,8 @@ fn k_nearest_concave_hull_inner(
 /// larger `k`.
 fn try_build_concave_hull(
   coords : Array[@type.Coord],
-  tree : @rtree.RTree[Int],
-  k : Int,
+  tree : @rtree.RTree[Int32],
+  k : Int32,
 ) -> @type.LineString? {
   let n = coords.length()
   let claimed : Array[Bool] = Array::make(n, false)
@@ -211,7 +211,7 @@ fn concave_hull_all_collinear(points : Array[@type.Coord]) -> Bool {
 /// Index of the lexicographically lowest point (smallest `y`, ties
 /// broken by smallest `x`). This anchors the boundary walk on a point
 /// guaranteed to be on the convex hull.
-fn concave_hull_first_point_index(points : Array[@type.Coord]) -> Int {
+fn concave_hull_first_point_index(points : Array[@type.Coord]) -> Int32 {
   let mut idx = 0
   for i = 1; i < points.length(); i = i + 1 {
     let p = points[i]
@@ -244,7 +244,7 @@ fn concave_hull_pseudo_angle(dx : Double, dy : Double) -> Double {
 /// rotation from "behind" corresponds to the largest left-hand turn —
 /// exactly what the Moreira-Santos walk wants.
 fn sort_indices_by_angle(
-  indices : Array[Int],
+  indices : Array[Int32],
   coords : Array[@type.Coord],
   current : @type.Coord,
   prev : @type.Coord,
@@ -287,13 +287,13 @@ fn sort_indices_by_angle(
 /// `pt` whose `claimed` slot is still `false`. Skipped indices are
 /// passed over without being counted.
 fn get_k_nearest_unclaimed(
-  tree : @rtree.RTree[Int],
+  tree : @rtree.RTree[Int32],
   claimed : Array[Bool],
   pt : @type.Coord,
-  k : Int,
-) -> Array[Int] {
+  k : Int32,
+) -> Array[Int32] {
   let all_nearest = tree.nearest_neighbors(pt, None)
-  let result : Array[Int] = []
+  let result : Array[Int32] = []
   for i = 0; i < all_nearest.length() && result.length() < k; i = i + 1 {
     let idx = all_nearest[i]
     if !claimed[idx] {
@@ -384,16 +384,16 @@ pub fn delaunay_concave_hull(
       if kept.length() == 0 {
         return None
       }
-      let edges_u : Array[Int] = []
-      let edges_v : Array[Int] = []
+      let edges_u : Array[Int32] = []
+      let edges_v : Array[Int32] = []
       for i = 0; i < kept.length(); i = i + 1 {
         let t = kept[i]
         push_concave_edge(edges_u, edges_v, t.a, t.b)
         push_concave_edge(edges_u, edges_v, t.b, t.c)
         push_concave_edge(edges_u, edges_v, t.c, t.a)
       }
-      let boundary_u : Array[Int] = []
-      let boundary_v : Array[Int] = []
+      let boundary_u : Array[Int32] = []
+      let boundary_v : Array[Int32] = []
       for k = 0; k < edges_u.length(); k = k + 1 {
         let mut occurrences = 0
         for l = 0; l < edges_u.length(); l = l + 1 {
@@ -426,10 +426,10 @@ fn concave_hull_edge_length(a : @type.Coord, b : @type.Coord) -> Double {
 /// index first) so two triangles sharing the edge produce matching
 /// records.
 fn push_concave_edge(
-  edges_u : Array[Int],
-  edges_v : Array[Int],
-  u : Int,
-  v : Int,
+  edges_u : Array[Int32],
+  edges_v : Array[Int32],
+  u : Int32,
+  v : Int32,
 ) -> Unit {
   if u < v {
     edges_u.push(u)
@@ -447,8 +447,8 @@ fn push_concave_edge(
 /// returns *some* cycle if one exists but not necessarily the
 /// "outer" ring.
 fn walk_concave_boundary_ring(
-  boundary_u : Array[Int],
-  boundary_v : Array[Int],
+  boundary_u : Array[Int32],
+  boundary_v : Array[Int32],
   points : Array[@type.Coord],
 ) -> @type.LineString? {
   let m = boundary_u.length()
@@ -462,9 +462,9 @@ fn walk_concave_boundary_ring(
     }
   }
   let n = max_idx + 1
-  let adjacency : Array[Array[Int]] = []
+  let adjacency : Array[Array[Int32]] = []
   for i = 0; i < n; i = i + 1 {
-    let inner : Array[Int] = []
+    let inner : Array[Int32] = []
     adjacency.push(inner)
   }
   for i = 0; i < m; i = i + 1 {
@@ -480,7 +480,7 @@ fn walk_concave_boundary_ring(
   if start < 0 {
     return None
   }
-  let ring : Array[Int] = [start]
+  let ring : Array[Int32] = [start]
   let mut prev = -1
   let mut curr = start
   let max_steps = m + 1

@@ -24,7 +24,7 @@ Planar Euclidean distance, squared distance, distance-to-segment, length, bearin
 ///|
 test "euclidean_distance_points - 3-4-5 via Point inputs" {
   @test.assert_eq(
-    euclidean_distance_points(
+    @geo.euclidean_distance_points(
       @type.Point::Point(0.0, 0.0),
       @type.Point::Point(3.0, 4.0),
     ),
@@ -40,7 +40,7 @@ test "euclidean_distance_points - 3-4-5 via Point inputs" {
 test "euclidean - squared / point_to_line / coord_to_line_string / bearing" {
   // Squared distance avoids the sqrt: 3² + 4² = 25.
   @test.assert_eq(
-    euclidean_distance_squared_coords(
+    @geo.euclidean_distance_squared_coords(
       @type.Coord::Coord(0.0, 0.0),
       @type.Coord::Coord(3.0, 4.0),
     ),
@@ -49,18 +49,21 @@ test "euclidean - squared / point_to_line / coord_to_line_string / bearing" {
   // Point → line distance: foot of perpendicular at midpoint.
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   @test.assert_eq(
-    euclidean_distance_point_to_line(@type.Point::Point(5.0, 3.0), l),
+    @geo.euclidean_distance_point_to_line(@type.Point::Point(5.0, 3.0), l),
     3.0,
   )
   // Coord → linestring distance: shortest of any segment.
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (10.0, 0.0)])
   @test.assert_eq(
-    euclidean_distance_coord_to_line_string(@type.Coord::Coord(5.0, 3.0), ls),
+    @geo.euclidean_distance_coord_to_line_string(
+      @type.Coord::Coord(5.0, 3.0),
+      ls,
+    ),
     3.0,
   )
   // Bearing east is 0°.
   @test.assert_eq(
-    euclidean_bearing(
+    @geo.euclidean_bearing(
       @type.Coord::Coord(0.0, 0.0),
       @type.Coord::Coord(1.0, 0.0),
     ),
@@ -77,7 +80,7 @@ test "euclidean - squared / point_to_line / coord_to_line_string / bearing" {
 ///|
 test "euclidean_distance_coords - 3-4-5 triangle" {
   @test.assert_eq(
-    euclidean_distance_coords(
+    @geo.euclidean_distance_coords(
       @type.Coord::Coord(0.0, 0.0),
       @type.Coord::Coord(3.0, 4.0),
     ),
@@ -100,7 +103,7 @@ test "euclidean_distance_coords - 3-4-5 triangle" {
 test "euclidean_distance_coord_to_line - perpendicular at midpoint" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
   @test.assert_eq(
-    euclidean_distance_coord_to_line(@type.Coord::Coord(5.0, 3.0), l),
+    @geo.euclidean_distance_coord_to_line(@type.Coord::Coord(5.0, 3.0), l),
     3.0,
   )
 }
@@ -112,9 +115,12 @@ test "euclidean_distance_coord_to_line - perpendicular at midpoint" {
 ///|
 test "euclidean_distance_coord_to_line - past start clamps to start distance" {
   let l = @type.Line::from_tuples((0.0, 0.0), (10.0, 0.0))
-  let d = euclidean_distance_coord_to_line(@type.Coord::Coord(-5.0, 3.0), l)
+  let d = @geo.euclidean_distance_coord_to_line(
+    @type.Coord::Coord(-5.0, 3.0),
+    l,
+  )
   let expected = (34.0 : Double).sqrt()
-  assert_true((d - expected).abs() < TOLERANCE)
+  assert_true((d - expected).abs() < @geo.TOLERANCE)
 }
 ```
 
@@ -133,7 +139,7 @@ test "euclidean_distance_coord_to_line - past start clamps to start distance" {
 ///|
 test "HasEuclideanLength::euclidean_length - Line of length 5" {
   let l = @type.Line::from_tuples((0.0, 0.0), (3.0, 4.0))
-  @test.assert_eq(HasEuclideanLength::euclidean_length(l), 5.0)
+  @test.assert_eq(@geo.HasEuclideanLength::euclidean_length(l), 5.0)
 }
 ```
 
@@ -143,7 +149,7 @@ test "HasEuclideanLength::euclidean_length - Line of length 5" {
 ///|
 test "HasEuclideanLength::euclidean_length - 3+4 LineString gives 7" {
   let ls = @type.LineString::from_tuples([(0.0, 0.0), (3.0, 0.0), (3.0, 4.0)])
-  @test.assert_eq(HasEuclideanLength::euclidean_length(ls), 7.0)
+  @test.assert_eq(@geo.HasEuclideanLength::euclidean_length(ls), 7.0)
 }
 ```
 
@@ -154,12 +160,16 @@ test "HasEuclideanLength::euclidean_length - 3+4 LineString gives 7" {
 ```mbt check
 ///|
 test "euclidean_destination - east and north" {
-  let east = euclidean_destination(@type.Coord::Coord(0.0, 0.0), 0.0, 5.0)
-  let north = euclidean_destination(@type.Coord::Coord(0.0, 0.0), 90.0, 5.0)
+  let east = @geo.euclidean_destination(@type.Coord::Coord(0.0, 0.0), 0.0, 5.0)
+  let north = @geo.euclidean_destination(
+    @type.Coord::Coord(0.0, 0.0),
+    90.0,
+    5.0,
+  )
   // Up to floating-point round-off the results are (5, 0) and (0, 5).
-  assert_true((east.x() - 5.0).abs() < TOLERANCE)
-  assert_true(east.y().abs() < TOLERANCE)
-  assert_true(north.x().abs() < TOLERANCE)
-  assert_true((north.y() - 5.0).abs() < TOLERANCE)
+  assert_true((east.x() - 5.0).abs() < @geo.TOLERANCE)
+  assert_true(east.y().abs() < @geo.TOLERANCE)
+  assert_true(north.x().abs() < @geo.TOLERANCE)
+  assert_true((north.y() - 5.0).abs() < @geo.TOLERANCE)
 }
 ```

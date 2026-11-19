@@ -3,6 +3,7 @@
 
 ///|
 /// Result of querying the closest point on a geometry.
+#derive(Eq, Debug)
 pub(all) enum Closest {
   /// The query point is exactly on the geometry.
   Intersection(@type.Coord)
@@ -11,7 +12,7 @@ pub(all) enum Closest {
   /// Multiple closest points equidistant — the geometry is degenerate or
   /// has been queried from a special location.
   Indeterminate
-} derive(Eq, Debug)
+}
 
 // MARK: trait ClosestPoint + impls ------------------------------------------
 

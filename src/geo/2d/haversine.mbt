@@ -5,14 +5,15 @@
 ///|
 /// A sphere parameterised by its radius (typically in meters). The standard
 /// Earth radius is `grs80_mean_radius` (6371008.8 m, IUGG recommendation).
+#derive(Eq)
 pub(all) struct HaversineMeasure {
   radius : Double
-} derive(Eq)
+}
 
 ///|
 /// Standard Earth mean radius (GRS80 R₁ = 6,371,008.8 m).
 pub fn haversine() -> HaversineMeasure {
-  HaversineMeasure::{ radius: 6_371_008.8 }
+  HaversineMeasure::{ radius: 6_371_008.8, }
 }
 
 ///|

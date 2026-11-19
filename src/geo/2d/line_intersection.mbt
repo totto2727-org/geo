@@ -3,6 +3,7 @@
 
 ///|
 /// The result of intersecting two line segments.
+#derive(Eq, Debug)
 pub(all) enum LineIntersection {
   /// A single point of intersection. The boolean is `true` if the
   /// intersection is a "proper" intersection (the segments cross each other
@@ -11,7 +12,7 @@ pub(all) enum LineIntersection {
   SinglePoint(@type.Coord, Bool)
   /// The two segments are collinear and overlap on a sub-segment.
   Collinear(@type.Line)
-} derive(Eq, Debug)
+}
 
 ///|
 /// Returns the intersection of two line segments, if any.

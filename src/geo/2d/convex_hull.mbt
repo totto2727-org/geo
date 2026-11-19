@@ -8,7 +8,7 @@
 
 ///|
 /// Lexicographic compare of two coordinates by (x, y).
-fn coord_cmp(a : @type.Coord, b : @type.Coord) -> Int {
+fn coord_cmp(a : @type.Coord, b : @type.Coord) -> Int32 {
   if a.x() < b.x() {
     -1
   } else if a.x() > b.x() {

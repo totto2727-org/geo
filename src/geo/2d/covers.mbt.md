@@ -34,13 +34,22 @@ test "covers_polygon_point - boundary included, outside rejected" {
   let p = @type.Polygon::Polygon(exterior, [])
   let gp = @type.Geometry::Polygon(p)
   assert_true(
-    covers_geometry(gp, @type.Geometry::Point(@type.Point::Point(0.0, 5.0))),
+    @geo.covers_geometry(
+      gp,
+      @type.Geometry::Point(@type.Point::Point(0.0, 5.0)),
+    ),
   ) // boundary
   assert_true(
-    covers_geometry(gp, @type.Geometry::Point(@type.Point::Point(5.0, 5.0))),
+    @geo.covers_geometry(
+      gp,
+      @type.Geometry::Point(@type.Point::Point(5.0, 5.0)),
+    ),
   ) // interior
   assert_false(
-    covers_geometry(gp, @type.Geometry::Point(@type.Point::Point(20.0, 20.0))),
+    @geo.covers_geometry(
+      gp,
+      @type.Geometry::Point(@type.Point::Point(20.0, 20.0)),
+    ),
   ) // outside
 }
 ```
@@ -65,16 +74,22 @@ test "covers_geometry - coord/line string/polygon boundary inclusive" {
   // Coord on boundary → covered.
   let gp = @type.Geometry::Polygon(polygon)
   assert_true(
-    covers_geometry(gp, @type.Geometry::Point(@type.Point::Point(0.0, 5.0))),
+    @geo.covers_geometry(
+      gp,
+      @type.Geometry::Point(@type.Point::Point(0.0, 5.0)),
+    ),
   )
   assert_false(
-    covers_geometry(gp, @type.Geometry::Point(@type.Point::Point(20.0, 20.0))),
+    @geo.covers_geometry(
+      gp,
+      @type.Geometry::Point(@type.Point::Point(20.0, 20.0)),
+    ),
   )
   // LineString every coord covered.
   let ls = @type.LineString::from_tuples([(1.0, 1.0), (5.0, 5.0)])
-  assert_true(covers_geometry(gp, @type.Geometry::LineString(ls)))
+  assert_true(@geo.covers_geometry(gp, @type.Geometry::LineString(ls)))
   let crossing = @type.LineString::from_tuples([(1.0, 1.0), (20.0, 20.0)])
-  assert_false(covers_geometry(gp, @type.Geometry::LineString(crossing)))
+  assert_false(@geo.covers_geometry(gp, @type.Geometry::LineString(crossing)))
   // Inner polygon's exterior coords all covered.
   let inner = @type.Polygon::Polygon(
     @type.LineString::from_tuples([
@@ -86,7 +101,7 @@ test "covers_geometry - coord/line string/polygon boundary inclusive" {
     ]),
     [],
   )
-  assert_true(covers_geometry(gp, @type.Geometry::Polygon(inner)))
+  assert_true(@geo.covers_geometry(gp, @type.Geometry::Polygon(inner)))
 }
 ```
 
@@ -102,13 +117,22 @@ test "covers_geometry - rect boundary inclusive" {
   // Boundary is covered (unlike strict contains_rect_coord).
   let gr = @type.Geometry::Rect(r)
   assert_true(
-    covers_geometry(gr, @type.Geometry::Point(@type.Point::Point(0.0, 5.0))),
+    @geo.covers_geometry(
+      gr,
+      @type.Geometry::Point(@type.Point::Point(0.0, 5.0)),
+    ),
   )
   assert_true(
-    covers_geometry(gr, @type.Geometry::Point(@type.Point::Point(5.0, 5.0))),
+    @geo.covers_geometry(
+      gr,
+      @type.Geometry::Point(@type.Point::Point(5.0, 5.0)),
+    ),
   )
   assert_false(
-    covers_geometry(gr, @type.Geometry::Point(@type.Point::Point(20.0, 20.0))),
+    @geo.covers_geometry(
+      gr,
+      @type.Geometry::Point(@type.Point::Point(20.0, 20.0)),
+    ),
   )
 }
 ```
@@ -129,7 +153,7 @@ test "covers_geometry - boundary point: covers true, contains false" {
   ])
   let p = @type.Geometry::Polygon(@type.Polygon::Polygon(exterior, []))
   let boundary_pt = @type.Geometry::Point(@type.Point::Point(0.0, 5.0))
-  assert_false(contains_geometry(p, boundary_pt))
-  assert_true(covers_geometry(p, boundary_pt))
+  assert_false(@geo.contains_geometry(p, boundary_pt))
+  assert_true(@geo.covers_geometry(p, boundary_pt))
 }
 ```

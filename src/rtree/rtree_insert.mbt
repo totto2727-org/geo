@@ -22,7 +22,7 @@ priv enum InsertResult[T] {
 /// TODO ms-18-followup: rstar uses overlap-enlargement (not area) at the
 /// leaf level. Switching would reduce later split frequency at a per-insert
 /// cost.
-fn[T] choose_subtree(children : Array[Node[T]], bbox : @type.Rect) -> Int {
+fn[T] choose_subtree(children : Array[Node[T]], bbox : @type.Rect) -> Int32 {
   let mut best_idx = 0
   let mut best_enlargement = @double.infinity
   let mut best_area = @double.infinity

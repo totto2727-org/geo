@@ -3,10 +3,11 @@
 
 ///|
 /// The winding order of a `LineString` ring.
+#derive(Eq, Debug)
 pub(all) enum WindingOrder {
   Clockwise
   CounterClockwise
-} derive(Eq, Debug)
+}
 
 ///|
 /// Returns the winding order of a closed `LineString`. Returns `None` if the

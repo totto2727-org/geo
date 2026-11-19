@@ -4,17 +4,18 @@
 ///|
 /// Geometries can have 0, 1, or 2 dimensions, plus a special `Empty`
 /// dimensionality (for empty collections / linestrings).
+#derive(Eq, Debug)
 pub(all) enum Dimensions {
   Empty
   ZeroDimensional
   OneDimensional
   TwoDimensional
-} derive(Eq, Debug)
+}
 
 ///|
 /// Compares dimensions in the natural ordering Empty < ZeroDimensional <
 /// OneDimensional < TwoDimensional. Returns the integer rank.
-pub fn Dimensions::rank(self : Dimensions) -> Int {
+pub fn Dimensions::rank(self : Dimensions) -> Int32 {
   match self {
     Empty => 0
     ZeroDimensional => 1

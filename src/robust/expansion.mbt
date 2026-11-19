@@ -28,7 +28,7 @@ pub const ICCERRBOUND_B : Double = (4.0 + 48.0 * EPSILON) * EPSILON
 pub const ICCERRBOUND_C : Double = (44.0 + 576.0 * EPSILON) * EPSILON * EPSILON
 
 ///|
-pub fn estimate(e : Array[Double], len : Int) -> Double {
+pub fn estimate(e : Array[Double], len : Int32) -> Double {
   e.iter().take(len).fold(init=0.0, fn(acc, x) { acc + x })
 }
 
@@ -194,8 +194,8 @@ pub fn two_one_product(
 /// updating the running accumulator `q` and appending nonzero corrections.
 fn drain_tail(
   source : Array[Double],
-  start : Int,
-  finish : Int,
+  start : Int32,
+  finish : Int32,
   q_init : Double,
   h : Array[Double],
 ) -> Double {
@@ -223,9 +223,9 @@ fn drain_tail(
 /// program.
 pub fn fast_expansion_sum_zeroelim(
   e : Array[Double],
-  elen : Int,
+  elen : Int32,
   f : Array[Double],
-  flen : Int,
+  flen : Int32,
 ) -> Array[Double] {
   let h : Array[Double] = []
   let mut eindex = 0
@@ -288,7 +288,7 @@ pub fn fast_expansion_sum_zeroelim(
 /// `fast_expansion_sum_zeroelim`.
 pub fn scale_expansion_zeroelim(
   e : Array[Double],
-  elen : Int,
+  elen : Int32,
   b : Double,
 ) -> Array[Double] {
   let (bhi, blo) = split(b)
